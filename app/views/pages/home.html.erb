@@ -1,0 +1,192 @@
+
+<!-- Hero Section -->
+<section class="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-teal-50 py-24 text-center">
+  <div class="absolute top-0 left-0 w-72 h-72 bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse"></div>
+  <div class="absolute bottom-0 right-0 w-72 h-72 bg-cyan-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse delay-300"></div>
+
+  <div class="relative z-10">
+    <h2 class="text-4xl md:text-4xl font-extrabold text-gray-900 leading-tight opacity-0 animate-fadeInUp">
+      Manage Clients, Projects & Teams<br />in One Smart Platform
+    </h2>
+
+    <p class="mt-6 text-teal-500 font-semibold max-w-1xl mx-auto opacity-0 animate-fadeInUp delay-200 text-md transition duration-300 hover:scale-105 hover:text-teal-400" style="text-shadow: 1px 1px 6px rgba(20, 184, 166, 0.3);">
+    Streamline your company’s workflow — track tasks, clients, and deadlines effortlessly.
+    </p>
+
+    <div class="mt-8 space-x-4 opacity-0 animate-fadeInUp delay-300 mt-13">
+      <%= link_to "Start Free Trial", "#pricing", class: "bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 shadow-lg hover:shadow-xl transition-all duration-300" %>
+      <a href="#description" class="border border-gray-300 px-6 py-3 rounded-lg font-semibold text-gray-700 hover:border-teal-600 hover:text-teal-600 transition-all duration-300">Learn More</a>
+    </div>
+  </div>
+</section>
+
+<section id="description" class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-2 items-center gap-x-16">
+  <div class="order-1 md:order-2 flex justify-center md:justify-end animate-fadeIn">
+    <%= image_tag "bg2.jpg",
+      class: "rounded-2xl shadow-2xl w-full max-w-xl h-[450px] object-cover animate-floating",
+      alt: "Dashboard Preview" %>
+  </div>
+
+  <div class="order-2 md:order-1 space-y-3 animate-fadeIn md:pr-6">
+    <h2 class="text-3xl font-bold text-gray-800 leading-tight">
+      Simplify Project Management for Your Team
+    </h2>
+
+    <p class="text-gray-600 text-lg leading-relaxed">
+      Our <span class="text-teal-600 font-semibold">Client & Project Management Platform</span> empowers businesses
+      to streamline their workflow, improve collaboration, and track project progress in real time.
+      Whether you're managing multiple clients, deadlines, or deliverables — our system keeps everything
+      organized in one intuitive dashboard.
+    </p>
+
+    <p class="text-gray-600 text-lg leading-relaxed">
+      With a clean and responsive interface, managers can easily assign tasks, monitor productivity,
+      and communicate directly with team members. Automated notifications ensure no deadline is missed,
+      while the analytics dashboard gives clear insights into overall performance.
+    </p>
+
+    <a href="#features"
+       class="inline-block bg-teal-600 text-white mt-2 px-6 py-3 rounded-xl shadow-md hover:bg-teal-700 transition duration-300">
+      Explore Features
+    </a>
+  </div>
+</section>
+
+
+<!-- Features Section -->
+<section id="features" class="py-10 bg-white">
+  <div class="text-center mb-12">
+    <h3 class="text-3xl font-bold text-gray-900">Powerful <span class="text-teal-900">Features</span></h3>
+    <p class="mt-2 text-gray-600">Everything your company needs to stay on track</p>
+  </div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-6">
+  <% features = [
+    { icon: "building-2", title: "Multi-Company Access", desc: "Each company has its own secure workspace and users." },
+    { icon: "clipboard-list", title: "Project & Task Management", desc: "Assign projects, track progress, and manage deadlines visually." },
+    { icon: "bell", title: "Automated Notifications", desc: "Sidekiq-based background jobs notify users automatically." },
+    { icon: "layout-dashboard", title: "Analytics Dashboard", desc: "Visualize projects, clients, and progress with graphs." },
+    { icon: "folder", title: "File Management", desc: "Upload deliverables, documents, and assets directly to projects." },
+    { icon: "users", title: "Team Collaboration", desc: "Managers, employees, and clients work together in real time." }
+  ] %>
+
+  <% features.each_with_index do |feature, index| %>
+    <div class="group bg-white p-8 rounded-2xl shadow-sm border-2 border-transparent 
+                hover:shadow-lg hover:-translate-y-1 hover:border-teal-600 transition-all duration-300 
+                opacity-0 animate-fadeInUp delay-<%= (index+1) * 100 %>">
+      <div class="flex flex-col items-center text-center">
+        <i data-lucide="<%= feature[:icon] %>" 
+           class="w-10 h-10 text-teal-600 mb-4 transform transition-transform duration-300 group-hover:scale-125 group-hover:animate-pop"></i>
+        <h4 class="font-semibold text-lg mb-2 text-gray-900"><%= feature[:title] %></h4>
+        <p class="text-gray-600 text-sm"><%= feature[:desc] %></p>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="bg-slate-100 py-10">
+  <div class="text-center mb-10">
+    <h3 class="text-3xl font-bold text-gray-900">How It Works</h3>
+    <p class="text-gray-600 mt-2">Get started in just three simple steps</p>
+  </div>
+  
+  <div class="relative max-w-6xl mx-auto px-6 py-8">
+  <!-- Left/Right Navigation -->
+  <button id="scroll-left" class="absolute -left-6 top-1/2 -translate-y-1/2 bg-teal-600 text-white p-2 rounded-full shadow-lg z-10 hover:bg-teal-700 transition">
+    &#10094;
+  </button>
+  <button id="scroll-right" class="absolute -right-6 top-1/2 -translate-y-1/2 bg-teal-600 text-white p-2 rounded-full shadow-lg z-10 hover:bg-teal-700 transition">
+    &#10095;
+  </button>
+
+  <!-- Steps Container -->
+  <div id="steps-container" class="flex gap-19 overflow-x-hidden scroll-snap-x snap-mandatory">
+    <% steps = [
+      { num: 1, title: "Create Company", desc: "Admin registers and sets up the company profile." },
+      { num: 2, title: "Add Managers & Clients", desc: "Managers add employees, clients, and create projects." },
+      { num: 3, title: "Track Everything", desc: "Monitor progress with reports, charts, and notifications." },
+      { num: 4, title: "Create Projects & Tasks", desc: "Managers assign tasks and set deadlines for projects." },
+      { num: 5, title: "Upload Deliverables", desc: "Employees upload task or project files." },
+      { num: 6, title: "Receive Notifications", desc: "Sidekiq sends automated updates about tasks and deadlines." },
+      { num: 7, title: "View Analytics Dashboard", desc: "Managers and admins monitor project progress visually." }
+    ] %>
+
+    <% steps.each_with_index do |step, index| %>
+      <div class="group flex flex-col items-center text-center snap-start min-w-[220px] relative transition-all duration-500" data-step="<%= step[:num] %>">
+        <!-- Step Circle -->
+        <div class="step-circle text-teal-600 text-4xl font-bold mb-3 rounded-full w-12 h-12 mt-1 mb-1 flex items-center justify-center bg-teal-100 
+                    group-hover:bg-teal-200 transition-all duration-300 transform group-hover:scale-110">
+          <%= step[:num] %>
+        </div>
+
+        <!-- Step Title & Description -->
+        <h4 class="font-semibold text-lg mb-2"><%= step[:title] %></h4>
+        <p class="text-gray-600 text-sm"><%= step[:desc] %></p>
+
+        <!-- Animated Arrow to Next -->
+        <% if index < steps.size - 1 %>
+          <div class="absolute top-1/2 right-[-60px] w-16 h-1 flex items-center justify-center">
+            <div class="w-full h-1 bg-teal-400 rounded-full relative overflow-hidden">
+              <div class="animated-flow bg-teal-600 h-1 absolute left-0 top-0 w-0"></div>
+              <svg class="absolute right-0 -top-2 w-4 h-4 text-teal-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6"/>
+              </svg>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+</section>
+
+<!-- Pricing Section -->
+<section id="pricing" class="bg-white py-15 text-center">
+  <h3 class="text-3xl font-bold text-gray-900 mb-4">Simple Pricing</h3>
+  <p class="text-gray-600 mb-10">Start free — upgrade when your team grows</p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto px-6">
+    <!-- Starter Plan -->
+    <div class="relative group bg-white p-8 border rounded-2xl shadow-sm transition-all duration-300 hover:shadow-lg hover:border-teal-600 hover:border-2
+                hover:shadow-lg hover:-translate-y-1 hover:border-teal-600 transition-all duration-300 
+                opacity-0 animate-fadeInUp">
+      <!-- Label -->
+      <span class="absolute top-3 right-3 bg-teal-700 text-white text-xs font-semibold px-3 py-1 rounded-full">1–7 Members</span>
+
+      <h4 class="font-semibold text-xl mb-2">Starter</h4>
+      <p class="text-3xl font-bold text-teal-600 mb-4">Free</p>
+      <p class="text-gray-600 text-sm mb-6">
+        Perfect for small teams just getting started. Includes essential project and task management tools.<br>
+        <span class="text-gray-500 italic">Valid for teams of up to 7 members.</span>
+      </p>
+      <%= link_to "Get Started", "#", class: "bg-teal-600 text-white px-5 py-2 rounded-lg hover:bg-teal-700 transition" %>
+    </div>
+
+    <!-- Professional Plan -->
+    <div class="relative group bg-white p-8 border rounded-2xl shadow-md transition-all duration-300 hover:shadow-xl hover:border-teal-600 hover:border-2
+                hover:shadow-lg hover:-translate-y-1 hover:border-teal-600 transition-all duration-300 
+                opacity-0 animate-fadeInUp">
+      <!-- Label -->
+      <span class="absolute top-3 right-3 bg-teal-700 text-white text-xs font-semibold px-3 py-1 rounded-full">7+ Members</span>
+
+      <h4 class="font-semibold text-xl mb-2">Professional</h4>
+      <p class="text-3xl font-bold text-teal-600 mb-4">$49/mo</p>
+      <p class="text-gray-600 text-sm mb-6">
+        Designed for growing companies managing multiple clients and teams. Unlock advanced project analytics, file sharing, and automation.
+      </p>
+      <%= link_to "Upgrade", "#", class: "bg-teal-600 text-white px-5 py-2 rounded-lg hover:bg-teal-700 transition" %>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="bg-slate-50 py-16 text-center">
+  <h3 class="text-3xl font-bold text-gray-900 mb-4">Get in Touch</h3>
+  <p class="text-gray-600 mb-8">Have questions or feedback? We’d love to hear from you.</p>
+  <%= link_to "Contact Us", "#", class: "bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 shadow" %>
+</section>
+
+
