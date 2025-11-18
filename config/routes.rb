@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
 
   # Company profile creation (after signup)
-  resources :companies, only: [ :new, :create, :show ]
+  resources :companies, only: [ :new, :create, :show, :update ]
 
   # Defines the root path
   root "pages#home"

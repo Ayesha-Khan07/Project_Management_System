@@ -1,5 +1,8 @@
 class CompaniesController < ApplicationController
+  
   before_action :authenticate_user!
+  before_action :set_company, only: [:show, :update]
+  before_action :authorize_company_admin!, only: [:update]
 
   def new
     @company = Company.new
@@ -28,6 +31,14 @@ class CompaniesController < ApplicationController
     redirect_to root_path, alert: "No company found" if @company.nil?
   end
 
+  def update
+    if @company.update(logo: params[:company][:logo])
+      redirect_to company_path(@company), notice: "Logo updated successfully."
+    else
+      redirect_to company_path(@company), alert: "Failed to update logo."
+    end
+  end
+
   private
 
   def company_params
@@ -40,4 +51,16 @@ class CompaniesController < ApplicationController
       :member_limit
     )
   end
+
+  def set_company()
+    @company = Company.find(params[:id])
+  end
+
+  def authorize_company_admin!
+    unless @company.users.exists?(id: current_user.id, role: "admin")
+      redirect_to company_path(@company), alert: "Not authorized."
+    end
+  end
+
+
 end

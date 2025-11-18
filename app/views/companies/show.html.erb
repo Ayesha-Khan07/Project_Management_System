@@ -18,7 +18,7 @@
     <!-- Company Logo With Camera Icon -->
     <div class="relative w-32 h-32 mt-6 mx-auto">
       <% if @company.logo.attached? %>
-        <%= image_tag @company.logo, class: "w-32 h-32 rounded-full object-cover border" %>
+        <%= image_tag url_for(@company.logo), class: "w-32 h-32 rounded-full object-cover border" %>
       <% else %>
         <div class="w-32 h-32 bg-gray-200 rounded-lg border flex items-center justify-center text-gray-500">
           No Logo
@@ -28,7 +28,7 @@
       <!-- Camera Icon for Upload -->
       <label class="absolute bottom-1 right-1.5 bg-gray-500 text-white p-2 rounded-full cursor-pointer hover:bg-gray-700">
         <i data-lucide="camera" class="w-4 h-4"></i>
-        <%= form_with model: @company, url: company_path(@company), method: :patch, html: { multipart: true, class: "hidden" } do |f| %>
+        <%= form_with model: @company, url: company_path(@company), method: :patch, local: true, html: { multipart: true, class: "hidden" } do |f| %>
           <%= f.file_field :logo, onchange: "this.form.submit();" %>
         <% end %>
       </label>
