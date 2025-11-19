@@ -1,5 +1,5 @@
 class CompaniesController < ApplicationController
-  
+
   before_action :authenticate_user!
   before_action :set_company, only: [:show, :update]
   before_action :authorize_company_admin!, only: [:update]
@@ -27,17 +27,21 @@ class CompaniesController < ApplicationController
   end
 
   def show
-    @company = current_user.company
+    set_company
     redirect_to root_path, alert: "No company found" if @company.nil?
   end
 
   def update
-    if @company.update(logo: params[:company][:logo])
-      redirect_to company_path(@company), notice: "Logo updated successfully."
+    Rails.logger.info "PARAMS: #{params.inspect}"
+    
+    if @company.update(company_params)
+      redirect_to company_path(@company), notice: "Company updated successfully."
     else
-      redirect_to company_path(@company), alert: "Failed to update logo."
+      flash.now[:alert] = "Update failed."
+      render :show, status: :unprocessable_entity
     end
   end
+
 
   private
 
