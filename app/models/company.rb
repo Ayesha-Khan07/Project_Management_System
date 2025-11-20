@@ -1,5 +1,6 @@
 class Company < ApplicationRecord
   has_many :users, dependent: :destroy
+   has_many :projects, dependent: :destroy
   has_one_attached :logo
 
   # validations
