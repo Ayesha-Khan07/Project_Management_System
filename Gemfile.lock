@@ -479,7 +479,7 @@ DEPENDENCIES
   debug
   devise
   groupdate
-  image_processing
+  image_processing (~> 1.2)
   importmap-rails
   jbuilder
   jquery-rails

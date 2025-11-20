@@ -1,0 +1,3 @@
+web: bin/rails server
+css: ./bin/build-css --watch
+js: ./bin/webpack-dev-server

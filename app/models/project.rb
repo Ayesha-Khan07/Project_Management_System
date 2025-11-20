@@ -1,0 +1,15 @@
+class Project < ApplicationRecord
+  belongs_to :company
+  belongs_to :manager, class_name: "User", foreign_key: "manager_id", optional: true
+  belongs_to :client, class_name: "User", foreign_key: "client_id", optional: true
+
+  has_rich_text :description
+  has_one_attached :uploaded_document
+
+  # Allowed statuses
+  STATUSES = ["pending", "working", "completed"]
+
+  # Validations
+  validates :title, :description, :project_status, :project_deadline, presence: true
+  validates :project_status, inclusion: { in: STATUSES }
+end

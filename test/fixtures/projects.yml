@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  project_description: MyText
+  status: MyString
+  project_deadline: 2025-11-19
+  company: one
+  manager: one
+  client: one
+
+two:
+  title: MyString
+  project_description: MyText
+  status: MyString
+  project_deadline: 2025-11-19
+  company: two
+  manager: two
+  client: two

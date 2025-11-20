@@ -1,0 +1,52 @@
+<section class="p-10 bg-gray-50 ">
+  <div class="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-lg border">
+
+    <h1 class="text-3xl font-bold mb-8 text-gray-800">Create New Project</h1>
+
+    <%= form_with model: @project, local: true, html: { multipart: true } do |f| %>
+
+      <div class="mb-6">
+        <label class="block font-semibold mb-2">Project Title</label>
+        <%= f.text_field :title, class: "w-full p-3 border rounded-lg" %>
+      </div>
+
+      <!-- Rich Text Description -->
+      <div class="mb-6 h=900">
+        <label class="block font-semibold mb-2">Description</label>
+        <%= f.rich_text_area :description, class: "w-full" %>
+      </div>
+
+      <!-- Status Dropdown -->
+      <div class="mb-6">
+         <label class="block font-semibold mb-2">Project Status</label>
+         <%= f.select :project_status,
+            Project::STATUSES.map { |s| [s.titleize, s] },
+            {},
+            class: "w-full p-3 border rounded-lg" %>
+     </div>
+
+
+      <!-- Deadline Calendar -->
+      <div class="mb-6">
+        <label class="block font-semibold mb-2">Deadline</label>
+        <%= f.date_field :project_deadline, class: "w-full p-3 border rounded-lg" %>
+      </div>
+
+      <!-- File Upload Area -->
+      <div class="mb-6">
+        <label class="block font-semibold mb-2">Upload Document</label>
+
+        <div class="border-2 border-dashed p-6 rounded-lg text-center bg-gray-100 cursor-pointer">
+          <span class="block text-gray-600 mb-3">+ Browse and upload file here</span>
+          <%= f.file_field :uploaded_document, class: "block mx-auto" %>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="mt-8 text-right">
+        <%= f.submit "Create Project", class: "px-6 py-3 bg-teal-600 text-white rounded-lg shadow hover:bg-teal-700" %>
+      </div>
+
+    <% end %>
+  </div>
+</section>
