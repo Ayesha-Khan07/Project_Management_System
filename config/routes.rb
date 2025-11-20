@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   match "/ceo_login", to: "registrations#login_ceo", via: [ :get, :post ], as: :login_ceo
 
   # Company profile creation (after signup)
-  resources :companies, only: [ :new, :create, :show ]
+  resources :companies, only: [ :new, :create, :show, :update ]
 
   #projects maagement
   resources :projects
@@ -27,4 +27,8 @@ Rails.application.routes.draw do
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
+
+  #project path
+  resources :projects
+
 end

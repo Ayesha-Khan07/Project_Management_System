@@ -1,0 +1,30 @@
+<div class="max-w-2xl mx-auto py-16">
+  <h2 class="text-2xl font-bold mb-4 text-center">Create Company Profile</h2>
+  <p class="text-center text-gray-600 mb-6">Add your company details. Logo is optional.</p>
+
+  <%= form_with model: @company, local: true, html: { multipart: true }, class: "space-y-4" do |f| %>
+    <div>
+      <%= f.label :name, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :name, required: true, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :description, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_area :description, rows: 4, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :services, "Services (comma separated)", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :services, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :logo, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.file_field :logo, accept: "image/*", class: "mt-1" %>
+    </div>
+
+    <div class="text-center">
+      <%= f.submit "Create Company & Go to Dashboard", class: "bg-teal-600 text-white px-4 py-2 rounded-lg" %>
+    </div>
+  <% end %>
+</div>
