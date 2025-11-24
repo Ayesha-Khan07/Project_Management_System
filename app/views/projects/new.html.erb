@@ -1,48 +1,50 @@
-<section class="p-10 bg-gray-50 ">
-  <div class="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-lg border">
+<section class="p-10 bg-gray-50 min-h-screen">
+  <h1 class="text-3xl font-bold mb-8 text-teal-500">Create New Project</h1>
 
-    <h1 class="text-3xl font-bold mb-8 text-gray-800">Create New Project</h1>
+  <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-5xl mx-auto">
 
     <%= form_with model: @project, local: true, html: { multipart: true } do |f| %>
 
+      <!-- Title -->
       <div class="mb-6">
-        <label class="block font-semibold mb-2">Project Title</label>
-        <%= f.text_field :title, class: "w-full p-9 border rounded-lg" %>
+        <%= f.text_field :title,
+          placeholder: "Title",
+          class: "w-full border-b-2 border-gray-300 focus:border-teal-500 focus:outline-none
+                  text-2xl font-bold placeholder:text-2xl placeholder:font-bold placeholder:text-gray-400 py-2" %>
       </div>
 
-      <!-- Rich Text Description -->
-      <div class="mb-6 h=900">
+    <div class="mb-6">
         <label class="block font-semibold mb-2">Description</label>
-        <%= f.rich_text_area :description, class: "w-full" %>
-      </div>
+        <%= f.rich_text_area :description,
+            class: "trix-content w-full border rounded p-2 min-h-[300px]",
+            placeholder: "Type or paste article content here" %>
+    </div>
 
-      <!-- Status Dropdown -->
+      <!-- Project Status -->
       <div class="mb-6">
-         <label class="block font-semibold mb-2">Project Status</label>
-         <%= f.select :project_status,
+        <label class="block font-semibold mb-2">Project Status</label>
+        <%= f.select :project_status,
             Project::STATUSES.map { |s| [s.titleize, s] },
             {},
             class: "w-full p-3 border rounded-lg" %>
-     </div>
+      </div>
 
-
-      <!-- Deadline Calendar -->
+      <!-- Deadline -->
       <div class="mb-6">
         <label class="block font-semibold mb-2">Deadline</label>
         <%= f.date_field :project_deadline, class: "w-full p-3 border rounded-lg" %>
       </div>
 
-      <!-- File Upload Area -->
+      <!-- File Upload -->
       <div class="mb-6">
         <label class="block font-semibold mb-2">Upload Document</label>
-
         <div class="border-2 border-dashed p-6 rounded-lg text-center bg-gray-100 cursor-pointer">
           <span class="block text-gray-600 mb-3">+ Browse and upload file here</span>
           <%= f.file_field :uploaded_document, class: "block mx-auto" %>
         </div>
       </div>
 
-      <!-- Submit Button -->
+      <!-- Submit -->
       <div class="mt-8 text-right">
         <%= f.submit "Create Project", class: "px-6 py-3 bg-teal-600 text-white rounded-lg shadow hover:bg-teal-700" %>
       </div>

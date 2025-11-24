@@ -1,29 +1,33 @@
 class ProjectsController < ApplicationController
-    before_action :authenticate_user!
+  before_action :authenticate_user!
 
-    def new 
-        @project = Project.new
-        @company = current_user.company
+  def new
+    @project = Project.new
+  end
+
+  def create
+    @project = current_user.company.projects.build(project_params)
+    if @project.save
+      redirect_to @project, notice: "Project created successfully."
+    else
+      Rails.logger.debug(@project.errors.full_messages)
+      render :new, status: :unprocessable_entity
     end
+  end
 
-    def create 
-        @project = current_user.company.projects.build(project_params)      #build-> handle the associations of project & company == to new's 2 lines
-        if @project.save 
-            redirect_to @project, notice: "Project created sucessfully."
-        else
-            render :new, status: :unprocessable_entity
-        end
-    end
+  def show
+    @project = Project.find(params[:id])  
+  end
 
-    private
-    
-    def project_params
-        params.require(:project).permit(
-            :title,
-            :description,
-            :status,
-            :project_deadline
-        )
-    end
+  private
 
+  def project_params
+    params.require(:project).permit(
+      :title,
+      :project_status,
+      :project_deadline,
+      :description,       # Action Text
+      :uploaded_document  # ActiveStorage
+    )
+  end
 end

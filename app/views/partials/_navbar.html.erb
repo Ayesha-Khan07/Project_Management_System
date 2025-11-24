@@ -13,6 +13,7 @@
 
   <div class="flex space-x-4">
      <% if user_signed_in? %>
+      <%= link_to "Profile", company_path(current_user.company), class: "relative text-gray-700 font-medium hover:text-teal-600 mt-2 before:absolute before:-bottom-1 before:left-0 before:w-0 before:h-[2px] before:bg-teal-600 before:transition-all before:duration-300 hover:before:w-full" %>
       <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-teal-700 transition" %>
      <% else %>
       <%= link_to "Login", login_ceo_path, class: "relative text-gray-700 font-medium hover:text-teal-600 mt-2 before:absolute before:-bottom-1 before:left-0 before:w-0 before:h-[2px] before:bg-teal-600 before:transition-all before:duration-300 hover:before:w-full" %>

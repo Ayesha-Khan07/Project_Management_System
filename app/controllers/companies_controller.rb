@@ -18,7 +18,9 @@ class CompaniesController < ApplicationController
    @company = Company.new(company_params)
 
    if @company.save
-     current_user.update(company: @company)
+     current_user.update(company: @company)         # === current_user.company = @company
+                                                    # current_user.save
+
      redirect_to company_path(@company), notice: "Company created successfully."
    else
      flash.now[:alert] = "Failed to create company."
