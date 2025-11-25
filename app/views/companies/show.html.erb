@@ -70,8 +70,8 @@
 
     <!-- Pencil icon (shows the edit form) -->
       <% if @company.users.exists?(id: current_user.id, role: "admin") %>
-        <button type="button" class="mr-240 mb-4 p-1 rounded-full hover:bg-gray-100" data-toggle-target="description">
-          <i data-lucide="edit-2" class="w-5 h-5 text-gray-800"></i>
+        <button type="button" class="mr-220 mb-4 p-1 rounded-full hover:bg-gray-100" data-toggle-target="description">
+          <i data-lucide="edit" class="w-5 h-5 text-gray-800"></i>
         </button>
       <% end %>
     </div>
@@ -104,7 +104,7 @@
 
       <% if @company.users.exists?(id: current_user.id, role: "admin") %>
         <button type="button" class="mr-280 ml-1 mb-5 p-1 rounded-full hover:bg-gray-200" data-toggle-target="services">
-          <i data-lucide="edit-2" class="w-5 h-5 text-gray-600"></i>
+          <i data-lucide="edit" class="w-5 h-5 text-gray-600"></i>
         </button>
       <% end %>
     </div>
@@ -170,7 +170,6 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    // helper: show/hide by id suffix
     function showForm(key) {
       const display = document.getElementById(`company-${key}-display`);
       const form = document.getElementById(`company-${key}-form`);

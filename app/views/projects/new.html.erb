@@ -24,9 +24,9 @@
       <div class="mb-6">
         <label class="block font-semibold mb-2">Project Status</label>
         <%= f.select :project_status,
-            Project::STATUSES.map { |s| [s.titleize, s] },
-            {},
-            class: "w-full p-3 border rounded-lg" %>
+          Project.project_statuses.keys.map { |s| [s.titleize, s] },
+          {},
+          class: "w-full p-3 border rounded-lg" %>
       </div>
 
       <!-- Deadline -->

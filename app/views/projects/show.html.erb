@@ -1,4 +1,190 @@
-<h1 class="text-3xl mt-10 font-bold mb-4">Title: <%= @project.title %></h1>
-<div class="prose mb-4">Description: <%= @project.description %></div>
-<p>Status: <%= @project.project_status %></p>
-<p>Deadline: <%= @project.project_deadline %></p>
+<section class="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-teal-50 py-10 px-6 sm:px-12 min-h-screen">
+
+  <!-- gradient colors -->
+  <div class="fixed top-20 left-4 w-92 h-92 bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse pointer-events-none -z-10"></div>
+  <div class="fixed bottom-0 right-2 w-92 h-92 bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse delay-300 pointer-events-none -z-10"></div>
+
+  <!-- Created / Updated info -->
+  <div class="flex flex-wrap justify-start space-x-6 text-sm text-gray-600 mb-6">
+    <div>
+      Created by <span class="font-semibold"><%= @current_user.username.titleize %></span> 
+      at <%= @project.created_at.strftime("%b %d, %Y %H:%M") %>
+    </div>
+    <div>
+      Updated by <span class="font-semibold"><%= @current_user.username.titleize %></span> 
+      at <%= @project.updated_at.strftime("%b %d, %Y %H:%M") %>
+    </div>
+  </div>
+
+  <!-- Title with edit option -->
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <div id="project-title-display" class="flex items-center space-x-2">
+        <h1 class="text-4xl font-bold"><%= @project.title %></h1>
+        <% if @current_user.role == "admin" || @current_user.role == "manager" %>
+          <button type="button" class="text-gray-500 mb-1 hover:text-gray-700" data-toggle-target="title">
+            <i data-lucide="edit"></i>
+          </button>
+        <% end %>
+      </div>
+
+      <div id="project-title-form" class="hidden flex items-center space-x-2">
+        <%= form_with model: @project, url: project_path(@project), method: :patch, local: false, html: { class: "inline-edit-form", data: { field: "title" } } do |f| %>
+          <%= f.text_field :title, class: "border rounded px-2 py-1", value: @project.title %>
+          <%= f.submit "Save", class: "bg-teal-600 text-white px-3 py-1 rounded" %>
+          <button type="button" class="px-3 py-1 rounded border hover:bg-gray-200" data-toggle-cancel="title">Cancel</button>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex space-x-6">
+      <button class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition">+ Add</button>
+      <button class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition">+ Create Task</button>
+    </div>
+  </div>
+
+  <!-- Status + Deadline -->
+  <div class="flex flex-wrap items-center space-x-6 mb-6">
+    <!-- Status -->
+    <div>
+      <div id="project-status-display" class="flex items-center space-x-2">
+        <span class="font-semibold">Status:</span>
+        <span><%= @project.project_status.capitalize %></span>
+        <% if @current_user.role == "admin" %>
+          <button type="button" class="text-gray-500 hover:text-gray-700" data-toggle-target="status">
+            <i data-lucide="edit"></i>
+          </button>
+        <% end %>
+      </div>
+
+      <div id="project-status-form" class="hidden flex items-center space-x-2 mt-2">
+        <%= form_with model: @project, url: project_path(@project), method: :patch, local: false, html: { class: "inline-edit-form", data: { field: "status" } } do |f| %>
+          <%= f.select :project_status, Project.project_statuses.keys.map { |k| [k.titleize, k] }, {}, class: "border rounded px-2 py-1" %>
+          <%= f.submit "Save", class: "bg-teal-600 text-white px-3 py-1 rounded" %>
+          <button type="button" class="px-3 py-1 rounded border hover:bg-gray-200" data-toggle-cancel="status">Cancel</button>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Deadline -->
+    <div>
+      <div id="project-deadline-display" class="flex items-center space-x-2">
+        <span class="font-semibold">Deadline:</span>
+        <span><%= @project.project_deadline %></span>
+        <% if @current_user.role == "admin" %>
+          <button type="button" class="text-gray-500 hover:text-gray-700" data-toggle-target="deadline">
+            <i data-lucide="edit"></i>
+          </button>
+        <% end %>
+      </div>
+
+      <div id="project-deadline-form" class="hidden flex items-center space-x-2 mt-2">
+        <%= form_with model: @project, url: project_path(@project), method: :patch, local: false, html: { class: "inline-edit-form", data: { field: "deadline" } } do |f| %>
+          <%= f.date_field :project_deadline, class: "border rounded px-2 py-1", value: @project.project_deadline %>
+          <%= f.submit "Save", class: "bg-teal-600 text-white px-3 py-1 rounded" %>
+          <button type="button" class="px-3 py-1 rounded border hover:bg-gray-200" data-toggle-cancel="deadline">Cancel</button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+<!-- Project Description Section -->
+<div class="mt-10">
+
+  <!-- Heading + Edit icon beside heading -->
+  <div class="flex items-center space-x-2 mb-3">
+    <h2 class="text-2xl font-semibold">Project Description</h2>
+
+    <% if @current_user.role == "admin" %>
+      <button type="button" data-toggle-target="description"
+              class="text-gray-600 hover:text-gray-800">
+        <i data-lucide="edit"></i>
+      </button>
+    <% end %>
+  </div>
+
+  <!-- Display box -->
+  <div id="project-description-display"
+       class="bg-white p-6 rounded-lg border shadow-sm text-gray-800 ml-4">
+    <%= @project.description %>
+  </div>
+
+  <!-- Edit form -->
+  <div id="project-description-form" class="hidden ml-4 mt-3">
+    <%= form_with model: @project, url: project_path(@project),
+                  method: :patch, local: false,
+                  html: { class: "inline-edit-form", data: { field: "description" } } do |f| %>
+
+      <!-- Wrapper around TRIX for padding + clean border -->
+      <div class="p-3 border rounded bg-white">
+        <%= f.rich_text_area :description,
+              class: "trix-content w-full" %>
+      </div>
+
+      <div class="flex justify-end space-x-2 mt-3">
+        <%= f.submit "Save",
+              class: "bg-teal-600 text-white px-4 py-1 rounded" %>
+        <button type="button" data-toggle-cancel="description"
+                class="px-4 py-1 rounded border hover:bg-gray-100">
+          Cancel
+        </button>
+      </div>
+
+    <% end %>
+  </div>
+</div>
+
+</div>
+  <hr class="border-gray-300 mt-6">
+
+</section>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  function showForm(key) {
+    document.getElementById(`project-${key}-display`).classList.add('hidden');
+    document.getElementById(`project-${key}-form`).classList.remove('hidden');
+    const field = document.querySelector(`#project-${key}-form input, #project-${key}-form textarea, #project-${key}-form select`);
+    if (field) field.focus();
+  }
+
+  function hideForm(key) {
+    document.getElementById(`project-${key}-form`).classList.add('hidden');
+    document.getElementById(`project-${key}-display`).classList.remove('hidden');
+  }
+
+  // Toggle edit btn
+  document.querySelectorAll('[data-toggle-target]').forEach(btn => {
+    btn.addEventListener('click', () => showForm(btn.getAttribute('data-toggle-target')));
+  });
+
+  document.querySelectorAll('[data-toggle-cancel]').forEach(btn => {
+    btn.addEventListener('click', () => hideForm(btn.getAttribute('data-toggle-cancel')));
+  });
+
+  // AJAX inline form submission
+  document.querySelectorAll('.inline-edit-form').forEach(form => {
+    form.addEventListener('ajax:success', (event) => {
+      const [data, status, xhr] = event.detail;
+      const field = form.dataset.field;
+      if (field === "description") {
+        document.getElementById("project-description-display").innerHTML = data.project.description_html;
+      } else if (field === "deadline") {
+        document.getElementById(`project-${field}-display`).querySelector('span').textContent = data.project.project_deadline;
+      } else if (field === "status") {
+        document.getElementById(`project-${field}-display`).querySelector('span').textContent = data.project.project_status.charAt(0).toUpperCase() + data.project.project_status.slice(1);
+      } else if (field === "title") {
+        document.getElementById(`project-${field}-display`).querySelector('h1').textContent = data.project.title;
+      }
+      hideForm(field);
+    });
+
+    form.addEventListener('ajax:error', (event) => {
+      const [data, status, xhr] = event.detail;
+      alert("Update failed: " + data.errors.join(", "));
+    });
+  });
+});
+</script>

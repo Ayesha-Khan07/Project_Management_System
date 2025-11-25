@@ -6,10 +6,9 @@ class Project < ApplicationRecord
   has_rich_text :description
   has_one_attached :uploaded_document
 
-  # Allowed statuses
-  STATUSES = ["pending", "working", "completed"]
+  # statuses enum
+  enum :project_status, { pending: 0, working: 1, completed: 2 }, suffix: true
 
   # Validations
   validates :title, :description, :project_status, :project_deadline, presence: true
-  validates :project_status, inclusion: { in: STATUSES }
 end
