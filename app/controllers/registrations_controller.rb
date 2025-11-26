@@ -7,6 +7,9 @@ class RegistrationsController < ApplicationController
     @user = User.new(ceo_params)
     @user.role = "admin"
     if @user.save
+      #send welcome email when the user is signed-up
+      UserMailer.welcome_email(@user).deliver_later
+      
       sign_in(@user)
       redirect_to new_company_path, notice: "Great! Now complete your company profile."
     else
