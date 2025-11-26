@@ -24,6 +24,11 @@ Rails.application.routes.draw do
   #projects maagement
   resources :projects
 
+  if Rails.env.development?
+  mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
+
+
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
