@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_20_071622) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_26_112428) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -88,10 +88,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_20_071622) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "invitations", force: :cascade do |t|
+    t.string "email"
+    t.string "role"
+    t.string "token"
+    t.boolean "used"
+    t.bigint "project_id", null: false
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_invitations_on_project_id"
+  end
+
   create_table "projects", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.integer "project_status", default: 0, null: false
+    t.string "project_status", default: "pending", null: false
     t.date "project_deadline"
     t.bigint "company_id", null: false
     t.bigint "manager_id"
@@ -122,6 +134,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_20_071622) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "invitations", "projects"
   add_foreign_key "projects", "companies"
   add_foreign_key "projects", "users", column: "client_id"
   add_foreign_key "projects", "users", column: "manager_id"

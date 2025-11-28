@@ -1,0 +1,32 @@
+<h2>Set up your account</h2>
+
+<%= form_with url: register_from_invite_path, model: @user do |f| %>
+  <%= f.hidden_field :token, value: @invitation.token %>
+
+  <div>
+    <%= f.label :email %>
+    <%= f.email_field :email, value: @user.email, readonly: true %>
+  </div>
+
+  <div>
+    <%= f.label :role %>
+    <%= f.text_field :role, value: @user.role, readonly: true %>
+  </div>
+
+  <div>
+    <%= f.label :username %>
+    <%= f.text_field :username %>
+  </div>
+
+  <div>
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+  </div>
+
+  <div>
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation %>
+  </div>
+
+  <%= f.submit "Register" %>
+<% end %>

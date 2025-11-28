@@ -6,6 +6,9 @@ class User < ApplicationRecord
 
   belongs_to :company, optional: true
 
+  #added for email check now
+  REGEX_EMAIL = /\A[^@\s]+@[^@\s]+\z/
+
   ROLES = %W[admin manager employee client]
 
   def admin?
