@@ -7,11 +7,11 @@
   <!-- Created / Updated info -->
   <div class="flex flex-wrap justify-start space-x-6 text-sm text-gray-600 mb-6">
     <div>
-      Created by <span class="font-semibold"><%= @current_user.username.titleize %></span> 
+      Created by <span class="font-semibold"><%= @company_admin.username.titleize%></span> 
       at <%= @project.created_at.strftime("%b %d, %Y %H:%M") %>
     </div>
     <div>
-      Updated by <span class="font-semibold"><%= @current_user.username.titleize %></span> 
+      Updated by <span class="font-semibold"><%= @company_admin.username.titleize %></span> 
       at <%= @project.updated_at.strftime("%b %d, %Y %H:%M") %>
     </div>
   </div>
@@ -39,8 +39,31 @@
 
     <!-- Buttons -->
     <div class="flex space-x-6">
-      <button class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition">+ Add</button>
-      <button class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition">+ Create Task</button>
+      <% if current_user.role == "admin" %>    
+        <button id="show-add-invite-btn" class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition">+ Add</button>
+
+        <!-- INVITE USER FORM (HIDDEN BY DEFAULT) -->
+        <div id="invite-user-form" class="hidden mt-4 p-4 border rounded bg-white shadow-md w-full max-w-md">
+          <%= form_with model: [@project, @project.invitations.new], url: project_invitations_path(@project), local: true do |f| %>
+            <div class="mb-3">
+              <%= f.label :email, class: "block font-semibold mb-1" %>
+              <%= f.email_field :email, class: "border rounded px-2 py-1 w-full" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :role, class: "block font-semibold mb-1" %>
+              <%= f.select :role, User::ROLES.reject { |r| r == "admin" }.map { |r| [r.titleize, r] }, {}, class: "border rounded px-2 py-1 w-full" %>
+            </div>
+
+            <div class="flex justify-end space-x-2">
+              <%= f.submit "Send Invitation", class: "bg-teal-600 text-white px-3 py-1 rounded" %>
+              <button type="button" id="cancel-invite-btn" class="px-3 py-1 rounded border hover:bg-gray-200">Cancel</button>
+            </div>
+          <% end %>
+        </div>
+
+        <button class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition">+ Create Task</button>
+      <% end %>
     </div>
   </div>
 
@@ -50,7 +73,7 @@
     <div>
       <div id="project-status-display" class="flex items-center space-x-2">
         <span class="font-semibold">Status:</span>
-        <span><%= @project.project_status.capitalize %></span>
+        <span><%= @project.project_status&.capitalize || "No Status SEt"%></span>
         <% if @current_user.role == "admin" %>
           <button type="button" class="text-gray-500 hover:text-gray-700" data-toggle-target="status">
             <i data-lucide="edit"></i>
@@ -112,9 +135,12 @@
 
   <!-- Edit form -->
   <div id="project-description-form" class="hidden ml-4 mt-3">
-    <%= form_with model: @project, url: project_path(@project),
-                  method: :patch, local: false,
-                  html: { class: "inline-edit-form", data: { field: "description" } } do |f| %>
+    <%= form_with model: @project,
+              url: project_path(@project),
+              method: :patch,
+              data: { turbo: false },
+              html: { class: "inline-edit-form", data: { field: "description" } } do |f| %>
+
 
       <!-- Wrapper around TRIX for padding + clean border -->
       <div class="p-3 border rounded bg-white">
@@ -163,6 +189,37 @@ document.addEventListener("DOMContentLoaded", function() {
   document.querySelectorAll('[data-toggle-cancel]').forEach(btn => {
     btn.addEventListener('click', () => hideForm(btn.getAttribute('data-toggle-cancel')));
   });
+
+  // Invite user form toggle + AJAX
+  const addBtn = document.querySelector("#show-add-invite-btn");
+  const inviteForm = document.getElementById("invite-user-form");
+  const cancelBtn = document.getElementById("cancel-invite-btn");
+
+  if (addBtn && inviteForm && cancelBtn) {
+    addBtn.addEventListener("click", () => {
+      inviteForm.classList.remove("hidden");
+      inviteForm.scrollIntoView({ behavior: "smooth" });
+    });
+
+    cancelBtn.addEventListener("click", () => {
+      inviteForm.classList.add("hidden");
+    });
+
+    const form = document.getElementById("new-invitation-form");
+    if (form) {
+      form.addEventListener("ajax:success", (event) => {
+        const [data, status, xhr] = event.detail;
+        alert("Invitation sent successfully!");
+        form.reset();
+        inviteForm.classList.add("hidden");
+      });
+
+      form.addEventListener("ajax:error", (event) => {
+        const [data, status, xhr] = event.detail;
+        alert("Failed to send invitation: " + (data.errors || ["Unknown error"]).join(", "));
+      });
+    }
+  }
 
   // AJAX inline form submission
   document.querySelectorAll('.inline-edit-form').forEach(form => {
