@@ -33,9 +33,9 @@ class RegistrationsController < ApplicationController
 
     if user&.valid_password?(user_params[:password])
       sign_in(user)
-      if user.role == "client"
-        if user.client_projects.any?
-          redirect_to project_path(user.client_projects.first), notice: "Login successfully."
+      if user.role == "client" || user.role == "employee"
+        if user.project_id?
+          redirect_to project_path(user.project), notice: "Login successfully."
         else
           redirect_to root_path, alert: "No projects found."
         end
