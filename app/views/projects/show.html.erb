@@ -7,11 +7,11 @@
   <!-- Created / Updated info -->
   <div class="flex flex-wrap justify-start space-x-6 text-sm text-gray-600 mb-6">
     <div>
-      Created by <span class="font-semibold"><%= @company_admin.username.titleize%></span> 
+      Created by <span class="font-semibold"><%= @company_admin&.username&.titleize || "Unknown" %></span> 
       at <%= @project.created_at.strftime("%b %d, %Y %H:%M") %>
     </div>
     <div>
-      Updated by <span class="font-semibold"><%= @company_admin.username.titleize %></span> 
+      Updated by <span class="font-semibold"><%= @company_admin&.username&.titleize || "Unknown" %></span> 
       at <%= @project.updated_at.strftime("%b %d, %Y %H:%M") %>
     </div>
   </div>
