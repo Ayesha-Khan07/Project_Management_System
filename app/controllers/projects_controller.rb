@@ -43,8 +43,21 @@ class ProjectsController < ApplicationController
       format.json { render json: { errors: @project.errors.full_messages }, status: :unprocessable_entity }
      end
    end
- end
+  end
 
+  def index
+    if params[:company_id].present?
+      @company = Company.find(params[:company_id])
+      if current_user.role == "admin" || current_user.role == "manager"
+        @projects = @company.projects.order(created_at: :desc)
+      else
+        redirect_to company_path(current_user.company), alert: "You have NO ACCESS to see all the projects of the company."
+        return
+      end
+    else
+      @projects = Project.none
+    end
+  end
 
   private
 

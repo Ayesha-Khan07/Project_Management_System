@@ -19,11 +19,13 @@ Rails.application.routes.draw do
   match "/ceo_login", to: "registrations#login_ceo", via: [ :get, :post ], as: :login_ceo
 
   # Company profile creation (after signup)
-  resources :companies, only: [ :new, :create, :show, :update ]
+  resources :companies, only: [ :new, :create, :show, :update ] do
+    resources :projects, only: [:index]
+  end
 
   #projects maagement
   resources :projects do
-  resources :invitations, only: [:new, :create]
+    resources :invitations, only: [:new, :create]
   end
 
   # Routes for accepting the invitation

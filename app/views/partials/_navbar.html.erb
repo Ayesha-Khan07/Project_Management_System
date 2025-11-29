@@ -27,7 +27,7 @@
     <% end %>
 
     <span class="text-teal-600 font-bold text-xl"><%= @company.name %></span>
-    <a href="#" class="text-gray-700 hover:text-teal-600 font-medium">Projects</a>
+    <%= link_to "Projects", company_projects_path(@company), class: "text-gray-700 hover:text-teal-600 font-medium" %>
     <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-teal-700 transition" %>
   </div>
 

@@ -1,0 +1,47 @@
+<!-- app/views/projects/index.html.erb -->
+<div class="max-w-5xl mx-auto py-8 px-4">
+  <div class="flex items-center justify-between mb-6">
+   <h1 class="text-2xl font-bold text-gray-800">
+    Projects for -
+    <% if @company.present? %>
+        <span class="text-3xl text-teal-600"><%= @company.name.titleize %></span>
+    <% else %>
+        Your Company
+    <% end %>
+   </h1>
+
+    <% if current_user.role == "admin" %>
+      <%= link_to "New Project", new_project_path, class: "bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition" %>
+    <% end %>
+  </div>
+
+  <% if @projects.any? %>
+    <div class="grid gap-6">
+      <% @projects.each do |project| %>
+        <div class="border mt-5 p-6 rounded-lg shadow-sm hover:shadow-md transition"> 
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-xl font-semibold text-teal-600 hover:text-teal-800">
+                <%= link_to project.title, project_path(project) %> 
+              </h2>
+              <p class="text-sm text-gray-600 mt-1">
+                Status: <%= project.project_status %> • Deadline: <%= project.project_deadline %>
+              </p>
+            </div>
+            <div class="text-sm text-gray-500">
+              <%= time_ago_in_words(project.created_at) %> ago
+            </div>
+          </div>
+
+          <% if project.description&.body&.to_plain_text.present? %>
+            <div class="mt-4 text-sm text-gray-700">
+              <%= truncate(project.description.to_plain_text, length: 180) %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-gray-600">No projects found for this company.</p>
+  <% end %>
+</div>
