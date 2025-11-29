@@ -56,11 +56,23 @@
             </div>
 
             <div class="flex justify-end space-x-2">
-              <%= f.submit "Send Invitation", class: "bg-teal-600 text-white px-3 py-1 rounded" %>
+             <% if @project.company.users.count < 7 %>
+               <%= f.submit "Send Invitation", class: "bg-teal-600 text-white px-3 py-1 rounded" %>
+             <% else %>
+                <button type="button" class="bg-gray-300 text-gray-600 px-3 py-1 rounded cursor-not-allowed" disabled> Send Invitation </button>
+             <% end %>
               <button type="button" id="cancel-invite-btn" class="px-3 py-1 rounded border hover:bg-gray-200">Cancel</button>
             </div>
+              <% if @project.company.users.count >= 7 %>
+              <p class="text-red-600 text-sm mt-3">
+                Your team has hit the member limit for the free plan. <br>
+                To enhance your team, please get the paid version of the app and add unlimited users.
+                <a href="#" class="text-teal-600 font-semibold underline">Upgrade Now</a>.
+              </p>
+              <% end %>
           <% end %>
         </div>
+            
 
         <button class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition">+ Create Task</button>
       <% end %>
