@@ -5,6 +5,10 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   belongs_to :company, optional: true
+  belongs_to :project, optional: true
+
+  #added for email check now
+  REGEX_EMAIL = /\A[^@\s]+@[^@\s]+\z/
 
   ROLES = %W[admin manager employee client]
 

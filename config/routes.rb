@@ -22,7 +22,13 @@ Rails.application.routes.draw do
   resources :companies, only: [ :new, :create, :show, :update ]
 
   #projects maagement
-  resources :projects
+  resources :projects do
+  resources :invitations, only: [:new, :create]
+  end
+
+  # Routes for accepting the invitation
+  get '/accept_invite', to: 'registrations#accept_invite', as: :accept_invite
+  post '/register_from_invite', to: 'registrations#register_from_invite', as: :register_from_invite
 
   if Rails.env.development?
   mount LetterOpenerWeb::Engine, at: "/letter_opener"

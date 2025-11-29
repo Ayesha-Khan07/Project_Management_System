@@ -18,21 +18,32 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.find(params[:id])  
+    @company_admin = @project.company.users.find_by(role: :admin)
   end
 
   def update
-  if @project.update(project_params)
-    respond_to do |format|
-      format.html { redirect_to @project, notice: "Project updated successfully." }
-      format.json { render json: { project: @project } }
-    end
-  else
-    respond_to do |format|
+   if @project.update(project_params)
+     respond_to do |format|
+       format.html { redirect_to @project, notice: "Project updated successfully." }
+       format.json do
+         render json: {
+           project: {
+             title: @project.title,
+             project_status: @project.project_status,
+             project_deadline: @project.project_deadline,
+             description_html: @project.description&.body&.to_html
+           }
+         }
+       end
+     end
+   else
+     Rails.logger.debug "UPDATE ERRORS: #{@project.errors.full_messages}"
+     respond_to do |format|
       format.html { render :show, status: :unprocessable_entity }
       format.json { render json: { errors: @project.errors.full_messages }, status: :unprocessable_entity }
-    end
-  end
-end
+     end
+   end
+ end
 
 
   private
