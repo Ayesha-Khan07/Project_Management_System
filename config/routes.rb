@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   #projects maagement
   resources :projects do
     resources :invitations, only: [:new, :create]
+    resources :tasks, only: [:new, :create, :show, :index, :update]
   end
 
   # Routes for accepting the invitation

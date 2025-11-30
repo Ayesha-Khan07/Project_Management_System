@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  task_type: 1
+  task_status: 1
+  progress: 1
+  estimated_deadline: 2025-11-29
+  project: one
+  assigned_user: one
+
+two:
+  title: MyString
+  description: MyText
+  task_type: 1
+  task_status: 1
+  progress: 1
+  estimated_deadline: 2025-11-29
+  project: two
+  assigned_user: two

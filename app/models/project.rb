@@ -8,6 +8,7 @@ class Project < ApplicationRecord
 
   has_many :invitations, dependent: :destroy
   has_many :users
+  has_many :tasks, dependent: :destroy
 
   # statuses enum
   enum :project_status, { pending: 0, working: 1, completed: 2 }, suffix: true
