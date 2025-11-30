@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_project, only: [:new, :create]
+  before_action :set_project, only: [:new, :create, :index]
   before_action :set_task, only: [:show]
 
   def new
@@ -18,6 +18,18 @@ class TasksController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
+
+  def index
+    tasks = @project.tasks.includes(:assigned_user).order(created_at: :desc)
+    ordered_statuses = %w[to_do in_progress to_verify done]
+
+    grouped = tasks.group_by(&:task_status)
+
+    @tasks_by_status = ordered_statuses.each_with_object({}) do |status_key, h|
+      h[status_key] = grouped[status_key] || []
+    end
+    
+  end 
 
   def show
   end
@@ -37,7 +49,7 @@ class TasksController < ApplicationController
       :title,
       :description,
       :task_type,
-      :status,
+      :task_status,
       :progress,
       :estimated_deadline,
       :assigned_user_id

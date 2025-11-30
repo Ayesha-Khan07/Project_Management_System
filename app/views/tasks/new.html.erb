@@ -19,7 +19,7 @@
     </div>
 
     <div class="mb-4">
-      <%= f.label :status, class: "block font-semibold mb-1" %>
+      <%= f.label :task_status, class: "block font-semibold mb-1" %>
       <%= f.select :task_status, Task.task_statuses.keys.map { |k| [k.humanize, k] }, {}, class: "w-full border rounded px-3 py-2" %>
     </div>
 
