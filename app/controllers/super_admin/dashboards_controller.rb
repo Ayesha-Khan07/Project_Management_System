@@ -38,16 +38,15 @@ module SuperAdmin
 
     def load_companies_data
       @companies = Company.includes(:projects).order(created_at: :desc)
-      
-      # Chart data for subscription status
-      @subscription_chart_data = @companies.group(:subscription_status).count
+      @subscription_chart_data = Company.group(:subscription_status).count
     end
+
 
     def load_projects_data
       @projects = Project.includes(:company, :client).order(created_at: :desc)
       
       # Chart data for project status
-      @project_status_chart_data = @projects.group(:project_status).count
+      @project_status_chart_data = Project.group(:project_status).count
     end
 
     def load_tasks_data
@@ -55,9 +54,11 @@ module SuperAdmin
                    .order(created_at: :desc)
       
       # Chart data
-      @task_type_chart_data = @tasks.group(:task_type).count
-      @task_status_chart_data = @tasks.group(:task_status).count
-      @task_progress_chart_data = @tasks.group(:progress).count
+      @tasks_for_charts = Task.all
+      @task_type_chart_data = @tasks_for_charts.group(:task_type).count
+      @task_status_chart_data = @tasks_for_charts.group(:task_status).count
+      @task_progress_chart_data = @tasks_for_charts.group(:progress).count
+
     end
   end
 end

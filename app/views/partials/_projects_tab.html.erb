@@ -25,7 +25,7 @@
                       when 'working' then 'bg-primary'
                       when 'completed' then 'bg-success'
                       end %>">
-                  <%= project.project_status.upcase %>
+                   <%= project.project_status&.upcase || 'N/A' %>
                 </span>
               </td>
               <td><%= project.project_deadline&.strftime('%B %d, %Y') || 'N/A' %></td>

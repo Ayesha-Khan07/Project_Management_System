@@ -13,12 +13,14 @@
                   text-2xl font-bold placeholder:text-2xl placeholder:font-bold placeholder:text-gray-400 py-2" %>
       </div>
 
-    <div class="mb-6">
+      <!-- Description (Plain Textarea) -->
+      <div class="mb-6">
         <label class="block font-semibold mb-2">Description</label>
-        <%= f.rich_text_area :description,
-            class: "trix-content w-full border rounded p-2 min-h-[300px]",
-            placeholder: "Type or paste article content here" %>
-    </div>
+        <%= f.text_area :description,
+              rows: 10,
+              placeholder: "Type project description here",
+              class: "w-full border rounded px-4 py-4 mt-3 p-3 text-gray-700 focus:outline-none focus:border-teal-500" %>
+      </div>
 
       <!-- Project Status -->
       <div class="mb-6">

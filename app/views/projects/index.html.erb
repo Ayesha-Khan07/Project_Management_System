@@ -32,12 +32,13 @@
               <%= time_ago_in_words(project.created_at) %> ago
             </div>
           </div>
+          
+         <% if project.description.present? %>
+          <div class="mt-4 text-sm text-gray-700">
+            <%= truncate(project.description, length: 180) %>
+          </div>
+        <% end %>
 
-          <% if project.description&.body&.to_plain_text.present? %>
-            <div class="mt-4 text-sm text-gray-700">
-              <%= truncate(project.description.to_plain_text, length: 180) %>
-            </div>
-          <% end %>
         </div>
       <% end %>
     </div>
