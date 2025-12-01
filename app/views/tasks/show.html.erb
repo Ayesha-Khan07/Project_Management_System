@@ -1,6 +1,18 @@
 <!-- app/views/tasks/show.html.erb -->
 <div class="max-w-3xl mx-auto py-8 px-4">
-  <h1 class="text-2xl font-bold mb-4"><%= @task.title %></h1>
+  <div class="mb-4 flex items-center justify-between">
+  <label class="block font-semibold">Title</label>
+
+  <% if ["admin", "manager", "employee"].include?(@current_user.role) %>
+    <%= link_to edit_project_task_path(@task.project, @task),
+            class: "text-gray-500 hover:text-gray-700" do %>
+    <i data-lucide="edit"></i>
+  <% end %>
+  <% end %>
+</div>
+
+<p class="rounded px-2 py-1 w-full bg-gray-50"><%= @task.title %></p>
+
   <p class="mb-2"><strong>Project:</strong> <%= link_to @task.project.title, project_path(@task.project) %></p>
   <p class="mb-2"><strong>Assigned to:</strong> <%= @task.assigned_user.username %></p>
   <p class="mb-2"><strong>Type:</strong> <%= @task.task_type.humanize %></p>

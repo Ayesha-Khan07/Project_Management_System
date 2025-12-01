@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_project, only: [:new, :create, :index]
-  before_action :set_task, only: [:show]
+  before_action :set_project, only: [:new, :create, :index, :edit, :update]
+  before_action :set_task, only: [:show, :edit, :update]
 
   def new
     @task = @project.tasks.build
@@ -27,9 +27,26 @@ class TasksController < ApplicationController
 
     @tasks_by_status = ordered_statuses.each_with_object({}) do |status_key, h|
       h[status_key] = grouped[status_key] || []
-    end
-    
+    end  
   end 
+
+  def edit
+  @task = @project.tasks.find(params[:id])
+  # Only employees of the project's company
+  @employees = @project.company.users.where(role: "employee")
+  end
+
+  def update
+   @task = @project.tasks.find(params[:id])
+
+   if @task.update(task_params)
+     redirect_to project_tasks_path(@project), notice: "Task updated successfully."
+   else
+     @employees = @project.company.users.where(role: "employee")
+     render :edit, status: :unprocessable_entity
+   end
+  end
+
 
   def show
   end
