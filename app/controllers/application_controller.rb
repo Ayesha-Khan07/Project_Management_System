@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   
   def ensure_company_exists
     return unless user_signed_in?     #return from this method if user is not signed-in
+    return if current_user.super_admin?
 
     if current_user.company_id.nil?   # user don't have any company
       redirect_to new_company_path unless on_company_pages?

@@ -39,6 +39,8 @@ class RegistrationsController < ApplicationController
         else
           redirect_to root_path, alert: "No projects found."
         end
+      elsif user.role == "super_admin"
+        redirect_to super_admin_dashboard_path, notice: "Login successfully."
       else
           redirect_to company_path(current_user.company), notice: "Login successfully."
       end

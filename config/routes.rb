@@ -33,6 +33,12 @@ Rails.application.routes.draw do
   get '/accept_invite', to: 'registrations#accept_invite', as: :accept_invite
   post '/register_from_invite', to: 'registrations#register_from_invite', as: :register_from_invite
 
+  #namespace for super admin
+  namespace :super_admin do
+    get 'dashboard', to: 'dashboards#index', as: 'dashboard'
+    delete 'users/:id', to: 'dashboards#destroy_user', as: 'destroy_user'
+  end
+
   if Rails.env.development?
   mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end

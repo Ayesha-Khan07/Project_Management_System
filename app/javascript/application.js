@@ -3,3 +3,5 @@ import "horizontal_scroller"
 
 import "trix"
 import "@rails/actiontext"
+
+import "chartkick/chart.js"

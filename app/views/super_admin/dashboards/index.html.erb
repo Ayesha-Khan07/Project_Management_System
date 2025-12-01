@@ -1,0 +1,36 @@
+<div class="container-fluid mt-4">
+  <h1 class="mb-4">Super Admin Dashboard</h1>
+
+  <!-- Tabs Navigation -->
+  <ul class="nav nav-tabs mb-4" id="dashboardTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <%= link_to "Users", super_admin_dashboard_path(tab: 'users'), 
+          class: "nav-link #{@active_tab == 'users' ? 'active' : ''}" %>
+    </li>
+    <li class="nav-item" role="presentation">
+      <%= link_to "Companies", super_admin_dashboard_path(tab: 'companies'), 
+          class: "nav-link #{@active_tab == 'companies' ? 'active' : ''}" %>
+    </li>
+    <li class="nav-item" role="presentation">
+      <%= link_to "Projects", super_admin_dashboard_path(tab: 'projects'), 
+          class: "nav-link #{@active_tab == 'projects' ? 'active' : ''}" %>
+    </li>
+    <li class="nav-item" role="presentation">
+      <%= link_to "Tasks", super_admin_dashboard_path(tab: 'tasks'), 
+          class: "nav-link #{@active_tab == 'tasks' ? 'active' : ''}" %>
+    </li>
+  </ul>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <% if @active_tab == 'users' %>
+      <%= render 'partials/users_tab' %>
+    <% elsif @active_tab == 'companies' %>
+      <%= render 'partials/companies_tab' %>
+    <% elsif @active_tab == 'projects' %>
+      <%= render 'partials/projects_tab' %>
+    <% elsif @active_tab == 'tasks' %>
+      <%= render 'partials/tasks_tab' %>
+    <% end %>
+  </div>
+</div>

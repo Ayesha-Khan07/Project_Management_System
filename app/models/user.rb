@@ -10,7 +10,11 @@ class User < ApplicationRecord
   #added for email check now
   REGEX_EMAIL = /\A[^@\s]+@[^@\s]+\z/
 
-  ROLES = %W[admin manager employee client]
+  ROLES = %W[admin manager employee client super_admin]
+
+  def super_admin?
+    role == "super_admin"
+  end
 
   def admin?
     role == "admin"
