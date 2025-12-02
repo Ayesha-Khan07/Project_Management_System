@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_29_220921) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_02_052345) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -103,13 +103,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_29_220921) do
   create_table "projects", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.string "project_status", default: "pending", null: false
     t.date "project_deadline"
     t.bigint "company_id", null: false
     t.bigint "manager_id"
     t.bigint "client_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "project_status", default: 0, null: false
     t.index ["client_id"], name: "index_projects_on_client_id"
     t.index ["company_id"], name: "index_projects_on_company_id"
     t.index ["manager_id"], name: "index_projects_on_manager_id"

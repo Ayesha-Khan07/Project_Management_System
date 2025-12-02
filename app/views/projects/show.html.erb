@@ -85,7 +85,7 @@
     <div>
       <div id="project-status-display" class="flex items-center space-x-2">
         <span class="font-semibold">Status:</span>
-        <span><%= @project.project_status&.capitalize || "No Status SEt"%></span>
+        <span><%= @project.project_status&.capitalize %></span>
         <% if @current_user.role == "admin" %>
           <button type="button" class="text-gray-500 hover:text-gray-700" data-toggle-target="status">
             <i data-lucide="edit"></i>
@@ -156,8 +156,7 @@
 
       <!-- Wrapper around TRIX for padding + clean border -->
       <div class="p-3 border rounded bg-white">
-        <%= f.rich_text_area :description,
-              class: "trix-content w-full" %>
+        <%= f.text_area :description, rows: 10, class: "w-full border rounded px-4 py-4 mt-3 p-3 text-gray-700 focus:outline-none focus:border-teal-500" %>
       </div>
 
       <div class="flex justify-end space-x-2 mt-3">
@@ -239,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const [data, status, xhr] = event.detail;
       const field = form.dataset.field;
       if (field === "description") {
-        document.getElementById("project-description-display").innerHTML = data.project.description_html;
+        document.getElementById("project-description-display").textContent = data.project.description;
       } else if (field === "deadline") {
         document.getElementById(`project-${field}-display`).querySelector('span').textContent = data.project.project_deadline;
       } else if (field === "status") {

@@ -31,7 +31,7 @@ class ProjectsController < ApplicationController
              title: @project.title,
              project_status: @project.project_status,
              project_deadline: @project.project_deadline,
-             description_html: @project.description&.body&.to_html
+             description: @project.description
            }
          }
        end
@@ -70,7 +70,7 @@ class ProjectsController < ApplicationController
       :title,
       :project_status,
       :project_deadline,
-      :description,       # Action Text
+      :description,       
       :uploaded_document  # ActiveStorage
     )
   end
