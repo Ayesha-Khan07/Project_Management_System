@@ -46,7 +46,9 @@
     <!-- Subscription & Member Info -->
     <div class="space-y-4 w-full text-gray-700 text-lg">
       <p><strong class="mr-3">Subscription Status:</strong> <%= @company.subscription_status.titleize || "Free Plan" %></p>
-      <p><strong class="mr-4">Member Limit:</strong> <%= @company.member_limit %></p>
+      <% if @company.subscription_status == "free" %>
+        <p><strong class="mr-4">Member Limit:</strong> <%= @company.member_limit %></p>
+      <% end %>
       <% active_count = @company.users.count %>
       <p><strong class="mr-3">Active Members:</strong> <%= active_count %></p>
     </div>

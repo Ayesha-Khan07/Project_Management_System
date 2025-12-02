@@ -56,14 +56,14 @@
             </div>
 
             <div class="flex justify-end space-x-2">
-             <% if @project.company.users.count < 7 %>
+             <% if @project.company.users.count < 7 || @project.company.subscription_status == "paid"%>
                <%= f.submit "Send Invitation", class: "bg-teal-600 text-white px-3 py-1 rounded" %>
              <% else %>
                 <button type="button" class="bg-gray-300 text-gray-600 px-3 py-1 rounded cursor-not-allowed" disabled> Send Invitation </button>
              <% end %>
               <button type="button" id="cancel-invite-btn" class="px-3 py-1 rounded border hover:bg-gray-200">Cancel</button>
             </div>
-              <% if @project.company.users.count >= 7 %>
+              <% if @project.company.users.count >= 7 && @project.company.subscription_status == "free" %>
               <p class="text-red-600 text-sm mt-3">
                 Your team has hit the member limit for the free plan. <br>
                 To enhance your team, please get the paid version of the app and add unlimited users.
