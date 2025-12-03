@@ -26,4 +26,16 @@ class User < ApplicationRecord
     end
   end
 
+  #   ROLE LEVEL ACCESS 
+
+  #  super_admin: have all access. can see the total registered companies. registered users of the compannies, projects and tasks of the companies.
+  #   the super admin user can add, delete, edit the users, projects and tasks from a company.
+  #  admin:  have full access within the company. can update company profile, projects and tasks related to the projects. 
+  #           Can view all the projects of the company. Add and invite the users in the project.
+  #  manager: have access to the project level. can view all projects of the company. can update the project and tasks.
+  #  employee: have the limited access within the project. Can't view all projects of the company.can't create and update the project. 
+  #           emp can create, update and view all tasks of the project in which he/she is being added.
+  #  client: have read only access of the project. can view the project and tasks but can't create or update them. 
+
+
 end
