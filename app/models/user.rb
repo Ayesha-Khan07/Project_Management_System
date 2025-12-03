@@ -12,23 +12,12 @@ class User < ApplicationRecord
 
   ROLES = %W[admin manager employee client super_admin]
 
-  def super_admin?
-    role == "super_admin"
+  #added the metaprogramming dynamically method definition
+  
+  ROLES.each do |type|
+    define_method "#{type}?" do
+      role == type
+    end
   end
 
-  def admin?
-    role == "admin"
-  end
-
-  def manager?
-    role == "manager"
-  end
-
-  def client?
-    role == "client"
-  end
-
-  def employee?
-    role == "employee"
-  end
 end
