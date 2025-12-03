@@ -10,15 +10,19 @@
     </div>
 
     <div>
+
+    <div>
       <%= f.label :email, class: "block text-sm font-medium text-gray-700" %>
-      <%= f.email_field :email, autocomplete: "email", required: true, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", required: true, maxlength: 50, 
+            class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
+      <p class="text-xs text-gray-500 mt-1 mb-4">Max 50 characters. Must be a valid email format</p>
     </div>
 
     <div>
       <%= f.label :password, class: "block text-sm font-medium text-gray-700" %>
       <%= f.password_field :password, autocomplete: "new-password", required: true, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
       <% if @minimum_password_length %>
-        <p class="text-xs text-gray-500 mt-1">(<%= @minimum_password_length %> characters minimum)</p>
+        <p class="text-xs text-gray-500 mt-1 mb-4">(<%= @minimum_password_length %> characters minimum)</p>
       <% end %>
     </div>
 
@@ -27,7 +31,7 @@
       <%= f.password_field :password_confirmation, autocomplete: "new-password", required: true, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
     </div>
 
-    <div class="text-center">
+    <div class="text-center mt-5">
       <%= f.submit "Sign up", class: "bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700" %>
     </div>
   <% end %>
