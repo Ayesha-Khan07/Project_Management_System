@@ -40,9 +40,9 @@ class Users::InvitationsController < ApplicationController
 
     @user = User.new(user_params)
     @user.company = @invitation.project.company
-    @user.project = @invitation.project
-
+    
     if @user.save
+      @user.projects << @invitation.project unless @user.projects.include?(@invitation.project)
       @invitation.update(used: true)
       
       # Send welcome email
