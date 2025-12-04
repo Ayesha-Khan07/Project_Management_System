@@ -5,7 +5,12 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   belongs_to :company, optional: true
-  belongs_to :project, optional: true
+
+  #for join table
+  has_many :projects_users, dependent: :destroy
+  has_many :projects, through: :projects_users
+  
+  # belongs_to :project, optional: true  --- optional true not needed as now i am not using belongs_to
 
   #added for email check now
   REGEX_EMAIL = /\A[^@\s]+@[^@\s]+\z/
