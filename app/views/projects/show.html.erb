@@ -10,9 +10,18 @@
       Created by <span class="font-semibold"><%= @company_admin&.username&.titleize || "Unknown" %></span> 
       at <%= @project.created_at.strftime("%b %d, %Y %H:%M") %>
     </div>
-    <div>
-      Updated by <span class="font-semibold"><%= @company_admin&.username&.titleize || "Unknown" %></span> 
-      at <%= @project.updated_at.strftime("%b %d, %Y %H:%M") %>
+      <div>
+      <% last_version = @project.versions.last %>
+
+      <% if last_version.present? %>
+        Updated by 
+        <span class="font-semibold">
+          <%= User.find_by(id: last_version.whodunnit)&.username&.titleize || "Unknown" %>
+        </span>
+        at <%= last_version.created_at.strftime("%b %d, %Y %H:%M") %>
+      <% else %>
+        <span class="text-gray-600">No updates recorded yet.</span>
+      <% end %>
     </div>
   </div>
 
@@ -39,7 +48,7 @@
 
     <!-- Buttons -->
     <div class="flex space-x-6 items-start relative">
-      <% if current_user.role == "admin" || @current_user.role == "manager" || @current_user.role == "super_admin" %>    
+      <% if current_user.role == "admin" || @current_user.role == "super_admin" %>    
         <!-- Add button -->
         <button id="show-add-invite-btn" class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition relative z-10">+ Add</button>
         <%= link_to "+ Create Task", new_project_task_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
