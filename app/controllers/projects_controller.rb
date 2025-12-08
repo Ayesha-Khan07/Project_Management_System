@@ -1,6 +1,7 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_project, only: [:show, :update, :remove_user]
+   before_action :set_paper_trail_whodunnit
 
   def new
     @project = Project.new
@@ -22,6 +23,8 @@ class ProjectsController < ApplicationController
   end
 
   def update
+   PaperTrail.request.whodunnit = current_user.id  
+   
    if @project.update(project_params)
      respond_to do |format|
        format.html { redirect_to @project, notice: "Project updated successfully." }
