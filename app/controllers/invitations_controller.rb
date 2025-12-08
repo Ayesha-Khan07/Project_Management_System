@@ -20,6 +20,18 @@ class InvitationsController < ApplicationController
         return
     end
 
+      # validate only one manager per project
+    if @invitation.role == "manager"
+        existing_manager = @project.users.find_by(role: "manager")
+        if existing_manager
+        respond_to do |format|
+            format.json { render json: { errors: ["There is already a manager in this project. Please remove the existing manager before adding a new one."] }, status: :unprocessable_entity }
+            format.html { redirect_to project_path(@project), alert: "There is already a manager in this project. Please remove the existing manager before adding a new one." }
+        end
+        return
+        end
+    end
+
     respond_to do |format|
         if @invitation.save
         InvitationMailer.invite_user(@invitation).deliver_later
