@@ -10,6 +10,16 @@ class InvitationsController < ApplicationController
     @invitation.expires_at = 24.hours.from_now
     @invitation.used = false
 
+    # Check if user is already part of the project
+    existing_user = User.find_by(email: @invitation.email)
+    if existing_user && @project.users.exists?(existing_user.id)
+        respond_to do |format|
+        format.json { render json: { errors: ["User is already part of this project"] }, status: :unprocessable_entity }
+        format.html { redirect_to project_path(@project), alert: "User is already part of this project." }
+        end
+        return
+    end
+
     respond_to do |format|
         if @invitation.save
         InvitationMailer.invite_user(@invitation).deliver_later

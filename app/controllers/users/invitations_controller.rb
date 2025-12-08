@@ -13,6 +13,9 @@ class Users::InvitationsController < ApplicationController
     # Check if user already exists
     existing_user = User.find_by(email: @invitation.email)
     if existing_user
+      # add user to the new proj if not already added 
+      existing_user.projects << @invitation.project unless existing_user.projects.include?(@invitation.project)
+      @invitation.update(used: true)
       redirect_to new_user_session_path, notice: "Account already exists. Please login."
       return
     end
@@ -40,9 +43,9 @@ class Users::InvitationsController < ApplicationController
 
     @user = User.new(user_params)
     @user.company = @invitation.project.company
-    @user.project = @invitation.project
-
+    
     if @user.save
+      @user.projects << @invitation.project unless @user.projects.include?(@invitation.project)
       @invitation.update(used: true)
       
       # Send welcome email

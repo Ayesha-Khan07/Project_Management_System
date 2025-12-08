@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_02_052345) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_08_075857) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -115,6 +115,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_02_052345) do
     t.index ["manager_id"], name: "index_projects_on_manager_id"
   end
 
+  create_table "projects_users", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["project_id", "user_id"], name: "index_projects_users_on_project_id_and_user_id", unique: true
+    t.index ["project_id"], name: "index_projects_users_on_project_id"
+    t.index ["user_id"], name: "index_projects_users_on_user_id"
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
@@ -141,10 +149,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_02_052345) do
     t.string "username"
     t.string "role", default: "admin"
     t.bigint "company_id"
-    t.bigint "project_id"
+    t.string "invitation_token"
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
+    t.integer "invitation_limit"
+    t.string "invited_by_type"
+    t.bigint "invited_by_id"
+    t.integer "invitations_count", default: 0
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["project_id"], name: "index_users_on_project_id"
+    t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
+    t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
+    t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
@@ -155,8 +172,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_02_052345) do
   add_foreign_key "projects", "companies"
   add_foreign_key "projects", "users", column: "client_id"
   add_foreign_key "projects", "users", column: "manager_id"
+  add_foreign_key "projects_users", "projects"
+  add_foreign_key "projects_users", "users"
   add_foreign_key "tasks", "projects"
   add_foreign_key "tasks", "users", column: "assigned_user_id"
   add_foreign_key "users", "companies"
-  add_foreign_key "users", "projects"
 end
