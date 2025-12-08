@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_project, only: [:show, :update]
+  before_action :set_project, only: [:show, :update, :remove_user]
 
   def new
     @project = Project.new
@@ -58,6 +58,22 @@ class ProjectsController < ApplicationController
       @projects = Project.none
     end
   end
+
+  def remove_user
+    user = User.find(params[:user_id])
+    if @project.users.destroy(user)
+      respond_to do |format|
+        format.json { render json: { success: true, user_id: user.id } }
+        format.html { redirect_to @project, notice: "#{user.username} removed from project" }
+      end
+    else
+      respond_to do |format|
+        format.json { render json: { success: false }, status: :unprocessable_entity }
+        format.html { redirect_to @project, alert: "Failed to remove user" }
+      end
+    end
+  end
+
 
   private
 
