@@ -27,6 +27,9 @@ gem "devise"
 # Admin Dashboard
 gem "activeadmin"
 
+# For Audit HIstory
+gem "paper_trail"
+
 # Background Jobs
 gem "sidekiq"
 gem "redis"
