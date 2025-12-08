@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_08_062222) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_08_075857) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -149,7 +149,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_08_062222) do
     t.string "username"
     t.string "role", default: "admin"
     t.bigint "company_id"
-    t.bigint "project_id"
     t.string "invitation_token"
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"
@@ -163,7 +162,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_08_062222) do
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
     t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by"
-    t.index ["project_id"], name: "index_users_on_project_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
@@ -179,5 +177,4 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_08_062222) do
   add_foreign_key "tasks", "projects"
   add_foreign_key "tasks", "users", column: "assigned_user_id"
   add_foreign_key "users", "companies"
-  add_foreign_key "users", "projects"
 end
