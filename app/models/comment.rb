@@ -2,5 +2,8 @@ class Comment < ApplicationRecord
   belongs_to :user
   belongs_to :task
 
-  has
+  has_paper_trail
+
+  #validation
+  validates :body, presence: true
 end
