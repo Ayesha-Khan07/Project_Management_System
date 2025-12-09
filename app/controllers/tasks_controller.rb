@@ -2,6 +2,7 @@ class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_project, only: [:new, :create, :index, :edit, :update]
   before_action :set_task, only: [:show, :edit, :update]
+  before_action :set_paper_trail_whodunnit
 
   def new
     @task = @project.tasks.build
@@ -38,6 +39,7 @@ class TasksController < ApplicationController
 
   def update
    @task = @project.tasks.find(params[:id])
+   PaperTrail.request.whodunnit = current_user.id  
 
    if @task.update(task_params)
      redirect_to project_tasks_path(@project), notice: "Task updated successfully."
