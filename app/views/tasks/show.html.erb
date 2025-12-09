@@ -1,26 +1,105 @@
 <!-- app/views/tasks/show.html.erb -->
-<div class="max-w-3xl mx-auto py-8 px-4">
-  <div class="mb-4 flex items-center justify-between">
-  <label class="block font-semibold">Title</label>
+<section class="relative overflow-hidden ml-10 bg-gradient-to-br from-slate-50 via-white to-teal-50 py-10 px-6 sm:px-12 min-h-screen">
 
-  <% if ["admin", "manager", "employee"].include?(@current_user.role) %>
-    <%= link_to edit_project_task_path(@task.project, @task),
-            class: "text-gray-500 hover:text-gray-700" do %>
-    <i data-lucide="edit"></i>
-  <% end %>
-  <% end %>
-</div>
+  <!-- Gradient colors -->
+  <div class="fixed top-20 left-4 w-92 h-92 bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse pointer-events-none -z-10"></div>
+  <div class="fixed bottom-0 right-2 w-92 h-92 bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse delay-300 pointer-events-none -z-10"></div>
 
-<p class="rounded px-2 py-1 w-full bg-gray-50"><%= @task.title %></p>
-
-  <p class="mb-2"><strong>Project:</strong> <%= link_to @task.project.title, project_path(@task.project) %></p>
-  <p class="mb-2"><strong>Assigned to:</strong> <%= @task.assigned_user.username %></p>
-  <p class="mb-2"><strong>Type:</strong> <%= @task.task_type.humanize %></p>
-  <p class="mb-2"><strong>Status:</strong> <%= @task.task_status.humanize %></p>
-  <p class="mb-2"><strong>Progress:</strong> <%= @task.progress.gsub("_percent","%") %></p>
-  <p class="mb-2"><strong>Estimated Deadline:</strong> <%= @task.estimated_deadline %></p>
-  <div class="mt-4">
-    <strong>Description:</strong>
-    <p><%= @task.description %></p>
+  <!-- Created / Updated info -->
+  <div class="flex flex-wrap justify-start space-x-6 text-sm text-gray-600 mb-6">
+    <div>
+      <i data-lucide="plus-circle" class="w-4 h-4 inline mr-1"></i>
+      Created at <%= @task.created_at.strftime("%b %d, %Y %H:%M") %>
+    </div>
+    <div>
+      <i data-lucide="refresh-cw" class="w-4 h-4 inline mr-1"></i>
+      Updated at <%= @task.updated_at.strftime("%b %d, %Y %H:%M") %>
+    </div>
   </div>
+
+  <!-- Title with Edit Button -->
+  <div class="flex justify-between items-center mb-6 ml-10">
+    <div class="flex items-center gap-3">
+      <h1 class="text-4xl font-bold text-gray-800"><%= @task.title %></h1>
+      <span class="px-3 py-1 text-md font-semibold rounded-full">
+        <%= @task.task_status.humanize %>
+      </span>
+    </div>
+
+    <% if ["admin", "manager", "employee", "super_admin"].include?(@current_user.role) %>
+      <%= link_to edit_project_task_path(@task.project, @task), class: "text-gray-500 hover:text-gray-700 transition" do %>
+        <i data-lucide="edit" class="w-5 h-5"></i>
+      <% end %>
+    <% end %>
+  </div>
+
+  <!-- Task Details in Inline Layout -->
+<div class="flex flex-wrap items-center gap-x-4 gap-y-4 mb-6 text-gray-800">
+
+  <!-- Project -->
+  <div class="flex items-center gap-3">
+    <i data-lucide="folder" class="w-5 h-5 text-teal-600"></i>
+    <span class="text-xl font-semibold mr-3 ml-2">Project:</span>
+    <%= link_to @task.project.title, project_path(@task.project), class: "text-xl text-teal-600 mr-4" %>
+  </div>
+
+  <!-- Assigned User -->
+  <div class="flex items-center gap-3">
+    <i data-lucide="user" class="w-6 h-6 text-teal-600"></i>
+    <span class="text-xl font-semibold ml-2 mr-3">Assigned to:</span>
+    <span class="text-xl text-gray-800 mr-4"><%= @task.assigned_user.username %></span>
+  </div>
+
+  <!-- Type -->
+  <div class="flex items-center gap-3">
+    <i data-lucide="tag" class="w-5 h-5 text-teal-600"></i>
+    <span class="text-xl font-semibold mr-3 ml-2">Type:</span>
+    <span class="text-xl text-gray-800"><%= @task.task_type.humanize %></span>
+  </div>
+
 </div>
+
+<!-- Progress + Deadline -->
+<div class="flex flex-wrap items-center gap-6 mb-8 text-gray-800">
+
+  <!-- Progress -->
+  <div class="flex items-center gap-3">
+    <i data-lucide="trending-up" class="w-6 h-6 text-teal-600"></i>
+    <span class="text-xl font-semibold mr-3 ml-2">Progress:</span>
+    <% progress_value = @task.progress.gsub("_percent", "").to_i %>
+    <span class="text-xl font-bold text-gray-900"><%= progress_value %>%</span>
+  </div>
+
+  <div class="flex-1 min-w-[200px]">
+  </div>
+
+  <!-- Deadline -->
+  <div class="flex items-center gap-2">
+    <i data-lucide="calendar" class="w-5 h-5 text-teal-600"></i>
+    <span class="text-lg font-semibold">Deadline:</span>
+    <span class="text-lg"><%= @task.estimated_deadline.strftime("%b %d, %Y") %></span>
+    <% days_until = (@task.estimated_deadline.to_date - Date.today).to_i %>
+    <% if days_until < 0 %>
+      <span class="px-2 py-1 text-sm font-semibold mb-4">Overdue</span>
+    <% elsif days_until <= 3 %>
+      <span class="px-2 py-1 text-sm font-semibold mb-4">Soon</span>
+    <% end %>
+  </div>
+
+</div>
+
+  <!-- Description Section -->
+  <div class="mt-4">
+    <div class="flex items-center gap-2 mb-3">
+      <i data-lucide="file-text" class="w-5 h-5 text-teal-600"></i>
+      <h2 class="text-2xl font-semibold text-gray-800">Description</h2>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg border shadow-lg text-gray-800 ml-8">
+      <%= simple_format(@task.description) %>
+    </div>
+  </div>
+
+  <hr class="border-gray-300 mt-8">
+
+</section>
