@@ -1,4 +1,3 @@
-<!-- app/views/tasks/show.html.erb -->
 <section class="relative overflow-hidden ml-10 bg-gradient-to-br from-slate-50 via-white to-teal-50 py-10 px-6 sm:px-12 min-h-screen">
 
   <!-- Gradient colors -->
@@ -9,11 +8,25 @@
   <div class="flex flex-wrap justify-start space-x-6 text-sm text-gray-600 mb-6">
     <div>
       <i data-lucide="plus-circle" class="w-4 h-4 inline mr-1"></i>
-      Created at <%= @task.created_at.strftime("%b %d, %Y %H:%M") %>
+      <% first_version = @task.versions.first %>
+        Created by 
+        <span class="font-semibold">
+          <%= User.find_by(id: first_version&.whodunnit)&.username&.titleize || "Unknown" %>
+        </span>
+        at <%= @task.created_at.strftime("%b %d, %Y %H:%M") %>
     </div>
     <div>
       <i data-lucide="refresh-cw" class="w-4 h-4 inline mr-1"></i>
-      Updated at <%= @task.updated_at.strftime("%b %d, %Y %H:%M") %>
+      <% last_version = @task.versions.last %>
+      <% if last_version.present? && last_version != first_version %>
+        Updated by 
+        <span class="font-semibold">
+          <%= User.find_by(id: last_version.whodunnit)&.username&.titleize || "Unknown" %>
+        </span>
+        at <%= last_version.created_at.strftime("%b %d, %Y %H:%M") %>
+      <% else %>
+        <span class="text-gray-600">No updates recorded yet.</span>
+      <% end %>
     </div>
   </div>
 
