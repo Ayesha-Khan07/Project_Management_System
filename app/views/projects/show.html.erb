@@ -51,9 +51,7 @@
       <% if current_user.role == "admin" || @current_user.role == "super_admin" %>    
         <!-- Add button -->
         <button id="show-add-invite-btn" class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition relative z-10">+ Add</button>
-        <%= link_to "+ Create Task", new_project_task_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
-        <%= link_to "View Tasks", project_tasks_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
-
+    
         <!-- INVITE USER POPOVER FORM -->
         <div id="invite-user-form" class="hidden absolute z-20 w-80 bg-white rounded shadow-md p-4">
           <%= form_with model: [@project, @project.invitations.new], url: project_invitations_path(@project), local: true, html: { id: "invite-form" } do |f| %>
@@ -86,6 +84,12 @@
           <% end %>
         </div>
       <% end %>
+
+      <% if current_user.role == "admin" || @current_user.role == "super_admin" || @current_user.role == "manager" || @current_user.role == "employee"%> 
+        <%= link_to "+ Create Task", new_project_task_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
+        <%= link_to "View Tasks", project_tasks_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
+      <% end %> 
+      
     </div>
   </div>
 

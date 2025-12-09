@@ -21,14 +21,16 @@ class Users::SessionsController < Devise::SessionsController
   def after_sign_in_path_for(resource)
     if resource.super_admin?
       super_admin_dashboard_path
-    elsif resource.client? || resource.employee?
-      if resource.project_id?
-        project_path(resource.project)
-      else
-        root_path
+    elsif resource.admin? 
+      if resource.company_id?
+        company_path(resource.company)
       end
-    elsif resource.company_id?
-      company_path(resource.company)
+    elsif resource.manager? || resource.employee?
+      if resource.projects.any?
+        project_path(resource.projects.first)
+    else
+      root_path
+    end
     else
       new_company_path
     end

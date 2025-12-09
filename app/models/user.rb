@@ -9,6 +9,9 @@ class User < ApplicationRecord
   #for join table
   has_many :projects_users, dependent: :destroy
   has_many :projects, through: :projects_users
+
+  #comments
+  has_many :comments
   
   # belongs_to :project, optional: true  --- optional true not needed as now i am not using belongs_to
 
