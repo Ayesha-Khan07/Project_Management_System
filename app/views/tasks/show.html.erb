@@ -9,11 +9,11 @@
     <div>
       <i data-lucide="plus-circle" class="w-4 h-4 inline mr-1"></i>
       <% first_version = @task.versions.first %>
-        Created by 
-        <span class="font-semibold">
-          <%= User.find_by(id: first_version&.whodunnit)&.username&.titleize || "Unknown" %>
-        </span>
-        at <%= @task.created_at.strftime("%b %d, %Y %H:%M") %>
+      Created by 
+      <span class="font-semibold">
+        <%= User.find_by(id: first_version&.whodunnit)&.username&.titleize || "Unknown" %>
+      </span>
+      at <%= @task.created_at.strftime("%b %d, %Y %H:%M") %>
     </div>
     <div>
       <i data-lucide="refresh-cw" class="w-4 h-4 inline mr-1"></i>
@@ -46,60 +46,58 @@
     <% end %>
   </div>
 
-  <!-- Task Details in Inline Layout -->
-<div class="flex flex-wrap items-center gap-x-4 gap-y-4 mb-6 text-gray-800">
+  <!-- Task Details -->
+  <div class="flex flex-wrap items-center gap-x-4 gap-y-4 mb-6 text-gray-800">
+    <!-- Project -->
+    <div class="flex items-center gap-3">
+      <i data-lucide="folder" class="w-5 h-5 text-teal-600"></i>
+      <span class="text-lg font-semibold mr-3 ml-2">Project:</span>
+      <%= link_to @task.project.title, project_path(@task.project), class: "text-lg text-teal-600 mr-4" %>
+    </div>
 
-  <!-- Project -->
-  <div class="flex items-center gap-3">
-    <i data-lucide="folder" class="w-5 h-5 text-teal-600"></i>
-    <span class="text-xl font-semibold mr-3 ml-2">Project:</span>
-    <%= link_to @task.project.title, project_path(@task.project), class: "text-xl text-teal-600 mr-4" %>
+    <!-- Assigned User -->
+    <div class="flex items-center gap-3">
+      <i data-lucide="user" class="w-6 h-6 text-teal-600"></i>
+      <span class="text-lg font-semibold ml-2 mr-3">Assigned to:</span>
+      <span class="text-lg text-teal-800 mr-4"><%= @task.assigned_user.username %></span>
+    </div>
+
+    <!-- Type -->
+    <div class="flex items-center gap-3">
+      <i data-lucide="tag" class="w-5 h-5 text-teal-600"></i>
+      <span class="text-lg font-semibold mr-3 ml-2">Type:</span>
+      <span class="text-lg text-teal-800"><%= @task.task_type.humanize %></span>
+    </div>
   </div>
 
-  <!-- Assigned User -->
-  <div class="flex items-center gap-3">
-    <i data-lucide="user" class="w-6 h-6 text-teal-600"></i>
-    <span class="text-xl font-semibold ml-2 mr-3">Assigned to:</span>
-    <span class="text-xl text-gray-800 mr-4"><%= @task.assigned_user.username %></span>
+  <!-- Progress + Deadline -->
+  <div class="flex flex-wrap items-center gap-6 mb-8 text-gray-800">
+    <!-- Progress -->
+    <div class="flex items-center gap-3">
+      <i data-lucide="trending-up" class="w-6 h-6 text-teal-600"></i>
+      <span class="text-lg font-semibold mr-3 ml-2">Progress:</span>
+      <% progress_value = @task.progress.gsub("_percent", "").to_i %>
+      <span class="text-xl font-bold text-gray-900"><%= progress_value %>%</span>
+    </div>
+    <div class="flex-1 min-w-[200px]">
+      <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+        <div class="h-full bg-gradient-to-r from-teal-500 to-blue-600 rounded-full transition-all duration-500" style="width: <%= progress_value %>%"></div>
+      </div>
+    </div>
+
+    <!-- Deadline -->
+    <div class="flex items-center gap-2">
+      <i data-lucide="calendar" class="w-5 h-5 text-teal-600"></i>
+      <span class="text-lg font-semibold">Deadline:</span>
+      <span class="text-lg"><%= @task.estimated_deadline.strftime("%b %d, %Y") %></span>
+      <% days_until = (@task.estimated_deadline.to_date - Date.today).to_i %>
+      <% if days_until < 0 %>
+        <span class="px-2 py-1 text-sm font-semibold mb-4 text-red-700 bg-red-100 rounded">Overdue</span>
+      <% elsif days_until <= 3 %>
+        <span class="px-2 py-1 text-sm font-semibold mb-4 text-yellow-800 bg-yellow-100 rounded">Soon</span>
+      <% end %>
+    </div>
   </div>
-
-  <!-- Type -->
-  <div class="flex items-center gap-3">
-    <i data-lucide="tag" class="w-5 h-5 text-teal-600"></i>
-    <span class="text-xl font-semibold mr-3 ml-2">Type:</span>
-    <span class="text-xl text-gray-800"><%= @task.task_type.humanize %></span>
-  </div>
-
-</div>
-
-<!-- Progress + Deadline -->
-<div class="flex flex-wrap items-center gap-6 mb-8 text-gray-800">
-
-  <!-- Progress -->
-  <div class="flex items-center gap-3">
-    <i data-lucide="trending-up" class="w-6 h-6 text-teal-600"></i>
-    <span class="text-xl font-semibold mr-3 ml-2">Progress:</span>
-    <% progress_value = @task.progress.gsub("_percent", "").to_i %>
-    <span class="text-xl font-bold text-gray-900"><%= progress_value %>%</span>
-  </div>
-
-  <div class="flex-1 min-w-[200px]">
-  </div>
-
-  <!-- Deadline -->
-  <div class="flex items-center gap-2">
-    <i data-lucide="calendar" class="w-5 h-5 text-teal-600"></i>
-    <span class="text-lg font-semibold">Deadline:</span>
-    <span class="text-lg"><%= @task.estimated_deadline.strftime("%b %d, %Y") %></span>
-    <% days_until = (@task.estimated_deadline.to_date - Date.today).to_i %>
-    <% if days_until < 0 %>
-      <span class="px-2 py-1 text-sm font-semibold mb-4">Overdue</span>
-    <% elsif days_until <= 3 %>
-      <span class="px-2 py-1 text-sm font-semibold mb-4">Soon</span>
-    <% end %>
-  </div>
-
-</div>
 
   <!-- Description Section -->
   <div class="mt-4">
@@ -107,12 +105,54 @@
       <i data-lucide="file-text" class="w-5 h-5 text-teal-600"></i>
       <h2 class="text-2xl font-semibold text-gray-800">Description</h2>
     </div>
-
     <div class="bg-white p-6 rounded-lg border shadow-lg text-gray-800 ml-8">
       <%= simple_format(@task.description) %>
     </div>
   </div>
 
   <hr class="border-gray-300 mt-8">
+
+  <!-- Comments Section -->
+  <div class="mt-8 ml-8">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+      Comments <span class="text-gray-600 text-lg">(<%= @task.comments.count %>)</span>
+    </h2>
+
+    <!-- New Comment Form -->
+    <%= form_with model: [@task.project, @task, Comment.new], local: true do |f| %>
+      <div class="flex items-start gap-2 mb-4">
+        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500 text-white flex items-center justify-center font-bold text-lg">
+          <%= current_user.username[0].upcase %>
+        </div>
+        <div class="flex-1">
+          <%= f.text_area :body, placeholder: "Write a comment...", class: "w-full p-2 border rounded-lg mb-2" %>
+          <%= f.submit "Add Comment", class: "px-3 py-1 bg-teal-600 text-white rounded hover:bg-teal-700" %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- List of Comments -->
+    <div class="space-y-4 mt-4">
+      <% @task.comments.order(created_at: :asc).each do |comment| %>
+        <div class="flex gap-3 bg-white p-4 rounded-lg border shadow-sm">
+          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500 text-white flex items-center justify-center font-bold text-lg">
+            <%= comment.user.username[0].upcase %>
+          </div>
+          <div class="flex-1">
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="font-semibold text-gray-800 ml-4"><%= comment.user.username %></span>
+                <span class="text-gray-500 text-sm ml-2"><%= comment.created_at.strftime("%b %d, %Y %H:%M") %></span>
+              </div>
+              <% if comment.user == current_user %>
+                <%= link_to "Edit", edit_project_task_comment_path(@task.project, @task, comment), class: "text-teal-600 hover:underline text-sm" %>
+              <% end %>
+            </div>
+            <div class="mt-1 text-gray-800 ml-4"><%= simple_format(comment.body) %></div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
 
 </section>

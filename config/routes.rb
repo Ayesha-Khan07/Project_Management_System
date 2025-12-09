@@ -21,7 +21,9 @@ Rails.application.routes.draw do
   # Projects management
   resources :projects do
     resources :invitations, only: [:new, :create]
-    resources :tasks
+    resources :tasks do
+      resources :comments, only: [:create, :edit, :update, :destroy]
+    end
     delete 'remove_user', on: :member           # added becoz we are deleting a user from a proj not the whole proj 
   end
 
