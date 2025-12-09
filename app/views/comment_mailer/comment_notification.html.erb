@@ -1,0 +1,9 @@
+<h2>Comment <%= @action %> on Task: <%= @task.title %></h2>
+
+<p><strong><%= @user.username %></strong> @action a comment</p>
+
+<%= @comment.body == "This comment was deleted." ? "Comment was removed." : @comment.body %>
+
+<br><br>
+<p>Project: <%= @project.title %></p>
+<p><%= link_to "View Task", project_task_url(@project, @task) %></p>
