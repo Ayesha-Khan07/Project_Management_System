@@ -34,7 +34,7 @@
   <div class="flex justify-between items-center mb-6 ml-10">
     <div class="flex items-center gap-3">
       <h1 class="text-4xl font-bold text-gray-800"><%= @task.title %></h1>
-      <span class="px-3 py-1 text-md font-semibold rounded-full">
+      <span class="bg-teal-200 mb-3 text-teal-900 text-md font-semibold px-3 py-1 rounded-full">
         <%= @task.task_status.humanize %>
       </span>
     </div>
@@ -52,21 +52,21 @@
     <div class="flex items-center gap-3">
       <i data-lucide="folder" class="w-5 h-5 text-teal-600"></i>
       <span class="text-lg font-semibold mr-3 ml-2">Project:</span>
-      <%= link_to @task.project.title, project_path(@task.project), class: "text-lg text-teal-600 mr-4" %>
+      <%= link_to @task.project.title, project_path(@task.project), class: "text-lg text-teal-700 mr-4" %>
     </div>
 
     <!-- Assigned User -->
     <div class="flex items-center gap-3">
       <i data-lucide="user" class="w-6 h-6 text-teal-600"></i>
       <span class="text-lg font-semibold ml-2 mr-3">Assigned to:</span>
-      <span class="text-lg text-teal-800 mr-4"><%= @task.assigned_user.username %></span>
+      <span class="text-lg text-teal-700 mr-4"><%= @task.assigned_user.username %></span>
     </div>
 
     <!-- Type -->
     <div class="flex items-center gap-3">
       <i data-lucide="tag" class="w-5 h-5 text-teal-600"></i>
       <span class="text-lg font-semibold mr-3 ml-2">Type:</span>
-      <span class="text-lg text-teal-800"><%= @task.task_type.humanize %></span>
+      <span class="text-lg text-teal-700"><%= @task.task_type.humanize %></span>
     </div>
   </div>
 
@@ -92,9 +92,9 @@
       <span class="text-lg"><%= @task.estimated_deadline.strftime("%b %d, %Y") %></span>
       <% days_until = (@task.estimated_deadline.to_date - Date.today).to_i %>
       <% if days_until < 0 %>
-        <span class="px-2 py-1 text-sm font-semibold mb-4 text-red-700 bg-red-100 rounded">Overdue</span>
+        <span class="bg-teal-200 text-teal-900 text-sm mb-4 font-semibold px-2 py-1 rounded-full">Overdue</span>
       <% elsif days_until <= 3 %>
-        <span class="px-2 py-1 text-sm font-semibold mb-4 text-yellow-800 bg-yellow-100 rounded">Soon</span>
+        <span class="bg-teal-200 text-teal-900 text-sm mb-4 font-semibold px-2 py-1 rounded-full">Soon</span>
       <% end %>
     </div>
   </div>
@@ -112,47 +112,70 @@
 
   <hr class="border-gray-300 mt-8">
 
-  <!-- Comments Section -->
-  <div class="mt-8 ml-8">
-    <h2 class="text-2xl font-semibold text-gray-800 mb-4">
-      Comments <span class="text-gray-600 text-lg">(<%= @task.comments.count %>)</span>
-    </h2>
+ <!-- Comments Section -->
+<div class="mt-8 ml-8">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+    Comments <span class="text-gray-600 text-lg">(<%= @task.comments.count %>)</span>
+  </h2>
 
-    <!-- New Comment Form -->
-    <%= form_with model: [@task.project, @task, Comment.new], local: true do |f| %>
-      <div class="flex items-start gap-2 mb-4">
+  <!-- New Comment Form -->
+  <%= form_with model: [@task.project, @task, Comment.new], local: true do |f| %>
+    <div class="flex items-start gap-2 mb-4">
+      <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500 text-white flex items-center justify-center font-bold text-lg">
+        <%= current_user.username[0].upcase %>
+      </div>
+      <div class="flex-1">
+        <%= f.text_area :body, placeholder: "Write a comment...", class: "w-full p-2 border rounded-lg mb-2" %>
+        <%= f.submit "Add Comment", class: "px-3 py-1 bg-teal-600 text-white rounded hover:bg-teal-700" %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- List of Comments -->
+  <div class="space-y-4 mt-4">
+    <% @task.comments.order(created_at: :asc).each do |comment| %>
+      <div class="flex gap-3 bg-white p-4 rounded-lg border shadow-sm">
         <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500 text-white flex items-center justify-center font-bold text-lg">
-          <%= current_user.username[0].upcase %>
+          <%= comment.user.username[0].upcase %>
         </div>
         <div class="flex-1">
-          <%= f.text_area :body, placeholder: "Write a comment...", class: "w-full p-2 border rounded-lg mb-2" %>
-          <%= f.submit "Add Comment", class: "px-3 py-1 bg-teal-600 text-white rounded hover:bg-teal-700" %>
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="font-semibold text-gray-800 ml-4"><%= comment.user.username %></span>
+              <% if comment.updated_at > comment.created_at %>
+                <span class="text-gray-500 text-sm ml-2">Updated • <%= comment.updated_at.strftime("%b %d, %Y %H:%M") %></span>
+              <% else %>
+                <span class="text-gray-500 text-sm ml-2"><%= comment.created_at.strftime("%b %d, %Y %H:%M") %></span>
+              <% end %>
+            </div>
+            <% if comment.user == current_user %>
+              <!-- Toggle edit form -->
+              <button onclick="document.getElementById('edit-comment-<%= comment.id %>').classList.toggle('hidden')" class="text-teal-600 hover:underline text-sm mr-4">
+                Edit
+              </button>
+            <% end %>
+          </div>
+
+          <!-- Comment body -->
+          <div id="comment-body-<%= comment.id %>" class="mt-1 text-gray-800 ml-4">
+            <%= simple_format(comment.body) %>
+          </div>
+
+          <!-- Edit form (hidden by default) -->
+          <% if comment.user == current_user %>
+            <div id="edit-comment-<%= comment.id %>" class="hidden mt-2 ml-4">
+              <%= form_with(model: [@task.project, @task, comment], local: true) do |f| %>
+                <%= f.text_area :body, value: comment.body, class: "w-full p-2 border rounded mb-2" %>
+                <%= f.submit "Save", class: "px-3 py-1 bg-teal-600 text-white rounded hover:bg-teal-700" %>
+              <% end %>
+            </div>
+          <% end %>
         </div>
       </div>
     <% end %>
-
-    <!-- List of Comments -->
-    <div class="space-y-4 mt-4">
-      <% @task.comments.order(created_at: :asc).each do |comment| %>
-        <div class="flex gap-3 bg-white p-4 rounded-lg border shadow-sm">
-          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500 text-white flex items-center justify-center font-bold text-lg">
-            <%= comment.user.username[0].upcase %>
-          </div>
-          <div class="flex-1">
-            <div class="flex justify-between items-center">
-              <div>
-                <span class="font-semibold text-gray-800 ml-4"><%= comment.user.username %></span>
-                <span class="text-gray-500 text-sm ml-2"><%= comment.created_at.strftime("%b %d, %Y %H:%M") %></span>
-              </div>
-              <% if comment.user == current_user %>
-                <%= link_to "Edit", edit_project_task_comment_path(@task.project, @task, comment), class: "text-teal-600 hover:underline text-sm" %>
-              <% end %>
-            </div>
-            <div class="mt-1 text-gray-800 ml-4"><%= simple_format(comment.body) %></div>
-          </div>
-        </div>
-      <% end %>
-    </div>
   </div>
+</div>
+
+
 
 </section>
