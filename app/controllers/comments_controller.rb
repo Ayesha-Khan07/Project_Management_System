@@ -30,7 +30,7 @@ class CommentsController < ApplicationController
 
   def destroy
     if @comment.user == current_user
-      @comment.destroy
+      @comment.update(body: "This comment was deleted.")
       redirect_to project_task_path(@task.project, @task), notice: "Comment deleted."
     else
       redirect_to project_task_path(@task.project, @task), alert: "Not allowed."
