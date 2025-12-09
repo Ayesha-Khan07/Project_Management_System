@@ -51,10 +51,15 @@ class ProjectsController < ApplicationController
   def index
     if params[:company_id].present?
       @company = Company.find(params[:company_id])
-      if current_user.role == "admin" || current_user.role == "manager"
-        @projects = @company.projects.order(created_at: :desc)
+      case current_user.role 
+      when "admin", "super_admin"
+         @projects = @company.projects.order(created_at: :desc)
+      when "manager", "employee"
+         @projects = @company.projects.joins(:users)
+                      .where(users: { id: current_user.id })
+                      .order(created_at: :desc)
       else
-        redirect_to company_path(current_user.company), alert: "You have NO ACCESS to see all the projects of the company."
+        redirect_to company_path(current_user.company), alert: "You Have Not Added In Any Project."
         return
       end
     else

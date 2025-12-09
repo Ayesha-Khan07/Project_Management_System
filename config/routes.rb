@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   # Company profile creation
   resources :companies, only: [:new, :create, :show, :update] do
-    resources :projects, only: [:index]
+    resources :projects, only: [:index, :show, :new, :create]
   end
 
   # Projects management
