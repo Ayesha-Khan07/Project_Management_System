@@ -22,6 +22,7 @@ class Project < ApplicationRecord
   # Validations
   validates :title, :project_status, :project_deadline, presence: true
   validates :description, presence: true
+  validates :project_deadline, presence: true
 
   # for action text
   # validates :description, presence: true, if: -> { description&.body&.to_plain_text.present? }
