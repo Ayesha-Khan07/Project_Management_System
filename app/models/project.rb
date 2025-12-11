@@ -24,7 +24,34 @@ class Project < ApplicationRecord
   validates :description, presence: true
   validates :project_deadline, presence: true
 
+  #custom validation for documenet uploada
+  validate :validate_uploaded_document                  # -- validates -> for built-in validations like presence, length, format
+                                                        # -- validate -> for custom validations
+
   # for action text
   # validates :description, presence: true, if: -> { description&.body&.to_plain_text.present? }
+
+  def validate_uploaded_document
+    return unless uploaded_document.attached?
+
+    #arr of all allowed types
+    allowed_types = [
+      "application/pdf",
+      "application/msword", 
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document", # .docx
+      "text/csv", 
+      "text/plain"
+    ]
+
+    #check for file type
+    unless allowed_types.include?(uploaded_document.content_type)
+      errors.add(:uploaded_document, "File must be a Pdf, doc, docx, txt and csv.")
+    end
+
+    #check for file's size
+    if uploaded_document.byte_size > 10.megabytes
+      errors.add(:uploaded_document, "File size can't be more than 10MB.")
+    end
+  end
 
 end
