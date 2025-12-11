@@ -1,4 +1,10 @@
-<section class="p-10 bg-gray-50 min-h-screen">
+<section class="p-10 bg-gray-50 min-h-screen relative">
+
+  <div class="absolute top-5 right-6 z-50">
+    <%= link_to "❌", company_path(current_user.company), 
+        class: "text-gray-500 hover:text-gray-700 text-2xl font-bold" %>
+  </div>
+
   <h1 class="text-3xl font-bold mb-8 text-teal-500">Create New Project</h1>
 
   <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-5xl mx-auto">
@@ -15,26 +21,26 @@
 
       <!-- Description (Plain Textarea) -->
       <div class="mb-6">
-        <label class="block font-semibold mb-2">Description</label>
+        <label class="block text-lg font-semibold mb-2">Description</label>
         <%= f.text_area :description,
               rows: 10,
-              placeholder: "Type project description here",
-              class: "w-full border rounded px-4 py-4 mt-3 p-3 text-gray-700 focus:outline-none focus:border-teal-500" %>
+              placeholder: "Type or Paste project description here",
+              class: "w-full border rounded px-4 py-4 mt-1 p-3 text-gray-700 focus:outline-none focus:border-teal-500" %>
       </div>
 
       <!-- Project Status -->
       <div class="mb-6">
-        <label class="block font-semibold mb-2">Project Status</label>
+        <label class="block text-md font-semibold mb-2">Project Status</label>
         <%= f.select :project_status,
           Project.project_statuses.keys.map { |s| [s.titleize, s] },
           {},
-          class: "w-full p-3 border rounded-lg" %>
+          class: "w-full p-2 border rounded-md" %>
       </div>
 
       <!-- Deadline -->
       <div class="mb-6">
-        <label class="block font-semibold mb-2">Deadline</label>
-        <%= f.date_field :project_deadline, class: "w-full p-3 border rounded-lg", min: Date.today %>
+        <label class="block text-md font-semibold mb-2">Deadline</label>
+        <%= f.date_field :project_deadline, class: "w-full p-2 border rounded-md", min: Date.today %>
       </div>
 
       <!-- File Upload -->
@@ -44,6 +50,12 @@
           <span class="block text-gray-600 mb-3">+ Browse and upload file here</span>
           <%= f.file_field :uploaded_document, class: "block mx-auto" %>
         </div>
+
+        <% if @project.errors[:uploaded_document].any? %>
+           <p class="text-teal-500 font-semibold mb-2">
+             <%= @project.errors[:uploaded_document].first %>
+           </p>
+         <% end %>
       </div>
 
       <!-- Submit -->
