@@ -29,7 +29,7 @@
       <label class="absolute bottom-1 right-1.5 bg-gray-500 text-white p-2 rounded-full cursor-pointer hover:bg-gray-700">
         <i data-lucide="camera" class="w-4 h-4"></i>
         <%= form_with model: @company, url: company_path(@company), method: :patch, local: true, html: { multipart: true, class: "hidden" } do |f| %>
-          <%= f.file_field :logo, onchange: "this.form.submit();" %>
+          <%= f.file_field :logo,  accept: "image/png,image/jpeg,image/jpg,image/gif", onchange: "this.form.submit();" %>
         <% end %>
       </label>
     </div>

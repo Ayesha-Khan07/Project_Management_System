@@ -1,6 +1,18 @@
-<div class="max-w-3xl mx-auto py-8 px-4">
-  <h1 class="text-2xl font-bold mb-6">Edit Task of <%= @project.title %></h1>
+<section class="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-teal-50 py-6 px-6 sm:px-12 min-h-screen">
 
-  <%= render "partials/form" %>
+  <!-- gradient colors -->
+  <div class="fixed top-20 left-4 w-92 h-92 bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse pointer-events-none -z-10"></div>
+  <div class="fixed bottom-0 right-2 w-92 h-92 bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse delay-300 pointer-events-none -z-10"></div>
 
-</div> 
+  <div class="absolute top-5 right-4">
+      <%= link_to "❌", project_task_path(@task), class: "text-gray-500 hover:text-gray-700 text-2xl font-bold" %>
+  </div>
+
+  <div class="max-w-3xl mx-auto py-8 px-4">
+    <h1 class="text-2xl font-bold mb-6">Edit Task of <span class="text-3xl text-teal-600"> <%= @project.title %> </span> </h1>
+
+    <%= render "partials/form" %>
+
+  </div> 
+
+</section>

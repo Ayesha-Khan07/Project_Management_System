@@ -34,7 +34,7 @@
       <!-- Deadline -->
       <div class="mb-6">
         <label class="block font-semibold mb-2">Deadline</label>
-        <%= f.date_field :project_deadline, class: "w-full p-3 border rounded-lg" %>
+        <%= f.date_field :project_deadline, class: "w-full p-3 border rounded-lg", min: Date.today %>
       </div>
 
       <!-- File Upload -->

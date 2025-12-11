@@ -130,7 +130,7 @@
 
       <div id="project-deadline-form" class="hidden flex items-center space-x-2 mt-2">
         <%= form_with model: @project, url: project_path(@project), method: :patch, local: false, html: { class: "inline-edit-form", data: { field: "deadline" } } do |f| %>
-          <%= f.date_field :project_deadline, class: "border rounded px-2 py-1", value: @project.project_deadline %>
+          <%= f.date_field :project_deadline, class: "border rounded px-2 py-1",  min: Date.today, value: @project.project_deadline %>
           <%= f.submit "Save", class: "bg-teal-600 text-white px-3 py-1 rounded" %>
           <button type="button" class="px-3 py-1 rounded border hover:bg-gray-200" data-toggle-cancel="deadline">Cancel</button>
         <% end %>
