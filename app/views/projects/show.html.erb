@@ -152,7 +152,7 @@
 
     <div id="project-description-display"
          class="bg-white p-6 rounded-lg border shadow-sm text-gray-800 ml-4">
-      <%= @project.description %>
+      <%= simple_format(@project.description.presence || "No project description available.") %>
     </div>
 
     <div id="project-description-form" class="hidden ml-4 mt-3">
