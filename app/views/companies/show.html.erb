@@ -74,7 +74,7 @@
 
     <!-- Pencil icon (shows the edit form) -->
       <% if @company.users.exists?(id: current_user.id, role: "admin") %>
-        <button type="button" class="mr-220 mb-4 p-1 rounded-full hover:bg-gray-100" data-toggle-target="description">
+        <button type="button" class="mr-240 mb-4 p-1 rounded-full hover:bg-gray-100" data-toggle-target="description">
           <i data-lucide="edit" class="w-5 h-5 text-gray-800"></i>
         </button>
       <% end %>
