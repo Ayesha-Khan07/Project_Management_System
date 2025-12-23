@@ -74,7 +74,7 @@
               <button type="button" id="cancel-invite-btn" class="px-3 py-1 rounded border hover:bg-gray-200">Cancel</button>
             </div>
 
-            <% if @project.company.users.count >= 7 && @project.company.subscription_status == "free" %>
+            <% if @project.free_plan_limit_reached? %>
               <p class="text-red-600 text-sm mt-3">
                 Your team has hit the member limit for the free plan. <br>
                 To enhance your team, please get the paid version of the app and add unlimited users.

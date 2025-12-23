@@ -54,4 +54,9 @@ class Project < ApplicationRecord
     end
   end
 
+  #show page method
+  def free_plan_limit_reached?
+    users.count >= 7 && subscription_status == "free"
+  end
+
 end
