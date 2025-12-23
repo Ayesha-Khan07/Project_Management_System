@@ -1,8 +1,13 @@
 <section class="p-10 bg-gray-50 min-h-screen relative">
 
+<div class="fixed top-10 left-4 w-92 h-92 bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse pointer-events-none -z-10"></div>
+<div class="fixed bottom-0 right-2 w-92 h-92 bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse delay-300 pointer-events-none -z-10"></div>
+<div class="fixed -top-20 right-2 w-92 h-92 bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse delay-300 pointer-events-none -z-10"></div>
+
+
   <div class="absolute top-5 right-6 z-50">
-    <%= link_to "❌", company_path(current_user.company), 
-        class: "text-gray-500 hover:text-gray-700 text-2xl font-bold" %>
+    <%= link_to "Back", company_path(current_user.company), 
+        class: "text-teal-600 hover:text-teal-900 text-lg" %>
   </div>
 
   <h1 class="text-3xl font-bold mb-8 text-center text-teal-700">Create New Project</h1>
