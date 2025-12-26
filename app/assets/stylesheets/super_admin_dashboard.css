@@ -63,6 +63,22 @@
   z-index: 1;
 }
 
+/* FIX header layout */
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.search-box .form-control {
+  width: 100% !important;
+  max-width: 350px;
+  height: 40px;
+  background-color: white;
+}
+
+
 .stat-badge {
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
@@ -297,10 +313,11 @@
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  margin-top: 3rem;
 }
 
 .card-header-custom {
-  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  background: white;
   padding: 2rem;
   border-bottom: 1px solid #e5e7eb;
 }
@@ -318,7 +335,6 @@
 .card-subtitle-custom {
   color: #6b7280;
   margin: 0.5rem 0 0 0;
-  font-size: 0.95rem;
 }
 
 .chart-title {

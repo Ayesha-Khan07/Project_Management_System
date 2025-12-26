@@ -1,71 +1,98 @@
-<div class="tab-content-wrapper">
+<div class="tab-content-wrapper py-10">
+  <h1 class="text-center text-4xl font-bold mb-10">
+            <span class="inline-flex text-teal-800 items-center justify-center">
+              <i class="bi bi-people-fill text-3xl"></i>
+              Manage and monitor all platform users
+            </span>
+  </h1>
+
   <!-- Stats Cards -->
-  <div class="row mb-4">
-    <div class="col-md-3 mb-3">
-      <div class="stat-card teal-gradient">
-        <div class="stat-icon">
-          <i class="bi bi-people-fill"></i>
-        </div>
-        <div class="stat-info">
-          <h3><%= @users.count %></h3>
-          <p>Total Users</p>
-        </div>
+  <div class="flex flex-wrap gap-4 mb-6 justify-start px-8 ml-12 mb-12">
+
+    <!-- Total Users - Increased Width and Height -->
+    <div class="stat-card teal-gradient rounded-xl p-6 ml-10 shadow-md" style="min-width: 280px; min-height: 160px;">
+      <div class="stat-icon"
+           style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); width: 80px; height: 80px;">
+        <i class="bi bi-people-fill" style="font-size: 2.5rem;"></i>
+      </div>
+      <div class="flex flex-col mt-3">
+        <span class="text-gray-500 font-medium text-2xl mb-3">Total Users</span>
+        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @users.count %></span>
       </div>
     </div>
-    <div class="col-md-3 mb-3">
-      <div class="stat-card blue-gradient">
-        <div class="stat-icon">
-          <i class="bi bi-person-badge"></i>
-        </div>
-        <div class="stat-info">
-          <h3><%= @users.where(role: 'admin').count %></h3>
-          <p>Admins</p>
-        </div>
+
+    <!-- Admins - Increased Width and Height -->
+    <div class="stat-card blue-gradient rounded-xl p-6 ml-10 shadow-md" style="min-width: 280px; min-height: 160px;">
+      <div class="stat-icon"
+           style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); width: 80px; height: 80px;">
+        <i class="bi bi-person-badge" style="font-size: 2.5rem;"></i>
+      </div>
+      <div class="flex flex-col mt-3">
+        <span class="text-gray-500 font-medium text-2xl mb-3">Admins</span>
+        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @users.where(role: 'admin').count %></span>
       </div>
     </div>
-    <div class="col-md-3 mb-3">
-      <div class="stat-card purple-gradient">
-        <div class="stat-icon">
-          <i class="bi bi-briefcase-fill"></i>
-        </div>
-        <div class="stat-info">
-          <h3><%= @users.where(role: 'manager').count %></h3>
-          <p>Managers</p>
-        </div>
+
+    <!-- Managers - Increased Width and Height -->
+    <div class="stat-card purple-gradient rounded-xl p-6 ml-10 shadow-md" style="min-width: 280px; min-height: 160px;">
+      <div class="stat-icon"
+           style="background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%); width: 80px; height: 80px;">
+        <i class="bi bi-briefcase-fill" style="font-size: 2.5rem;"></i>
+      </div>
+      <div class="flex flex-col mt-3">
+        <span class="text-gray-500 font-medium text-2xl mb-3">Managers</span>
+        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @users.where(role: 'manager').count %></span>
       </div>
     </div>
-    <div class="col-md-3 mb-3">
-      <div class="stat-card orange-gradient">
-        <div class="stat-icon">
-          <i class="bi bi-person-workspace"></i>
-        </div>
-        <div class="stat-info">
-          <h3><%= @users.where(role: 'employee').count %></h3>
-          <p>Employees</p>
-        </div>
+
+    <!-- Employees - Increased Width and Height -->
+    <div class="stat-card orange-gradient rounded-xl p-6 ml-10 shadow-md" style="min-width: 280px; min-height: 160px;">
+      <div class="stat-icon"
+           style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); width: 80px; height: 80px;">
+        <i class="bi bi-person-workspace" style="font-size: 2.5rem;"></i>
+      </div>
+      <div class="flex flex-col mt-3">
+        <span class="text-gray-500 font-medium text-2xl mb-3">Employees</span>
+        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @users.where(role: 'employee').count %></span>
+      </div>
+    </div>
+
+    <!-- Clients - Increased Width and Height -->
+    <div class="stat-card purple-gradient rounded-xl p-6 ml-10 shadow-md" style="min-width: 280px; min-height: 160px;">
+      <div class="stat-icon"
+           style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); width: 80px; height: 80px;">
+        <i class="bi bi-person-check" style="font-size: 2.5rem;"></i>
+      </div>
+      <div class="flex flex-col mt-3">
+        <span class="text-gray-500 font-medium text-2xl mb-3">Clients</span>
+        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @users.where(role: 'client').count %></span>
+      </div>
+    </div>
+    
+</div>
+
+  <!-- Users Table Card -->
+  <div class="modern-card">
+   <div class="card-header-custom">
+    <div class="header-row">
+      <h3 class="card-title-custom">
+        <i class="bi bi-list-ul"></i> All Users
+      </h3>
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input
+          type="text"
+          id="userSearch"
+          placeholder="Search users..."
+          class="form-control"
+        >
       </div>
     </div>
   </div>
 
-  <!-- Users Table Card -->
-  <div class="modern-card">
-    <div class="card-header-custom">
-      <div class="d-flex justify-content-between align-items-center flex-wrap">
-        <div>
-          <h3 class="card-title-custom">
-            <i class="bi bi-list-ul"></i> All Users
-          </h3>
-          <p class="card-subtitle-custom">Manage and monitor all platform users</p>
-        </div>
-        <div class="search-box">
-          <i class="bi bi-search"></i>
-          <input type="text" id="userSearch" placeholder="Search users..." class="form-control">
-        </div>
-      </div>
-    </div>
     <div class="card-body-custom">
-      <div class="table-responsive">
-        <table class="table modern-table">
+      <div class="table-responsive flex justify-between ml-10 mt-5">
+        <table class="table modern-table w-auto">
           <thead>
             <tr>
               <th><i class="bi bi-person"></i> Username</th>
@@ -90,7 +117,7 @@
                 <td class="text-muted"><%= user.email %></td>
                 <td>
                   <span class="badge-custom badge-<%= user.role %>">
-                    <i class="bi bi-dot"></i> <%= user.role %>
+                     <%= user.role %>
                   </span>
                 </td>
                 <td>
