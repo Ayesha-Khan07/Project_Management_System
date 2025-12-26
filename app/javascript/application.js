@@ -5,4 +5,5 @@ import "trix"
 import "@rails/actiontext"
 
 import "chartkick/chart.js"
+import './super_admin_dashboard'
 
