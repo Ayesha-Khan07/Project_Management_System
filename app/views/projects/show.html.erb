@@ -85,10 +85,8 @@
         </div>
       <% end %>
 
-      <% if can_edit_project?(@current_user) %> 
-        <%= link_to "+ Create Task", new_project_task_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
-        <%= link_to "View Tasks", project_tasks_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
-      <% end %> 
+      <%= link_to "+ Create Task", new_project_task_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
+      <%= link_to "View Tasks", project_tasks_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
       
     </div>
   </div>
