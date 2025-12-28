@@ -1,13 +1,14 @@
-<div class="max-w-5xl mx-auto py-8 px-4">
+<div class="min-h-screen mx-auto px-4 py-8 bg-teal-100">
   <div class="flex items-center justify-between mb-6">
-   <h1 class="text-2xl font-bold text-gray-800">
-    Projects for -
-    <% if @company.present? %>
+    <h1 class="text-2xl font-bold text-gray-800">
+       <i class="bi bi-folder-fill mr-1 ml-3"></i>
+      Projects for -
+      <% if @company.present? %>
         <span class="text-3xl text-teal-600"><%= @company.name.titleize %></span>
-    <% else %>
+      <% else %>
         Your Company
-    <% end %>
-   </h1>
+      <% end %>
+    </h1>
 
     <% if current_user.role == "admin" %>
       <%= link_to "New Project", new_project_path, class: "bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition" %>
@@ -15,33 +16,41 @@
   </div>
 
   <% if @projects.any? %>
-    <div class="grid gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 ml-12">
       <% @projects.each do |project| %>
-        <div class="border mt-5 p-6 rounded-lg shadow-sm hover:shadow-md transition"> 
-          <div class="flex items-center justify-between">
-            <div>
-              <h2 class="text-xl font-semibold text-teal-600 hover:text-teal-800 mb-2">
-                <%= link_to project.title, project_path(project) %> 
+        <div class="bg-white border rounded-lg shadow hover:shadow-md transition flex flex-col">
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div class="space-y-5">
+              <h2 class="text-2xl font-semibold text-teal-600 flex items-center">
+                <i class="bi bi-folder-fill mr-2"></i>
+                <%= project.title %>
               </h2>
-              <p class="text-sm text-gray-600 mt-1">
-                Status: <%= project.project_status %> ⦿ Deadline: <%= project.project_deadline %>
+              <p class="flex items-center text-sm text-gray-700">
+                <i class="bi bi-activity mr-2 text-gray-500"></i>
+                Status: <span class="ml-2 font-medium capitalize bg-teal-200 px-2 py-0.5 rounded-full"><%= project.project_status %></span>
               </p>
+              <p class="flex items-center text-sm text-gray-700">
+                <i class="bi bi-calendar-event mr-2 text-gray-500"></i>
+                Deadline: <span class="ml-1"><%= project.project_deadline.present? ? project.project_deadline.strftime("%b %d, %Y") : "N/A" %></span>
+              </p>
+              <p class="flex items-center text-sm text-gray-700">
+                <i class="bi bi-clock-history mr-2 text-gray-500"></i>
+                Created: <span class="ml-1"><%= time_ago_in_words(project.created_at) %> ago</span>
+              </p>
+              <% if project.description.present? %>
+                <p class="text-gray-600 text-sm mt-2">
+                  <%= truncate(project.description, length: 120) %>
+                </p>
+              <% end %>
             </div>
-            <div class="text-sm text-gray-500">
-              <%= time_ago_in_words(project.created_at) %> ago
+            <div class="mt-8">
+              <%= link_to "View Details ➜", project_path(project), class: "bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 w-full text-center transition" %>
             </div>
           </div>
-          
-         <% if project.description.present? %>
-          <div class="mt-4 text-sm text-gray-700">
-            <%= truncate(project.description, length: 200) %>
-          </div>
-        <% end %>
-
         </div>
       <% end %>
     </div>
   <% else %>
-    <p class="text-gray-600">No projects found for this company.</p>
+    <p class="text-gray-600 mt-4">No projects found for this company.</p>
   <% end %>
 </div>
