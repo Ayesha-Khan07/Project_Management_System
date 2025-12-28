@@ -30,7 +30,7 @@
     <div>
       <div id="project-title-display" class="flex items-center space-x-2">
         <h1 class="text-4xl font-bold"><%= @project.title %></h1>
-        <% if @current_user.role == "admin" || @current_user.role == "manager" || @current_user.role == "super_admin" %>
+        <% if can_edit_project?(@current_user) %>
           <button type="button" class="text-gray-500 mb-1 hover:text-gray-700" data-toggle-target="title">
             <i data-lucide="edit"></i>
           </button>
@@ -48,7 +48,7 @@
 
     <!-- Buttons -->
     <div class="flex space-x-6 items-start relative">
-      <% if current_user.role == "admin" || @current_user.role == "super_admin" %>    
+      <% if can_edit_project?(@current_user) %>    
         <!-- Add button -->
         <button id="show-add-invite-btn" class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition relative z-10">+ Add</button>
     
@@ -62,7 +62,7 @@
 
             <div class="mb-5">
               <%= f.label :role, class: "block font-semibold mb-1" %>
-              <%= f.select :role, User::ROLES.reject { |r| r == "admin" || r == "super_admin" }.map { |r| [r.titleize, r] }, {}, class: "border rounded px-2 py-1 w-full" %>
+              <%= f.select :role, User::ROLES.reject { |r| r.in?(["admin","super_admin"]) }.map { |r| [r.titleize, r] }, {}, class: "border rounded px-2 py-1 w-full" %>
             </div>
 
             <div class="flex justify-end space-x-2">
@@ -74,7 +74,7 @@
               <button type="button" id="cancel-invite-btn" class="px-3 py-1 rounded border hover:bg-gray-200">Cancel</button>
             </div>
 
-            <% if @project.company.users.count >= 7 && @project.company.subscription_status == "free" %>
+            <% if @project.free_plan_limit_reached? %>
               <p class="text-red-600 text-sm mt-3">
                 Your team has hit the member limit for the free plan. <br>
                 To enhance your team, please get the paid version of the app and add unlimited users.
@@ -85,7 +85,7 @@
         </div>
       <% end %>
 
-      <% if current_user.role == "admin" || @current_user.role == "super_admin" || @current_user.role == "manager" || @current_user.role == "employee"%> 
+      <% if can_edit_project?(@current_user) %> 
         <%= link_to "+ Create Task", new_project_task_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
         <%= link_to "View Tasks", project_tasks_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
       <% end %> 
@@ -100,7 +100,7 @@
       <div id="project-status-display" class="flex items-center space-x-2">
         <span class="font-semibold">Status:</span>
         <span><%= @project.project_status&.capitalize %></span>
-        <% if @current_user.role == "admin" || @current_user.role == "manager" || @current_user.role == "super_admin" %>
+        <% if can_edit_project?(@current_user) %>
           <button type="button" class="text-gray-500 hover:text-gray-700" data-toggle-target="status">
             <i data-lucide="edit"></i>
           </button>
@@ -121,7 +121,7 @@
       <div id="project-deadline-display" class="flex items-center space-x-2">
         <span class="font-semibold">Deadline:</span>
         <span><%= @project.project_deadline %></span>
-        <% if @current_user.role == "admin" || @current_user.role == "manager" || @current_user.role == "super_admin" %>
+        <% if can_edit_project?(@current_user) %>
           <button type="button" class="text-gray-500 hover:text-gray-700" data-toggle-target="deadline">
             <i data-lucide="edit"></i>
           </button>
@@ -142,7 +142,7 @@
   <div class="mt-10">
     <div class="flex items-center space-x-2 mb-3">
       <h2 class="text-2xl font-semibold">Project Description</h2>
-      <% if @current_user.role == "admin" || @current_user.role == "manager" || @current_user.role == "super_admin" %>
+      <% if can_edit_project?(@current_user) %>
         <button type="button" data-toggle-target="description"
                 class="text-gray-600 hover:text-gray-800">
           <i data-lucide="edit"></i>
@@ -174,7 +174,7 @@
     </div>
   </div>
 
-   <!-- ================== PROJECT USERS LIST SECTION ================== -->
+  <!-- ================== PROJECT USERS LIST SECTION ================== -->
   <div class="mt-10">
     <div class="flex items-center space-x-2 mb-3">
       <h2 class="text-2xl font-semibold">Project Members</h2>
@@ -206,8 +206,7 @@
               <% if current_user.role.in?(["admin", "manager", "super_admin"]) %>
                 <%= button_to "❌️", remove_user_project_path(@project, user_id: user.id),
                               method: :delete,
-                              data: { confirm: "Are you sure you want to remove this user?" },
-                              class: "text-red-600 hover:text-red-800 ml-3" %>
+                              class: "text-red-600 hover:text-red-800 ml-3 delete-user-btn" %>
               <% end %>
             </li>
           <% end %>
@@ -249,10 +248,8 @@ document.addEventListener("DOMContentLoaded", function() {
   if (addBtn && inviteForm && cancelBtn) {
     addBtn.addEventListener("click", () => {
       inviteForm.classList.toggle("hidden");
-
-      // <-- Adjust position here -->
-      inviteForm.style.top = `${addBtn.offsetTop - 60}px`; // Move upward
-      inviteForm.style.left = `${addBtn.offsetLeft - inviteForm.offsetWidth - 15}px`; // Left side
+      inviteForm.style.top = `${addBtn.offsetTop - 60}px`;
+      inviteForm.style.left = `${addBtn.offsetLeft - inviteForm.offsetWidth - 15}px`;
     });
 
     cancelBtn.addEventListener("click", () => {
@@ -282,5 +279,15 @@ document.addEventListener("DOMContentLoaded", function() {
       alert("Update failed: " + data.errors.join(", "));
     });
   });
+
+  // ===== Custom Delete Confirmation for Users =====
+  document.querySelectorAll('.delete-user-btn').forEach(btn => {
+    btn.addEventListener('click', function(event) {
+      if (!confirm("Are you sure you want to remove this user?")) {
+        event.preventDefault(); // stop deletion
+      }
+    });
+  });
+
 });
 </script>

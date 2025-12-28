@@ -1,36 +1,80 @@
-<div class="container-fluid mt-4">
-  <h1 class="mb-4">Super Admin Dashboard</h1>
+<div class="super-admin-dashboard">
+  <!-- Header Section with Gradient -->
+  <div class="dashboard-header d-flex align-items-center justify-content-center min-vh-100">
+    <div class="container text-center">
+      <div class="row justify-content-center">
+        <div class="col-md-10">
 
-  <!-- Tabs Navigation -->
-  <ul class="nav nav-tabs mb-4" id="dashboardTabs" role="tablist">
-    <li class="nav-item" role="presentation">
-      <%= link_to "Users", super_admin_dashboard_path(tab: 'users'), 
-          class: "nav-link #{@active_tab == 'users' ? 'active' : ''}" %>
-    </li>
-    <li class="nav-item" role="presentation">
-      <%= link_to "Companies", super_admin_dashboard_path(tab: 'companies'), 
-          class: "nav-link #{@active_tab == 'companies' ? 'active' : ''}" %>
-    </li>
-    <li class="nav-item" role="presentation">
-      <%= link_to "Projects", super_admin_dashboard_path(tab: 'projects'), 
-          class: "nav-link #{@active_tab == 'projects' ? 'active' : ''}" %>
-    </li>
-    <li class="nav-item" role="presentation">
-      <%= link_to "Tasks", super_admin_dashboard_path(tab: 'tasks'), 
-          class: "nav-link #{@active_tab == 'tasks' ? 'active' : ''}" %>
-    </li>
-  </ul>
+          <h1 class="text-center text-4xl font-bold mb-3">
+            <span class="inline-flex text-white items-center justify-center">
+              <i class="bi bi-speedometer2 text-3xl"></i>
+              Super Admin Dashboard
+            </span>
+          </h1>
+          <p class="dashboard-subtitle p-4">
+            Monitor and manage your entire platform
+          </p>
 
-  <!-- Tab Content -->
-  <div class="tab-content">
-    <% if @active_tab == 'users' %>
-      <%= render 'partials/users_tab' %>
-    <% elsif @active_tab == 'companies' %>
-      <%= render 'partials/companies_tab' %>
-    <% elsif @active_tab == 'projects' %>
-      <%= render 'partials/projects_tab' %>
-    <% elsif @active_tab == 'tasks' %>
-      <%= render 'partials/tasks_tab' %>
-    <% end %>
+          <span class="stat-badge">
+            <i class="bi bi-clock"></i>
+            <%= Time.current.strftime('%B %d, %Y') %>
+          </span>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Vertical Navigation Tabs -->
+<div class="dashboard-nav py-3">
+  <div class="container-fluid px-5 ml-10">
+    <ul class="nav nav-pills custom-tabs flex-column">
+      <li class="nav-item mb-2"> <!-- Changed 'me-4' (right margin) to 'mb-2' (bottom margin) -->
+        <%= link_to super_admin_dashboard_path(tab: 'users'), 
+            class: "nav-link #{@active_tab == 'users' ? 'active' : ''} d-flex align-items-center gap-2" do %>
+          <i class="bi bi-people-fill"></i>
+          <span>Users</span>
+        <% end %>
+      </li>
+      <li class="nav-item mb-2">
+        <%= link_to super_admin_dashboard_path(tab: 'companies'), 
+            class: "nav-link #{@active_tab == 'companies' ? 'active' : ''} d-flex align-items-center gap-2" do %>
+          <i class="bi bi-building"></i>
+          <span>Companies</span>
+        <% end %>
+      </li>
+      <li class="nav-item mb-2">
+        <%= link_to super_admin_dashboard_path(tab: 'projects'), 
+            class: "nav-link #{@active_tab == 'projects' ? 'active' : ''} d-flex align-items-center gap-2" do %>
+          <i class="bi bi-folder-fill"></i>
+          <span>Projects</span>
+        <% end %>
+      </li>
+      <li class="nav-item mb-2">
+        <%= link_to super_admin_dashboard_path(tab: 'tasks'), 
+            class: "nav-link #{@active_tab == 'tasks' ? 'active' : ''} d-flex align-items-center gap-2" do %>
+          <i class="bi bi-check2-square"></i>
+          <span>Tasks</span>
+        <% end %>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+
+  <!-- Content Section -->
+  <div class="dashboard-content">
+    <div class="container-fluid">
+      <% if @active_tab == 'users' %>
+        <%= render 'partials/users_tab' %>
+      <% elsif @active_tab == 'companies' %>
+        <%= render 'partials/companies_tab' %>
+      <% elsif @active_tab == 'projects' %>
+        <%= render 'partials/projects_tab' %>
+      <% elsif @active_tab == 'tasks' %>
+        <%= render 'partials/tasks_tab' %>
+      <% end %>
+    </div>
   </div>
 </div>

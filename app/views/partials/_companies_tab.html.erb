@@ -1,51 +1,141 @@
-<div class="card mb-4">
-  <div class="card-header">
-    <h3>All Companies</h3>
+<div class="tab-content-wrapper py-10">
+  <h1 class="text-center text-4xl font-bold mb-10">
+    <span class="inline-flex text-teal-800 items-center justify-center">
+      <i class="bi bi-building-fill text-3xl"></i>
+      Manage and monitor all companies
+    </span>
+  </h1>
+
+  <!-- Stats Cards -->
+  <div class="flex flex-wrap gap-4 mb-6 justify-center px-8 ml-12 mb-12">
+
+    <!-- Total Companies -->
+    <div class="stat-card teal-gradient rounded-xl p-6 ml-10 shadow-md" style="min-width: 280px; min-height: 160px;">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); width: 80px; height: 80px;">
+        <i class="bi bi-building-fill" style="font-size: 2.5rem;"></i>
+      </div>
+      <div class="flex flex-col mt-3">
+        <span class="text-gray-500 font-medium text-2xl mb-3">Total Companies</span>
+        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @companies.count %></span>
+      </div>
+    </div>
+
+    <!-- Paid Subscriptions -->
+    <div class="stat-card green-gradient rounded-xl p-6 ml-10 shadow-md" style="min-width: 280px; min-height: 160px;">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); width: 80px; height: 80px;">
+        <i class="bi bi-check-circle-fill" style="font-size: 2.5rem;"></i>
+      </div>
+      <div class="flex flex-col mt-3">
+        <span class="text-gray-500 font-medium text-2xl mb-3">Paid Subscriptions</span>
+        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @companies.where(subscription_status: 'paid').count %></span>
+      </div>
+    </div>
+
+    <!-- Free Subscriptions -->
+    <div class="stat-card gray-gradient rounded-xl p-6 ml-10 shadow-md" style="min-width: 280px; min-height: 160px;">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%); width: 80px; height: 80px;">
+        <i class="bi bi-x-circle-fill" style="font-size: 2.5rem;"></i>
+      </div>
+      <div class="flex flex-col mt-3">
+        <span class="text-gray-500 font-medium text-2xl mb-3">Free Subscriptions</span>
+        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @companies.where(subscription_status: 'free').count %></span>
+      </div>
+    </div>
+
   </div>
-  <div class="card-body">
-    <div class="table-responsive">
-      <table class="table table-striped table-hover">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Subscription Status</th>
-            <th>Member Limit</th>
-            <th>No. of Projects</th>
-            <th>Created At</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @companies.each do |company| %>
+
+  <!-- Companies Table Card -->
+  <div class="modern-card">
+    <div class="card-header-custom">
+      <div class="header-row">
+        <h3 class="card-title-custom">
+          <i class="bi bi-building"></i> All Companies
+        </h3>
+        <div class="search-box">
+          <i class="bi bi-search"></i>
+          <input type="text" id="companySearch" placeholder="Search companies..." class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body-custom">
+      <div class="table-responsive flex justify-between ml-10 mt-5">
+        <table class="table modern-table w-auto">
+          <thead>
             <tr>
-              <td><%= company.name %></td>
-              <td>
-                <span class="badge <%= company.subscription_status == 'paid' ? 'bg-success' : 'bg-secondary' %>">
-                  <%= company.subscription_status.upcase %>
-                </span>
-              </td>
-              <td><%= company.member_limit %></td>
-              <td><%= company.projects.count %></td>
-              <td><%= company.created_at.strftime('%B %d, %Y') %></td>
+              <th><i class="bi bi-building"></i> Name</th>
+              <th><i class="bi bi-credit-card"></i> Subscription Status</th>
+              <th><i class="bi bi-people"></i> Member Limit</th>
+              <th><i class="bi bi-folder"></i> No. of Projects</th>
+              <th><i class="bi bi-calendar-plus"></i> Created At</th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <% @companies.each do |company| %>
+              <tr class="table-row-hover">
+                <td>
+                  <div class="company-info">
+                    <div class="company-avatar">
+                      <%= company.name.first.upcase %>
+                    </div>
+                    <strong><%= company.name %></strong>
+                  </div>
+                </td>
+                <td>
+                  <span class="subscription-badge subscription-<%= company.subscription_status %>">
+                    <i class="bi bi-<%= company.subscription_status == 'paid' ? 'check-circle-fill' : 'circle' %>"></i>
+                    <%= company.subscription_status.upcase %>
+                  </span>
+                </td>
+                <td>
+                  <span class="member-limit-badge">
+                    <i class="bi bi-people-fill"></i> <%= company.member_limit %>
+                  </span>
+                </td>
+                <td>
+                  <span class="project-count-badge">
+                    <i class="bi bi-folder-fill"></i> <%= company.projects.count %>
+                  </span>
+                </td>
+                <td class="text-muted">
+                  <i class="bi bi-calendar3"></i> <%= company.created_at.strftime('%B %d, %Y') %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Subscription Status Chart -->
-<div class="card">
-  <div class="card-header">
-    <h3>Subscription Status Distribution</h3>
-  </div>
-  <div class="card-body">
-    <%= pie_chart @subscription_chart_data, 
-        colors: ['#6c757d', '#28a745'],
-        library: { 
-          plugins: { 
-            legend: { position: 'bottom' } 
-          } 
-        } %>
+  <!-- Subscription Status Chart -->
+  <div class="modern-card chart-card mt-8">
+    <div class="card-header-custom">
+      <div class="header-row">
+        <h3 class="card-title-custom">
+          <i class="bi bi-pie-chart-fill"></i> Subscription Status Distribution
+        </h3>
+      </div>
+    </div>
+    <div class="card-body-custom chart-body">
+      <div class="chart-wrapper">
+        <%= pie_chart @subscription_chart_data, 
+            colors: ['#9ca3af', '#14b8a6'],
+            library: { 
+              plugins: { 
+                legend: { 
+                  position: 'bottom',
+                  labels: {
+                    padding: 20,
+                    font: { size: 14, family: "'Inter', sans-serif" },
+                    usePointStyle: true
+                  }
+                }
+              },
+              layout: { padding: 20 }
+            },
+            height: '350px' %>
+      </div>
+    </div>
   </div>
 </div>
