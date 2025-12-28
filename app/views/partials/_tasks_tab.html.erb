@@ -1,71 +1,77 @@
-<div class="tab-content-wrapper">
+<div class="tab-content-wrapper py-10">
+  <h1 class="text-center text-4xl font-bold mb-10">
+    <span class="inline-flex text-teal-800 items-center justify-center">
+      <i class="bi bi-check2-square text-3xl"></i>
+      Manage and monitor all tasks
+    </span>
+  </h1>
+
   <!-- Stats Cards -->
-  <div class="row mb-4">
-    <div class="col-lg-3 col-md-6 mb-3">
-      <div class="stat-card teal-gradient">
-        <div class="stat-icon">
-          <i class="bi bi-check2-square"></i>
-        </div>
-        <div class="stat-info">
-          <h3><%= @tasks.count %></h3>
-          <p>Total Tasks</p>
-        </div>
+  <div class="flex flex-wrap gap-4 mb-6 justify-center mb-12">
+
+    <!-- Total Tasks -->
+    <div class="stat-card teal-gradient rounded-xl p-6 ml-10 shadow-md" style="min-width: 280px; min-height: 160px;">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); width: 80px; height: 80px;">
+        <i class="bi bi-check2-square" style="font-size: 2.5rem;"></i>
+      </div>
+      <div class="flex flex-col mt-3">
+        <span class="text-gray-500 font-medium text-2xl mb-3">Total Tasks</span>
+        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @tasks.count %></span>
       </div>
     </div>
-    <div class="col-lg-3 col-md-6 mb-3">
-      <div class="stat-card yellow-gradient">
-        <div class="stat-icon">
-          <i class="bi bi-clock-history"></i>
-        </div>
-        <div class="stat-info">
-          <h3><%= @tasks.where(task_status: 'not_started').count %></h3>
-          <p>Not Started</p>
-        </div>
+
+    <!-- Not Started -->
+    <div class="stat-card yellow-gradient rounded-xl p-6 ml-10 shadow-md" style="min-width: 280px; min-height: 160px;">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #facc15 0%, #eab308 100%); width: 80px; height: 80px;">
+        <i class="bi bi-clock-history" style="font-size: 2.5rem;"></i>
+      </div>
+      <div class="flex flex-col mt-3">
+        <span class="text-gray-500 font-medium text-2xl mb-3">Not Started</span>
+        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @tasks.where(task_status: 'not_started').count %></span>
       </div>
     </div>
-    <div class="col-lg-3 col-md-6 mb-3">
-      <div class="stat-card blue-gradient">
-        <div class="stat-icon">
-          <i class="bi bi-arrow-repeat"></i>
-        </div>
-        <div class="stat-info">
-          <h3><%= @tasks.where(task_status: 'in_progress').count %></h3>
-          <p>In Progress</p>
-        </div>
+
+    <!-- In Progress -->
+    <div class="stat-card blue-gradient rounded-xl p-6 ml-10 shadow-md" style="min-width: 280px; min-height: 160px;">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); width: 80px; height: 80px;">
+        <i class="bi bi-arrow-repeat" style="font-size: 2.5rem;"></i>
+      </div>
+      <div class="flex flex-col mt-3">
+        <span class="text-gray-500 font-medium text-2xl mb-3">In Progress</span>
+        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @tasks.where(task_status: 'in_progress').count %></span>
       </div>
     </div>
-    <div class="col-lg-3 col-md-6 mb-3">
-      <div class="stat-card green-gradient">
-        <div class="stat-icon">
-          <i class="bi bi-check-circle-fill"></i>
-        </div>
-        <div class="stat-info">
-          <h3><%= @tasks.where(task_status: 'completed').count %></h3>
-          <p>Completed</p>
-        </div>
+
+    <!-- Completed -->
+    <div class="stat-card green-gradient rounded-xl p-6 ml-10 shadow-md" style="min-width: 280px; min-height: 160px;">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); width: 80px; height: 80px;">
+        <i class="bi bi-check-circle-fill" style="font-size: 2.5rem;"></i>
+      </div>
+      <div class="flex flex-col mt-3">
+        <span class="text-gray-500 font-medium text-2xl mb-3">Completed</span>
+        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @tasks.where(task_status: 'completed').count %></span>
       </div>
     </div>
+
   </div>
 
   <!-- Tasks Table Card -->
-  <div class="modern-card mb-4">
+  <div class="modern-card">
     <div class="card-header-custom">
-      <div class="d-flex justify-content-between align-items-center flex-wrap">
-        <div>
-          <h3 class="card-title-custom">
-            <i class="bi bi-list-task"></i> All Tasks
-          </h3>
-          <p class="card-subtitle-custom">Complete overview of all tasks across projects</p>
-        </div>
+      <div class="header-row">
+        <h3 class="card-title-custom">
+          <i class="bi bi-list-task"></i> All Tasks
+        </h3>
         <div class="search-box">
           <i class="bi bi-search"></i>
           <input type="text" id="taskSearch" placeholder="Search tasks..." class="form-control">
         </div>
       </div>
     </div>
+
     <div class="card-body-custom">
-      <div class="table-responsive">
-        <table class="table modern-table">
+      <div class="table-responsive flex justify-between ml-10 mt-5">
+        <table class="table modern-table w-auto">
           <thead>
             <tr>
               <th><i class="bi bi-file-text"></i> Title</th>
@@ -106,10 +112,7 @@
                   <div class="progress-wrapper">
                     <% progress_value = task.progress.gsub('%', '').to_i %>
                     <div class="custom-progress">
-                      <div class="progress-bar-custom" 
-                           style="width: <%= progress_value %>%"
-                           data-progress="<%= progress_value %>">
-                      </div>
+                      <div class="progress-bar-custom" style="width: <%= progress_value %>%;" data-progress="<%= progress_value %>"></div>
                     </div>
                     <span class="progress-text"><%= task.progress %></span>
                   </div>
@@ -118,7 +121,7 @@
                   <% if task.estimated_deadline %>
                     <div class="deadline-tag">
                       <i class="bi bi-calendar-event"></i>
-                      <%= task.estimated_deadline.strftime('%b %d, %Y') %>
+                      <%= task.estimated_deadline.strftime('%B %d, %Y') %>
                     </div>
                   <% else %>
                     <span class="text-muted">N/A</span>
@@ -144,7 +147,7 @@
                   </div>
                 </td>
                 <td class="text-muted">
-                  <small><%= task.created_at.strftime('%b %d, %Y') %></small>
+                  <small><%= task.created_at.strftime('%B %d, %Y') %></small>
                 </td>
               </tr>
             <% end %>
@@ -154,139 +157,66 @@
     </div>
   </div>
 
-  <!-- Task Charts -->
-  <div class="row">
-    <div class="col-lg-4 mb-4">
-      <div class="modern-card chart-card">
-        <div class="card-header-custom">
-          <h4 class="chart-title">
-            <i class="bi bi-pie-chart-fill"></i> Task Types
-          </h4>
-          <p class="chart-subtitle">Distribution by type</p>
-        </div>
-        <div class="card-body-custom chart-body">
-          <div class="chart-wrapper-small">
-            <%= pie_chart @task_type_chart_data,
-                colors: ['#14b8a6', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'],
-                library: { 
-                  plugins: { 
-                    legend: { 
-                      position: 'bottom',
-                      labels: {
-                        padding: 15,
-                        font: {
-                          size: 11,
-                          family: "'Inter', sans-serif"
-                        },
-                        usePointStyle: true
-                      }
-                    }
-                  }
-                },
-                height: '280px' %>
-          </div>
+ <!-- Task Charts -->
+<div class="flex flex-wrap gap-4 mt-8">
+
+  <!-- Top Row: Task Types & Task Status -->
+  <div class="flex flex-wrap gap-4 w-full">
+    <!-- Task Types Chart -->
+    <div class="modern-card chart-card" style="flex: 1 1 48%;">
+      <div class="card-header-custom">
+        <h4 class="chart-title">
+          <i class="bi bi-pie-chart-fill"></i> Task Types
+        </h4>
+        <p class="chart-subtitle">Distribution by type</p>
+      </div>
+      <div class="card-body-custom chart-body">
+        <div class="chart-wrapper">
+          <%= pie_chart @task_type_chart_data,
+              colors: ['#14b8a6', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'],
+              library: { plugins: { legend: { position: 'bottom', labels: { padding: 15, font: { size: 12, family: "'Inter', sans-serif" }, usePointStyle: true } } } },
+              height: '350px' %>
         </div>
       </div>
     </div>
-    
-    <div class="col-lg-4 mb-4">
-      <div class="modern-card chart-card">
-        <div class="card-header-custom">
-          <h4 class="chart-title">
-            <i class="bi bi-bar-chart-fill"></i> Task Status
-          </h4>
-          <p class="chart-subtitle">Current status breakdown</p>
-        </div>
-        <div class="card-body-custom chart-body">
-          <div class="chart-wrapper-small">
-            <%= column_chart @task_status_chart_data,
-                colors: ['#fbbf24', '#3b82f6', '#10b981'],
-                library: { 
-                  plugins: { 
-                    legend: { 
-                      display: false
-                    }
-                  },
-                  scales: {
-                    y: {
-                      beginAtZero: true,
-                      grid: {
-                        color: '#f3f4f6'
-                      },
-                      ticks: {
-                        font: {
-                          family: "'Inter', sans-serif",
-                          size: 10
-                        }
-                      }
-                    },
-                    x: {
-                      grid: {
-                        display: false
-                      },
-                      ticks: {
-                        font: {
-                          family: "'Inter', sans-serif",
-                          size: 10
-                        }
-                      }
-                    }
-                  }
-                },
-                height: '280px' %>
-          </div>
-        </div>
+
+    <!-- Task Status Chart -->
+    <div class="modern-card chart-card" style="flex: 1 1 48%;">
+      <div class="card-header-custom">
+        <h4 class="chart-title">
+          <i class="bi bi-bar-chart-fill"></i> Task Status
+        </h4>
+        <p class="chart-subtitle">Current status breakdown</p>
       </div>
-    </div>
-    
-    <div class="col-lg-4 mb-4">
-      <div class="modern-card chart-card">
-        <div class="card-header-custom">
-          <h4 class="chart-title">
-            <i class="bi bi-graph-up-arrow"></i> Task Progress
-          </h4>
-          <p class="chart-subtitle">Completion metrics</p>
-        </div>
-        <div class="card-body-custom chart-body">
-          <div class="chart-wrapper-small">
-            <%= bar_chart @task_progress_chart_data,
-                colors: ['#14b8a6'],
-                library: { 
-                  plugins: { 
-                    legend: { 
-                      display: false
-                    }
-                  },
-                  scales: {
-                    y: {
-                      beginAtZero: true,
-                      grid: {
-                        color: '#f3f4f6'
-                      },
-                      ticks: {
-                        font: {
-                          family: "'Inter', sans-serif",
-                          size: 10
-                        }
-                      }
-                    },
-                    x: {
-                      grid: {
-                        display: false
-                      },
-                      ticks: {
-                        font: {
-                          family: "'Inter', sans-serif",
-                          size: 10
-                        }
-                      }
-                    }
-                  }
-                },
-                height: '280px' %>
-          </div>
+      <div class="card-body-custom chart-body">
+        <div class="chart-wrapper">
+          <%= column_chart @task_status_chart_data,
+              colors: ['#fbbf24', '#3b82f6', '#10b981'],
+              library: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f3f4f6' }, ticks: { font: { family: "'Inter', sans-serif", size: 10 } } }, x: { grid: { display: false }, ticks: { font: { family: "'Inter', sans-serif", size: 10 } } } } },
+              height: '350px' %>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Bottom Row: Task Progress -->
+  <div class="modern-card chart-card w-full mt-4">
+    <div class="card-header-custom">
+      <h4 class="chart-title">
+        <i class="bi bi-graph-up-arrow"></i> Task Progress
+      </h4>
+      <p class="chart-subtitle">Completion metrics</p>
+    </div>
+    <div class="card-body-custom chart-body">
+      <div class="chart-wrapper">
+        <%= bar_chart @task_progress_chart_data,
+            colors: ['#14b8a6'],
+            library: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f3f4f6' }, ticks: { font: { family: "'Inter', sans-serif", size: 10 } } }, x: { grid: { display: false }, ticks: { font: { family: "'Inter', sans-serif", size: 10 } } } } },
+            height: '350px' %>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 </div>
