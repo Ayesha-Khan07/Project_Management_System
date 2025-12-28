@@ -5,12 +5,14 @@
   <div class="fixed bottom-0 right-2 w-92 h-92 bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse delay-300 pointer-events-none -z-10"></div>
 
   <!-- Created / Updated info -->
-  <div class="flex flex-wrap justify-start space-x-6 text-sm text-gray-600 mb-6">
+  <div class="flex flex-wrap justify-start space-x-6 text-sm text-gray-600 mb-6 ">
     <div>
+      <i data-lucide="plus-circle" class="w-4 h-4 inline mr-1"></i>
       Created by <span class="font-semibold"><%= @company_admin&.username&.titleize || "Unknown" %></span> 
       at <%= @project.created_at.strftime("%b %d, %Y %H:%M") %>
     </div>
       <div>
+      <i data-lucide="refresh-cw" class="w-4 h-4 inline mr-1"></i>
       <% last_version = @project.versions.last %>
 
       <% if last_version.present? %>
@@ -29,6 +31,7 @@
   <div class="flex justify-between items-center mb-6">
     <div>
       <div id="project-title-display" class="flex items-center space-x-2">
+        <i data-lucide="folder" class="w-7 h-7 ml-6 text-teal-600"></i>
         <h1 class="text-4xl font-bold"><%= @project.title %></h1>
         <% if can_edit_project?(@current_user) %>
           <button type="button" class="text-gray-500 mb-1 hover:text-gray-700" data-toggle-target="title">
@@ -85,9 +88,7 @@
         </div>
       <% end %>
 
-      <%= link_to "+ Create Task", new_project_task_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
-      <%= link_to "View Tasks", project_tasks_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
-      
+      <%= link_to "+ Create Task", new_project_task_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %> 
     </div>
   </div>
 
@@ -96,6 +97,7 @@
     <!-- Status -->
     <div>
       <div id="project-status-display" class="flex items-center space-x-2">
+        <i data-lucide="activity" class="w-6 h-6 text-yellow-500"></i>
         <span class="font-semibold">Status:</span>
         <span><%= @project.project_status&.capitalize %></span>
         <% if can_edit_project?(@current_user) %>
@@ -117,6 +119,7 @@
     <!-- Deadline -->
     <div>
       <div id="project-deadline-display" class="flex items-center space-x-2">
+        <i data-lucide="calendar" class="w-5 h-5 text-red-500"></i>
         <span class="font-semibold">Deadline:</span>
         <span><%= @project.project_deadline %></span>
         <% if can_edit_project?(@current_user) %>
@@ -139,6 +142,7 @@
   <!-- Project Description Section -->
   <div class="mt-10">
     <div class="flex items-center space-x-2 mb-3">
+      <i data-lucide="file-text" class="w-7 h-7 text-gray-500"></i>
       <h2 class="text-2xl font-semibold">Project Description</h2>
       <% if can_edit_project?(@current_user) %>
         <button type="button" data-toggle-target="description"
@@ -175,6 +179,7 @@
   <!-- ================== PROJECT USERS LIST SECTION ================== -->
   <div class="mt-10">
     <div class="flex items-center space-x-2 mb-3">
+      <i data-lucide="users" class="w-7 h-7 text-blue-500"></i>
       <h2 class="text-2xl font-semibold">Project Members</h2>
     </div>
 
