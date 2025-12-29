@@ -66,6 +66,7 @@
               <th><i class="bi bi-building"></i> Name</th>
               <th><i class="bi bi-credit-card"></i> Subscription Status</th>
               <th><i class="bi bi-people"></i> Member Limit</th>
+              <th><i class="bi bi-people-fill"></i> Associated Members</th> 
               <th><i class="bi bi-folder"></i> No. of Projects</th>
               <th><i class="bi bi-calendar-plus"></i> Created At</th>
             </tr>
@@ -90,6 +91,11 @@
                 <td>
                   <span class="member-limit-badge">
                     <i class="bi bi-people-fill"></i> <%= company.member_limit %>
+                  </span>
+                </td>
+                <td>
+                  <span class="member-limit-badge">
+                    <i class="bi bi-people-fill"></i> <%= company.users.count %>
                   </span>
                 </td>
                 <td>
