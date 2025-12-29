@@ -13,8 +13,6 @@
       <% if company.present? && !current_user&.super_admin? %>
         <% if company.logo.attached? %>
           <%= image_tag company.logo, class: "w-10 h-10 rounded-full" %>
-        <% else %>
-          <%= image_tag "default_logo.png", class: "w-10 h-10 rounded-full" %>
         <% end %>
         <span class="text-teal-600 font-bold text-xl"><%= company.name %></span>
       <% else %>
