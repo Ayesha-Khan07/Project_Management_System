@@ -78,7 +78,7 @@
               <th><i class="bi bi-activity"></i> Status</th>
               <th><i class="bi bi-calendar-check"></i> Deadline</th>
               <th><i class="bi bi-building"></i> Company</th>
-              <th><i class="bi bi-person"></i> Client</th>
+              <th><i class="bi bi-person-fill"></i> Active Members</th>
             </tr>
           </thead>
           <tbody>
@@ -127,12 +127,11 @@
                   </div>
                 </td>
                 <td>
-                  <% if project.client %>
+                  <% if project.users.any? %>
                     <div class="client-info">
                       <div class="client-avatar">
-                        <%= project.client.username.first.upcase %>
+                        <%= project.users.count %>
                       </div>
-                      <%= project.client.username %>
                     </div>
                   <% else %>
                     <span class="text-muted">N/A</span>
