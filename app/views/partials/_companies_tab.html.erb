@@ -69,6 +69,7 @@
               <th><i class="bi bi-people-fill"></i> Associated Members</th> 
               <th><i class="bi bi-folder"></i> No. of Projects</th>
               <th><i class="bi bi-calendar-plus"></i> Created At</th>
+              <th><i class="bi bi-shield-check"></i> Admin </th>
             </tr>
           </thead>
           <tbody>
@@ -104,8 +105,21 @@
                   </span>
                 </td>
                 <td class="text-muted">
+                 <div class="company-tag-inline">
                   <i class="bi bi-calendar3"></i> <%= company.created_at.strftime('%B %d, %Y') %>
+                 </div>
                 </td>
+                <td>
+                  <div class="assignee-info">
+                    <% admin = company.users.find_by(role: "admin") %>
+                    <% if admin %> 
+                      <div class="assignee-avatar">
+                        <%= admin.username.first.upcase %>
+                      </div>
+                      <%= admin.username %>
+                    <% end %>
+                 </div>
+               </td>
               </tr>
             <% end %>
           </tbody>
