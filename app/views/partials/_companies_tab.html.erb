@@ -66,8 +66,10 @@
               <th><i class="bi bi-building"></i> Name</th>
               <th><i class="bi bi-credit-card"></i> Subscription Status</th>
               <th><i class="bi bi-people"></i> Member Limit</th>
+              <th><i class="bi bi-people-fill"></i> Associated Members</th> 
               <th><i class="bi bi-folder"></i> No. of Projects</th>
               <th><i class="bi bi-calendar-plus"></i> Created At</th>
+              <th><i class="bi bi-shield-check"></i> Admin </th>
             </tr>
           </thead>
           <tbody>
@@ -93,13 +95,31 @@
                   </span>
                 </td>
                 <td>
+                  <span class="member-limit-badge">
+                    <i class="bi bi-people-fill"></i> <%= company.users.count %>
+                  </span>
+                </td>
+                <td>
                   <span class="project-count-badge">
                     <i class="bi bi-folder-fill"></i> <%= company.projects.count %>
                   </span>
                 </td>
                 <td class="text-muted">
+                 <div class="company-tag-inline">
                   <i class="bi bi-calendar3"></i> <%= company.created_at.strftime('%B %d, %Y') %>
+                 </div>
                 </td>
+                <td>
+                  <div class="assignee-info">
+                    <% admin = company.users.find_by(role: "admin") %>
+                    <% if admin %> 
+                      <div class="assignee-avatar">
+                        <%= admin.username.first.upcase %>
+                      </div>
+                      <%= admin.username %>
+                    <% end %>
+                 </div>
+               </td>
               </tr>
             <% end %>
           </tbody>

@@ -1,6 +1,7 @@
 <h2>Comment <%= @action %> on Task: <%= @task.title %></h2>
 
-<p><strong><%= @user.username %></strong> @action a comment</p>
+<p><strong><%= @user.username %></strong> <%= @action %> a comment</p>
+<p> comment body is </p> 
 
 <%= @comment.body == "This comment was deleted." ? "Comment was removed." : @comment.body %>
 

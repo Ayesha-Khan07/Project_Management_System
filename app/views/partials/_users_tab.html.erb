@@ -99,6 +99,7 @@
               <th><i class="bi bi-envelope"></i> Email</th>
               <th><i class="bi bi-shield-check"></i> Role</th>
               <th><i class="bi bi-building"></i> Related Company</th>
+              <th><i class="bi bi-folder"></i> Associated Projects</th>
               <th><i class="bi bi-calendar-plus"></i> Created At</th>
               <th><i class="bi bi-gear"></i> Actions</th>
             </tr>
@@ -128,6 +129,16 @@
                   <% else %>
                     <span class="text-muted">N/A</span>
                   <% end %>
+                </td>
+               <td>
+                  <span class="project-count-badge">
+                    <i class="bi bi-folder-fill"></i>
+                    <% if user.role == "admin" && user.company.present? %>
+                      <%= user.company.projects.count %>
+                    <% else %>
+                      <%= user.projects.count %>
+                    <% end %>
+                  </span>
                 </td>
                 <td class="text-muted">
                   <i class="bi bi-calendar3"></i> <%= user.created_at.strftime('%B %d, %Y') %>
