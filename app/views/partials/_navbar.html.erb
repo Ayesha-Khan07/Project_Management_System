@@ -1,49 +1,22 @@
 <header class="relative py-7 px-10 bg-white shadow-sm sticky top-0 z-50">
   <div class="flex items-center justify-between w-full">
 
-    <!-- LEFT: Logo / Company Name -->
+    <!-- LEFT: Logo / Title -->
     <div class="flex items-center space-x-4">
-      <% if controller_path == "super_admin/dashboards" %>
-        <h1 class="text-2xl font-bold text-teal-700">
-          ClientProject<span class="text-gray-900">Hub</span>
-        </h1>
+      <% company =
+           @company ||
+           @project&.company ||
+           @task&.project&.company ||
+           current_user&.company
+      %>
 
-      <% elsif current_page?(root_path) && !user_signed_in? %>
-        <h1 class="text-2xl font-bold text-teal-700">
-          ClientProject<span class="text-gray-900">Hub</span>
-        </h1>
-
-      <% elsif controller_name == "companies" && action_name == "new" %>
-        <h1 class="text-2xl font-bold text-teal-700">
-          ClientProject<span class="text-gray-900">Hub</span>
-        </h1>
-
-      <% elsif controller_name == "companies" && action_name == "show" && @company.present? %>
-        <% if @company.logo.attached? %>
-          <%= image_tag url_for(@company.logo), alt: "Logo", class: "w-10 h-10 rounded-full" %>
+      <% if company.present? && !current_user&.super_admin? %>
+        <% if company.logo.attached? %>
+          <%= image_tag company.logo, class: "w-10 h-10 rounded-full" %>
         <% else %>
-          <%= image_tag "default_logo.png", alt: "Logo", class: "w-10 h-10 rounded-full" %>
+          <%= image_tag "default_logo.png", class: "w-10 h-10 rounded-full" %>
         <% end %>
-        <span class="text-teal-600 font-bold text-xl"><%= @company.name %></span>
-
-      <% elsif controller_name == "projects" %>
-        <% company = @project&.company || current_user.company %>
-        <% if company&.logo&.attached? %>
-          <%= image_tag url_for(company.logo), alt: "Logo", class: "w-10 h-10 rounded-full" %>
-        <% else %>
-          <%= image_tag "default_logo.png", alt: "Logo", class: "w-10 h-10 rounded-full" %>
-        <% end %>
-        <span class="text-teal-600 font-bold text-xl"><%= company&.name %></span>
-
-      <% elsif controller_name == "tasks" && @task.present? %>
-        <% company = @task.project&.company || current_user.company %>
-        <% if company&.logo&.attached? %>
-          <%= image_tag url_for(company.logo), alt: "Logo", class: "w-10 h-10 rounded-full" %>
-        <% else %>
-          <%= image_tag "default_logo.png", alt: "Logo", class: "w-10 h-10 rounded-full" %>
-        <% end %>
-        <span class="text-teal-600 font-bold text-xl"><%= company&.name %></span>
-
+        <span class="text-teal-600 font-bold text-xl"><%= company.name %></span>
       <% else %>
         <h1 class="text-2xl font-bold text-teal-700">
           ClientProject<span class="text-gray-900">Hub</span>
@@ -51,61 +24,58 @@
       <% end %>
     </div>
 
-    <!-- CENTER: Page-specific Links -->
-    <div class="flex-1 flex justify-center space-x-6">
-      <% if !user_signed_in? && current_page?(root_path) %>
-        <%= link_to "Features", "#features", class: "text-gray-700 font-medium hover:text-teal-600" %>
-        <%= link_to "How It Works", "#how-it-works", class: "text-gray-700 font-medium hover:text-teal-600" %>
-        <%= link_to "Pricing", "#pricing", class: "text-gray-700 font-medium hover:text-teal-600" %>
-        <%= link_to "Contact", "#contact", class: "text-gray-700 font-medium hover:text-teal-600" %>
-      <% end %>
+    <!-- CENTER: Navigation -->
+    <nav class="flex-1 flex justify-center space-x-6">
 
-      <% if user_signed_in? %>
-        <%# Root page signed-in user %>
-        <% if current_page?(root_path) %>
-          <%= link_to "Features", "#features", class: "text-gray-700 font-medium hover:text-teal-600" %>
-          <%= link_to "How It Works", "#how-it-works", class: "text-gray-700 font-medium hover:text-teal-600" %>
-          <%= link_to "Pricing", "#pricing", class: "text-gray-700 font-medium hover:text-teal-600" %>
-          <%= link_to "Contact", "#contact", class: "text-gray-700 font-medium hover:text-teal-600" %>
-        <% end %>
+      <% if current_page?(root_path) %>
+        <%= link_to "Features", "#features", class: nav_link %>
+        <%= link_to "How It Works", "#how-it-works", class: nav_link %>
+        <%= link_to "Pricing", "#pricing", class: nav_link %>
+        <%= link_to "Contact", "#contact", class: nav_link %>
 
-        <%# Company show page: Home + Projects %>
-        <% if controller_name == "companies" && action_name == "show" && @company.present? %>
-          <%= link_to "Home", root_path, class: "text-gray-700 font-medium hover:text-teal-600" %>
-          <%= link_to "Projects", company_projects_path(@company), class: "text-gray-700 font-medium hover:text-teal-600" %>
-        <% end %>
-
-        <%# Project index page: Profile %>
-        <% if controller_name == "projects" && action_name == "index" %>
-          <%= link_to "Profile", company_path(current_user.company), class: "text-gray-700 font-medium hover:text-teal-600" %>
-        <% end %>
-
-        <%# Project show page: Projects + Profile %>
-        <% if controller_name == "projects" && @project.present? && action_name == "show" %>
-          <%= link_to "Projects", company_projects_path(@project.company), class: "text-gray-700 font-medium hover:text-teal-600" %>
-          <%= link_to "Profile", company_path(@project.company), class: "text-gray-700 font-medium hover:text-teal-600" %>
-        <% end %>
-
-        <%# Task show page: Project + Profile %>
-        <% if controller_name == "tasks" && @task.present? && action_name == "show" %>
-          <%= link_to "Project", project_path(@task.project), class: "text-gray-700 font-medium hover:text-teal-600" %>
-          <%= link_to "Profile", company_path(@task.project.company), class: "text-gray-700 font-medium hover:text-teal-600" %>
-        <% end %>
-
-        <%# Super Admin Dashboard %>
-        <% if current_user&.super_admin? %>
-          <%= link_to "Dashboard", super_admin_dashboard_path, class: "bg-gray-200 text-gray-700 px-3 py-1 rounded hover:bg-gray-300" %>
+        <% if user_signed_in? && current_user.super_admin? %>
+          <%= link_to "Dashboard", super_admin_dashboard_path, class: nav_link %>
+        <% elsif user_signed_in? && current_user.company.present? %>
+          <%= link_to "Profile", company_path(current_user.company), class: nav_link %>
         <% end %>
       <% end %>
-    </div>
 
-    <!-- RIGHT: Buttons -->
+      <% if controller_name == "companies" && action_name == "show" %>
+        <%= link_to "Home", root_path, class: nav_link %>
+        <%= link_to "Projects", company_projects_path(@company), class: nav_link %>
+      <% end %>
+
+      <% if controller_name == "projects" && action_name == "show" %>
+        <%= link_to "Projects", company_projects_path(@project.company), class: nav_link %>
+        <%= link_to "Profile", company_path(@project.company), class: nav_link %>
+      <% end %>
+
+      <% if controller_name == "projects" && (action_name == "index" || action_name == "new") %>
+        <%= link_to "Home", root_path, class: nav_link %>
+        <%= link_to "Profile", company_path(current_user.company), class: nav_link %>
+      <% end %>
+
+      <% if controller_name == "tasks" && (action_name == "show" || action_name = "new")  %>
+        <%= link_to "Project", project_path(@task.project), class: nav_link %>
+        <%= link_to "Profile", company_path(@task.project.company), class: nav_link %>
+      <% end %>
+
+      <% if current_user&.super_admin? && !current_page?(root_path) %>
+        <%= link_to "Home", root_path, class: nav_link %>
+      <% end %>
+
+    </nav>
+
+    <!-- RIGHT: Auth Buttons -->
     <div class="flex items-center space-x-4">
-      <% if !user_signed_in? && current_page?(root_path) %>
-        <%= link_to "Login", new_user_session_path, class: "text-gray-700 font-medium hover:text-teal-600" %>
-        <%= link_to "Get Started", new_user_registration_path, class: "bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-teal-700 transition" %>
-      <% elsif user_signed_in? %>
-        <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-teal-700 transition" %>
+      <% if !user_signed_in? %>
+        <%= link_to "Login", new_user_session_path, class: nav_link %>
+        <%= link_to "Get Started", new_user_registration_path,
+              class: "bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-teal-700 transition" %>
+      <% else %>
+        <%= button_to "Logout", destroy_user_session_path,
+              method: :delete,
+              class: "bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-teal-700 transition" %>
       <% end %>
     </div>
 
