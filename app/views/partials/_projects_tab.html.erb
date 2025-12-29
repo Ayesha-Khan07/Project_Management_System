@@ -7,7 +7,7 @@
   </h1>
 
   <!-- Stats Cards -->
-  <div class="flex flex-wrap gap-4 mb-6 justify-center px-8 ml-12 mb-12">
+  <div class="flex flex-wrap gap-4 mb-6 justify-center px-8 mb-12">
 
     <!-- Total Projects -->
     <div class="stat-card teal-gradient rounded-xl p-6 ml-10 shadow-md" style="min-width: 280px; min-height: 160px;">
@@ -70,7 +70,7 @@
     </div>
 
     <div class="card-body-custom">
-      <div class="table-responsive flex justify-between ml-10 mt-5">
+      <div class="table-responsive flex justify-between ml-4 mt-5">
         <table class="table modern-table w-auto">
           <thead>
             <tr>
@@ -79,6 +79,10 @@
               <th><i class="bi bi-calendar-check"></i> Deadline</th>
               <th><i class="bi bi-building"></i> Company</th>
               <th><i class="bi bi-person-fill"></i> Active Members</th>
+              <th><i class="bi bi-calendar-plus"></i> Created At</th>
+              <th><i class="bi bi-person"></i> Created By</th>
+              <th><i class="bi bi-calendar3"></i> Updated At</th>
+              <th><i class="bi bi-pencil-fill"></i> Updated By</th>
             </tr>
           </thead>
           <tbody>
@@ -132,6 +136,46 @@
                       <div class="client-avatar">
                         <%= project.users.count %>
                       </div>
+                    </div>
+                  <% else %>
+                    <span class="text-muted">N/A</span>
+                  <% end %>
+                </td>
+                 <td>
+                  <% if project.created_at %>
+                    <div class="deadline-badge">
+                      <i class="bi bi-calendar-event"></i>
+                      <%= project.created_at.strftime('%B %d, %Y') %>
+                    </div>
+                  <% else %>
+                    <span class="text-muted">N/A</span>
+                  <% end %>
+                </td>
+               <td>
+                  <% user = User.find_by(id: project.versions.first&.whodunnit) %>
+                  <% if user.present? %>
+                    <div class="company-tag-inline">
+                      <%= user.username.capitalize %>
+                    </div>
+                  <% else %>
+                    <span class="text-muted">N/A</span>
+                  <% end %>
+                </td>
+                <td>
+                  <% if project.updated_at %>
+                    <div class="company-tag-inline">
+                      <i class="bi bi-calendar-event"></i>
+                      <%= project.updated_at.strftime('%B %d, %Y') %>
+                    </div>
+                  <% else %>
+                    <span class="text-muted">N/A</span>
+                  <% end %>
+                </td>
+                <td>
+                  <% user = User.find_by(id: project.versions.last&.whodunnit) %>
+                  <% if user.present? %>
+                    <div class="company-tag-inline">
+                      <%= user.username.capitalize %>
                     </div>
                   <% else %>
                     <span class="text-muted">N/A</span>
