@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   # Company profile creation
   resources :companies, only: [:new, :create, :show, :update] do
     resources :projects, only: [:index, :show, :new, :create]
+    member do
+      delete "remove_user/:user_id", to: "companies#remove_user", as: :remove_user
+    end
   end
 
   # Projects management
@@ -24,7 +27,7 @@ Rails.application.routes.draw do
     resources :tasks do
       resources :comments, only: [:create, :edit, :update, :destroy]
     end
-    delete 'remove_user', on: :member           # added becoz we are deleting a user from a proj not the whole proj 
+    delete 'remove_user', on: :member           # added becoz we are deleting a user from a proj not from the db account of user 
   end
 
   # Super Admin Dashboard

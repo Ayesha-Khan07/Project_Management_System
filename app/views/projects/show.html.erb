@@ -206,7 +206,7 @@
               </span>
 
               <!-- Remove Button -->
-              <% if current_user.role.in?(["admin", "manager", "super_admin"]) %>
+              <% if can_edit_project?(current_user) %>
                 <%= button_to "❌️", remove_user_project_path(@project, user_id: user.id),
                               method: :delete,
                               class: "text-red-600 hover:text-red-800 ml-3 delete-user-btn" %>

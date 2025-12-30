@@ -26,7 +26,7 @@ class InvitationsController < ApplicationController
         if existing_manager
         respond_to do |format|
             format.json { render json: { errors: ["There is already a manager in this project. Please remove the existing manager before adding a new one."] }, status: :unprocessable_entity }
-            format.html { redirect_to project_path(@project), alert: "There is already a manager in this project. Please remove the existing manager before adding a new one." }
+            format.html { redirect_to project_path(@project), alert: "There is already a manager in this project. Please remove the existing manager to add new one." }
         end
         return
         end

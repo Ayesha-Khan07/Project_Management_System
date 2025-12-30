@@ -1,8 +1,6 @@
   <!-- ADDED BACKGROUND RADIENT LIKE Home PAGE -->
 <section class="relative overflow-hidden -mt-7 bg-gradient-to-br from-slate-50 via-white to-teal-50">
 <<div class="absolute top-0 left-0 w-92 h-92 bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse pointer-events-none"></div>
-<div class="absolute bottom-0 right-0 w-92 h-92 bg-cyan-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse delay-300 pointer-events-none"></div>
-
 
 <div class="w-full px-6 md:px-12 py-10 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
 
@@ -59,7 +57,7 @@
 
     <!-- Create Button -->
     <div class="flex md:justify-end">
-     <% if current_user.role == "admin" %>
+     <% if can_edit_company?(current_user) %>
       <a href= <%= new_project_path %>
          class="flex items-center bg-teal-600 text-white px-4 py-2 rounded-lg shadow hover:bg-teal-700 transition">
         <span class="text-lg font-bold mr-2">+</span> Create Project
@@ -73,7 +71,7 @@
       <h2 class="text-2xl font-semibold mb-4">Company Description</h2>
 
     <!-- Pencil icon (shows the edit form) -->
-      <% if @company.users.exists?(id: current_user.id, role: "admin") %>
+      <% if can_edit_company?(current_user) %>
         <button type="button" class="mr-240 mb-4 p-1 rounded-full hover:bg-gray-100" data-toggle-target="description">
           <i data-lucide="edit" class="w-5 h-5 text-gray-800"></i>
         </button>
@@ -106,7 +104,7 @@
     <div class="flex items-center justify-between">
       <h2 class="text-2xl font-semibold mb-5">Services</h2>
 
-      <% if @company.users.exists?(id: current_user.id, role: "admin") %>
+      <% if can_edit_company?(current_user) %>
         <button type="button" class="mr-280 ml-1 mb-5 p-1 rounded-full hover:bg-gray-200" data-toggle-target="services">
           <i data-lucide="edit" class="w-5 h-5 text-gray-600"></i>
         </button>
@@ -138,37 +136,78 @@
       <% end %>
     </div>
   </div>
-
-
-    <!-- Active Members -->
-    <div>
-      <h2 class="text-2xl font-semibold mb-5">Active Members</h2>
-      <% if active_count > 0 %>
-        <ul class="space-y-3">
-          <% @company.users.each do |user| %>
-            <li class="flex items-center space-x-3">
-              <!-- Avatar -->
-              <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 font-semibold">
-                <%= user.username[0].upcase %>
-              </div>
-
-              <!-- Username -->
-              <span class="font-medium text-lg text-gray-800"><%= user.username.titleize %></span>
-
-              <!-- Admin Badge -->
-              <% if user.role == "admin" %>
-                <span class="bg-teal-600 text-white text-sm font-semibold px-2 py-0.5 rounded-full">Admin</span>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
-      <% else %>
-        <p class="text-gray-700">No active members.</p>
-      <% end %>
-    </div>
-
   </div>
 </div>
+
+ <!-- Active Members -->
+<div class="mt-6">
+  <h2 class="text-2xl font-semibold mb-4 flex items-center gap-2 ml-12">
+    <i data-lucide="users" class="w-6 h-6 text-teal-700"></i>
+    Active Members
+  </h2>
+
+  <% if active_count > 0 %>
+    
+    <div class="card-body-custom">
+      <div class="table-responsive flex justify-between ml-10 mt-5 mr-5">
+        <table class="table modern-table w-full text-center">
+          <thead>
+            <tr>
+              <th class="w-1/6"><i class="bi bi-person"></i> Username</th>
+              <th class="w-1/6"><i class="bi bi-envelope"></i> Email</th>
+              <th class="w-1/6"><i class="bi bi-shield-check"></i> Role</th>
+              <th class="w-1/6"><i class="bi bi-folder"></i> Associated Projects</th>
+              <th class="w-1/6"><i class="bi bi-calendar-plus"></i> Created At</th>
+              <th class="w-1/6"><i class="bi bi-gear"></i> Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @company.users.each do |user| %>
+              <tr class="table-row-hover">
+                <td>
+                  <div class="user-info flex items-center">
+                    <div class="user-avatar mb-1">
+                      <%= user.username.first.upcase %>
+                    </div>
+                    <strong><%= user.username %></strong>
+                  </div>
+                </td>
+                <td class="text-muted"><%= user.email %></td>
+                <td>
+                  <span class="badge-custom badge-<%= user.role %>">
+                    <%= user.role %>
+                  </span>
+                </td>
+                <td>
+                  <span class="project-count-badge">
+                    <i class="bi bi-folder-fill"></i>
+                    <%= user.projects.count %>
+                  </span>
+                </td>
+                <td class="text-muted">
+                  <i class="bi bi-calendar3"></i> <%= user.created_at.strftime('%B %d, %Y') %>
+                </td>
+                <td>
+                  <% unless can_edit_company?(user) %>
+                    <%= button_to remove_user_company_path(@company, user_id: user.id),
+                        method: :delete, 
+                        form: { onsubmit: "return confirm('Are you sure you want to delete this user?');" },
+                        class: 'btn-delete flex items-center justify-center gap-1 mx-auto' do %>
+                      <i class="bi bi-trash"></i> Delete
+                    <% end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% else %>
+    <p class="text-gray-700 mt-2 text-center">No active members.</p>
+  <% end %>
+</div>
+
 </div>
 </div>
 

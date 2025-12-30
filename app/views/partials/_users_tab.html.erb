@@ -144,12 +144,14 @@
                   <i class="bi bi-calendar3"></i> <%= user.created_at.strftime('%B %d, %Y') %>
                 </td>
                 <td>
-                  <%= button_to super_admin_destroy_user_path(user), 
-                      method: :delete, 
-                      # data: { confirm: 'Are you sure you want to delete this user?' },
-                      form: { onsubmit: "return confirm('Are you sure you want to delete this user?');" },
-                      class: 'btn-delete' do %>
-                    <i class="bi bi-trash"></i> Delete
+                 <% unless system_user?(user) || super_admin_user?(user) %>
+                    <%= button_to super_admin_destroy_user_path(user), 
+                        method: :delete, 
+                        # data: { confirm: 'Are you sure you want to delete this user?' },
+                        form: { onsubmit: "return confirm('Are you sure you want to delete this user?');" },
+                        class: 'btn-delete' do %>
+                      <i class="bi bi-trash"></i> Delete
+                    <% end %>
                   <% end %>
                 </td>
               </tr>
