@@ -13,6 +13,9 @@ class Users::InvitationsController < ApplicationController
     # Check if user already exists
     existing_user = User.find_by(email: @invitation.email)
     if existing_user
+       if existing_user.company.nil?
+         existing_user.update!(company: @invitation.project.company)
+       end
       # add user to the new proj if not already added 
       existing_user.projects << @invitation.project unless existing_user.projects.include?(@invitation.project)
       @invitation.update(used: true)
