@@ -10,7 +10,7 @@ class ProjectsController < ApplicationController
   def create
     @project = current_user.company.projects.build(project_params)
     if @project.save
-      redirect_to @project, notice: "Project created successfully."
+      redirect_to @project
     else
       Rails.logger.debug(@project.errors.full_messages)
       render :new, status: :unprocessable_entity

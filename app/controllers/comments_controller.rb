@@ -12,7 +12,7 @@ class CommentsController < ApplicationController
        @task.project.users.where.not(id: current_user.id).find_each do |recipient|
         CommentMailer.with(comment: @comment, action: "created", recipient: recipient).comment_notification.deliver_now
       end
-      redirect_to project_task_path(@task.project, @task), notice: "Comment added."
+      redirect_to project_task_path(@task.project, @task)
     else
       redirect_to project_task_path(@task.project, @task), alert: "Comment cannot be blank."
     end

@@ -21,7 +21,7 @@ class CompaniesController < ApplicationController
      current_user.update(company: @company)         # === current_user.company = @company
                                                     # current_user.save
 
-     redirect_to company_path(@company), notice: "Company created successfully."
+     redirect_to company_path(@company)
    else
      flash.now[:alert] = "Failed to create company."
      render :new, status: :unprocessable_entity
