@@ -1,5 +1,7 @@
 module SuperAdmin
   class DashboardsController < ApplicationController
+    include SuperAdminHelper
+
     before_action :authenticate_user!
     before_action :ensure_super_admin!
 
@@ -20,9 +22,26 @@ module SuperAdmin
 
     def destroy_user
       user = User.find(params[:id])
-      user.destroy
-      redirect_to super_admin_dashboard_path(tab: 'users'), notice: 'User deleted successfully.'
+
+      ActiveRecord::Base.transaction do
+        # keep comments but username will be show of system user in place of deleted user
+        Comment.where(user_id: user.id)
+              .update_all(user_id: system_user.id)
+
+        # keep tasks but reassign
+        Task.where(assigned_user_id: user.id)
+            .update_all(assigned_user_id: system_user.id)
+
+        # remove user from projects only (do NOT delete projects)
+        user.projects_users.delete_all
+
+        user.destroy!
+      end
+
+      redirect_to super_admin_dashboard_path(tab: "users"),
+                  notice: "User deleted successfully."
     end
+
 
     private
 
