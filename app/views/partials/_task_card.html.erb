@@ -1,21 +1,25 @@
-<div class="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition max-h-[150px] overflow-hidden">
+<div class="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition max-h-[150px] overflow-hidden flex flex-col justify-between">
+  <!-- Top section: Title, assigned user, description -->
   <div class="flex items-start justify-between">
     <div class="flex-1 pr-3">
       <h3 class="text-xl font-semibold text-teal-600 hover:underline">
         <%= link_to task.title, project_task_path(project, task), class: "block" %>
       </h3>
+
       <div class="text-sm text-gray-600 mt-2">
         <% if task.assigned_user %>
-          Assigned to: <%= task.assigned_user.username %>
+          <span class="font-bold">Assigned to:</span> <span class="font-normal"><%= task.assigned_user.username %></span>
         <% else %>
-          Unassigned
+          <span class="font-bold">Assigned to:</span> <span class="font-normal">Unassigned</span>
         <% end %>
       </div>
+
       <div class="text-sm text-gray-500 mt-2">
-        <%= truncate(task.description.to_s, length: 80) %>
+        <%= truncate(task.description.to_s, length: 60) %>
       </div>
     </div>
 
+    <!-- Progress bar on top-right -->
     <div class="text-right w-24">
       <div class="text-xs text-gray-500">Progress</div>
       <div class="mt-0 ml-3">
@@ -29,8 +33,11 @@
     </div>
   </div>
 
-  <div class="mt-2 flex items-center justify-between text-xs text-gray-400">
-    <div>Due: <%= task.estimated_deadline.present? ? task.estimated_deadline.strftime("%b %d, %Y") : "—" %></div>
-    <div><%= time_ago_in_words(task.created_at) %> ago</div>
+  <!-- Bottom section: Due date -->
+  <div class="mt-2 flex justify-end text-xs text-gray-700">
+    <span class="font-bold">Due:</span>
+    <span class="ml-1">
+      <%= task.estimated_deadline.present? ? task.estimated_deadline.strftime("%b %d, %Y") : "—" %>
+    </span>
   </div>
 </div>
