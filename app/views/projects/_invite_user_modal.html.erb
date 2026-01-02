@@ -1,0 +1,54 @@
+<div
+  data-controller="modal"
+  class="relative inline-block"
+>
+  <!-- Trigger Button -->
+  <button
+    type="button"
+    data-action="click->modal#open"
+    class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition"
+  >
+    + Add
+  </button>
+
+  <!-- Popover Modal -->
+  <div
+    data-modal-target="container"
+    class="absolute hidden bg-white border rounded-lg shadow-lg px-8 py-4 z-10"
+    style="top: -60px; left: calc(-100% - 18px);"
+  >
+    <!-- Close -->
+    <button
+      type="button"
+      data-action="click->modal#close"
+      class="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+    >
+      &times;
+    </button>
+
+    <!-- Invite form -->
+    <%= form_with model: [project, project.invitations.new],
+                  url: project_invitations_path(project),
+                  data: { turbo_frame: "invite_users" } do |f| %>
+
+      <div class="mb-3">
+        <%= f.label :email, class: "block text-sm font-semibold mb-1" %>
+        <%= f.email_field :email, class: "border rounded px-2 py-1" %>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :role, class: "block text-sm font-semibold mb-1" %>
+        <%= f.select :role,
+          User::ROLES.reject { |r| r.in?(%w[admin super_admin]) }
+                     .map { |r| [r.titleize, r] },
+          {},
+          class: "border rounded px-2 py-1 w-full" %>
+      </div>
+
+      <div class="flex justify-end">
+        <%= f.submit "Send Invitation",
+          class: "bg-teal-600 text-white px-3 py-1 rounded" %>
+      </div>
+    <% end %>
+  </div>
+</div>

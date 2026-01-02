@@ -1,8 +1,4 @@
-<section class="relative overflow-hidden ml-10 bg-gradient-to-br from-slate-50 via-white to-teal-50 py-10 px-6 sm:px-12 min-h-screen">
-
-  <!-- Gradient colors -->
-  <div class="fixed top-20 left-4 w-92 h-92 bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse pointer-events-none -z-10"></div>
-  <div class="fixed bottom-0 right-2 w-92 h-92 bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse delay-300 pointer-events-none -z-10"></div>
+<section class="relative overflow-hidden ml-2 bg-gradient-to-br from-slate-50 via-white to-teal-50 py-10 px-6 sm:px-12 min-h-screen">
 
   <!-- Created / Updated info -->
   <div class="flex flex-wrap justify-start space-x-6 text-sm text-gray-600 mb-6">
@@ -23,7 +19,7 @@
         <span class="font-semibold">
           <%= User.find_by(id: last_version.whodunnit)&.username&.titleize || "Unknown" %>
         </span>
-        at <%= last_version.created_at.strftime("%b %d, %Y %H:%M") %>
+         <%= time_ago_in_words(last_version.created_at) %> ago
       <% else %>
         <span class="text-gray-600">No updates recorded yet.</span>
       <% end %>
@@ -32,14 +28,14 @@
 
   <!-- Title with Edit Button -->
   <div class="flex justify-between items-center mb-6 ml-10">
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-0">
       <h1 class="text-4xl font-bold text-gray-800 mr-3"><%= @task.title %></h1>
-      <span class="bg-teal-200 mb-3 text-teal-900 text-sm font-semibold px-3 py-1 rounded-full">
+      <span class="bg-teal-200 mb-4 text-teal-900 text-sm font-semibold px-3 py-1 rounded-full">
         <%= @task.task_status.humanize %>
       </span>
     </div>
 
-    <% if ["admin", "manager", "employee", "super_admin"].include?(@current_user.role) %>
+    <% if can_edit_task?(@current_user) %>
       <%= link_to edit_project_task_path(@task.project, @task), class: "text-gray-500 hover:text-gray-700 transition" do %>
         <i data-lucide="edit" class="w-5 h-5"></i>
       <% end %>
@@ -49,23 +45,23 @@
   <!-- Task Details -->
   <div class="flex flex-wrap items-center gap-x-4 gap-y-4 mb-6 text-gray-800">
     <!-- Project -->
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-0">
       <i data-lucide="folder" class="w-5 h-5 text-teal-600"></i>
-      <span class="text-lg font-semibold mr-3 ml-2">Project:</span>
-      <%= link_to @task.project.title, project_path(@task.project), class: "text-lg text-teal-700 mr-4" %>
+      <span class="text-lg font-semibold mr-2 ml-2">Project:</span>
+      <%= link_to @task.project.title, project_path(@task.project), class: "text-lg text-teal-700 mr-5" %>
     </div>
 
     <!-- Assigned User -->
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-0">
       <i data-lucide="user" class="w-6 h-6 text-teal-600"></i>
-      <span class="text-lg font-semibold ml-2 mr-3">Assigned to:</span>
+      <span class="text-lg font-semibold ml-2 mr-2">Assigned to:</span>
       <span class="text-lg text-teal-700 mr-4"><%= @task.assigned_user.username %></span>
     </div>
 
     <!-- Type -->
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-0">
       <i data-lucide="tag" class="w-5 h-5 text-teal-600"></i>
-      <span class="text-lg font-semibold mr-3 ml-2">Type:</span>
+      <span class="text-lg font-semibold mr-2 ml-2">Type:</span>
       <span class="text-lg text-teal-700"><%= @task.task_type.humanize %></span>
     </div>
   </div>
@@ -73,20 +69,20 @@
   <!-- Progress + Deadline -->
   <div class="flex flex-wrap items-center gap-6 mb-8 text-gray-800">
     <!-- Progress -->
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-0">
       <i data-lucide="trending-up" class="w-6 h-6 text-teal-600"></i>
       <span class="text-lg font-semibold mr-3 ml-2">Progress:</span>
       <% progress_value = @task.progress.gsub("_percent", "").to_i %>
       <span class="text-xl font-bold text-gray-900"><%= progress_value %>%</span>
     </div>
-    <div class="flex-1 min-w-[200px]">
+    <div class="flex-1 min-w-[80px]">
       <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-        <div class="h-full bg-gradient-to-r from-teal-500 to-blue-600 rounded-full transition-all duration-500" style="width: <%= progress_value %>%"></div>
+        <div class="h-full bg-gradient-to-r from-teal-500 to-blue-600 rounded-full transition-all duration-400" style="width: <%= progress_value %>%"></div>
       </div>
     </div>
 
     <!-- Deadline -->
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 ml-12">
       <i data-lucide="calendar" class="w-5 h-5 text-teal-600"></i>
       <span class="text-lg font-semibold">Deadline:</span>
       <span class="text-lg"><%= @task.estimated_deadline.strftime("%b %d, %Y") %></span>

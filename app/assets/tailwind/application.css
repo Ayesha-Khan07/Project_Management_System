@@ -1,6 +1,4 @@
 @import "tailwindcss";
-@import "actiontext";
-@import 'super_admin_dashboard';
 
 /* Custom Animations */
 @layer utilities {
