@@ -50,9 +50,9 @@
     <div class="flex space-x-6 items-start relative">
       <% if can_edit_project?(@current_user) %>    
         <%= render "projects/invite_user_modal", project: @project %>
-
-        <%= link_to "+ Create Task", new_project_task_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
       <% end %> 
+      <%= link_to "+ Create Task", new_project_task_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
+     
     </div>
  </div>
 
@@ -183,9 +183,6 @@
       <% end %>
     </div>
   </div>
-
-  <hr class="border-gray-300 mt-6">
-
 
  <!-- ================== PROJECT TASKS KANBAN ================== -->
   <div class="mt-12">
