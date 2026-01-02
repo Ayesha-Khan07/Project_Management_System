@@ -1,9 +1,5 @@
 <section class="relative overflow-hidden ml-10 bg-gradient-to-br from-slate-50 via-white to-teal-50 py-10 px-6 sm:px-12 min-h-screen">
 
-  <!-- Gradient colors -->
-  <div class="fixed top-20 left-4 w-92 h-92 bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse pointer-events-none -z-10"></div>
-  <div class="fixed bottom-0 right-2 w-92 h-92 bg-teal-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse delay-300 pointer-events-none -z-10"></div>
-
   <!-- Created / Updated info -->
   <div class="flex flex-wrap justify-start space-x-6 text-sm text-gray-600 mb-6">
     <div>
@@ -23,7 +19,7 @@
         <span class="font-semibold">
           <%= User.find_by(id: last_version.whodunnit)&.username&.titleize || "Unknown" %>
         </span>
-        at <%= last_version.created_at.strftime("%b %d, %Y %H:%M") %>
+         <%= time_ago_in_words(last_version.created_at) %> ago
       <% else %>
         <span class="text-gray-600">No updates recorded yet.</span>
       <% end %>
