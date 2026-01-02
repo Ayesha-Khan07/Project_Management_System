@@ -49,45 +49,12 @@
     <!-- Buttons -->
     <div class="flex space-x-6 items-start relative">
       <% if can_edit_project?(@current_user) %>    
-        <!-- Add button -->
-        <button id="show-add-invite-btn" class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition relative z-10">+ Add</button>
-    
-        <!-- INVITE USER POPOVER FORM -->
-        <div id="invite-user-form" class="hidden absolute z-20 w-80 bg-white rounded shadow-md p-4">
-          <%= form_with model: [@project, @project.invitations.new], url: project_invitations_path(@project), local: true, html: { id: "invite-form" } do |f| %>
-            <div class="mb-3">
-              <%= f.label :email, class: "block font-semibold mb-1" %>
-              <%= f.email_field :email, class: "border rounded px-2 py-1 w-full" %>
-            </div>
+        <%= render "projects/invite_user_modal", project: @project %>
 
-            <div class="mb-5">
-              <%= f.label :role, class: "block font-semibold mb-1" %>
-              <%= f.select :role, User::ROLES.reject { |r| r.in?(["admin","super_admin"]) }.map { |r| [r.titleize, r] }, {}, class: "border rounded px-2 py-1 w-full" %>
-            </div>
-
-            <div class="flex justify-end space-x-2">
-              <% if @project.company.users.count < 7 || @project.company.subscription_status == "paid"%>
-                <%= f.submit "Send Invitation", class: "bg-teal-600 text-white px-3 py-1 rounded" %>
-              <% else %>
-                <button type="button" class="bg-gray-300 text-gray-600 px-3 py-1 rounded cursor-not-allowed" disabled>Send Invitation</button>
-              <% end %>
-              <button type="button" id="cancel-invite-btn" class="px-3 py-1 rounded border hover:bg-gray-200">Cancel</button>
-            </div>
-
-            <% if @project.free_plan_limit_reached? %>
-              <p class="text-red-600 text-sm mt-3">
-                Your team has hit the member limit for the free plan. <br>
-                To enhance your team, please get the paid version of the app and add unlimited users.
-                <a href="#" class="text-teal-600 font-semibold underline">Upgrade Now</a>.
-              </p>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
-
-      <%= link_to "+ Create Task", new_project_task_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %> 
+        <%= link_to "+ Create Task", new_project_task_path(@project), class: "bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition" %>
+      <% end %> 
     </div>
-  </div>
+ </div>
 
   <!-- Status + Deadline -->
   <div class="flex flex-wrap items-center space-x-6 mb-6">
