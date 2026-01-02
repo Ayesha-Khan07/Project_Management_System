@@ -21,6 +21,10 @@ gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 
+# turbo and stimuls 
+gem "turbo-rails"
+
+
 # Authentication
 gem "devise"
 
@@ -29,6 +33,9 @@ gem "activeadmin"
 
 # For Audit HIstory
 gem "paper_trail"
+
+#for admin dashboard search
+gem 'ransack'
 
 # Background Jobs
 gem "sidekiq"
@@ -82,5 +89,7 @@ end
 
 gem "cssbundling-rails", "~> 1.4"
 gem "tailwindcss-rails"
-gem "importmap-rails"
 gem "bcrypt", "~> 3.1.18"
+
+gem "importmap-rails", "~> 2.2"
+gem "stimulus-rails", "~> 1.3"
