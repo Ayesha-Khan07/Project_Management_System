@@ -1,0 +1,42 @@
+<div class="bg-white shadow-lg rounded-xl p-10 ml-10 mt-8 relative w-full md:w-100 md:col-span-1 self-start flex flex-col items-center md:items-start">
+  <!-- Upgrade Button -->
+  <a href="#" class="absolute top-5 right-6 bg-teal-600 text-white px-3 py-1.5 rounded-full text-sm font-medium hover:bg-teal-700 transition">
+    Upgrade
+  </a>
+
+  <!-- Company Logo -->
+  <div class="relative w-32 h-32 mt-6 mx-auto">
+    <% if company.logo.attached? %>
+      <%= image_tag url_for(company.logo), class: "w-32 h-32 rounded-full object-cover border" %>
+    <% else %>
+      <div class="w-32 h-32 bg-gray-200 rounded-lg border flex items-center justify-center text-gray-500">
+        No Logo
+      </div>
+    <% end %>
+
+    <!-- Logo Upload -->
+    <label class="absolute bottom-1 right-1.5 bg-gray-500 text-white p-2 rounded-full cursor-pointer hover:bg-gray-700">
+      <i data-lucide="camera" class="w-4 h-4"></i>
+      <%= form_with model: company, url: company_path(company), method: :patch, local: true, html: { multipart: true, class: "hidden" } do |f| %>
+        <%= f.file_field :logo, accept: "image/png,image/jpeg,image/jpg,image/gif", onchange: "this.form.submit();" %>
+      <% end %>
+    </label>
+  </div>
+
+  <!-- Company Name & Admin -->
+  <div class="mt-4 w-full text-center md:text-center">
+    <h1 class="text-2xl font-bold"><%= company.name %></h1>
+    <p class="text-gray-600 mt-2 mb-1">Admin: <span class="font-medium"><%= admin_name(company) %></span></p>
+  </div>
+
+  <div class="w-full border-t my-4"></div>
+
+  <!-- Subscription Info -->
+  <div class="space-y-4 w-full text-gray-700 text-lg">
+    <p><strong>Subscription Status:</strong> <%= subscription_status(company) %></p>
+    <% if member_limit_display(company) %>
+      <p><strong>Member Limit:</strong> <%= member_limit_display(company) %></p>
+    <% end %>
+    <p><strong>Active Members:</strong> <%= @active_count %></p>
+  </div>
+</div>

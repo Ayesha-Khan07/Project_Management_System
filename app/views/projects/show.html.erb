@@ -8,16 +8,17 @@
       Created by <span class="font-semibold"><%= @company_admin&.username&.titleize || "Unknown" %></span> 
       at <%= @project.created_at.strftime("%b %d, %Y %H:%M") %>
     </div>
-      <div>
+     <div>
       <i data-lucide="refresh-cw" class="w-4 h-4 inline mr-1"></i>
-      <% last_version = @project.versions.last %>
 
-      <% if last_version.present? %>
-        Updated by 
+      <% if @project.updated_at > @project.created_at + 1.second%>
+        <% last_update = @project.versions.where(event: "update").last %>
+
+        Updated by
         <span class="font-semibold">
-          <%= User.find_by(id: last_version.whodunnit)&.username&.titleize || "Unknown" %>
+          <%= User.find_by(id: last_update&.whodunnit)&.username&.titleize || "Unknown" %>
         </span>
-        at <%= last_version.created_at.strftime("%b %d, %Y %H:%M") %>
+        at <%= @project.updated_at.strftime("%b %d, %Y %H:%M") %>
       <% else %>
         <span class="text-gray-600">No updates recorded yet.</span>
       <% end %>

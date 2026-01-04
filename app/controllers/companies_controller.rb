@@ -30,6 +30,8 @@ class CompaniesController < ApplicationController
 
   def show
     redirect_to root_path, alert: "No company found" if @company.nil?
+    @active_count = @company.users.count
+    @edit_section = params[:edit] # "description" or "services"
   end
 
   def update
@@ -47,20 +49,20 @@ class CompaniesController < ApplicationController
     user = @company.users.find(params[:user_id])
 
     Company.transaction do
-      # 1️⃣ Reassign tasks
+      # Reassign tasks
       Task.where(assigned_user_id: user.id).update_all(
         assigned_user_id: system_user.id
       )
 
-      # 2️⃣ Reassign comments
+      # Reassign comments
       Comment.where(user_id: user.id).update_all(
         user_id: system_user.id
       )
 
-      # 3️⃣ Remove from projects
+      # Remove from projects
       user.projects_users.delete_all
 
-      # 4️⃣ Remove from company (NOT delete user)
+      # Remove from company (NOT delete user)
       user.update!(company_id: nil)
     end
 
