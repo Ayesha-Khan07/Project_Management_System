@@ -1,0 +1,33 @@
+<turbo-frame id="company_description">
+  <!-- Heading with section icon and edit button -->
+  <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center gap-2">
+      <i data-lucide="file-text" class="w-6 h-6 text-teal-700"></i> <!-- Section icon -->
+      <h2 class="text-2xl font-semibold">Company Description</h2>
+    </div>
+
+    <% if can_edit_company?(current_user) %>
+      <%# Show edit button only when not editing %>
+      <% unless @edit_section == "description" %>
+        <%= link_to company_path(company, edit: "description"), class: "inline-flex items-center p-1 rounded-full hover:bg-gray-100" do %>
+          <i data-lucide="edit" class="w-5 h-5 text-gray-800"></i>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <!-- Content: either display or edit form -->
+  <% if can_edit_company?(current_user) && @edit_section == "description" %>
+    <%= form_with model: company, url: company_path(company), method: :patch, local: false do |f| %>
+      <%= f.text_area :description, rows: 6, class: "block w-full px-4 rounded-md border-gray-300 shadow-sm mb-4" %>
+      <div class="flex items-center justify-end mt-3 space-x-3">
+        <%= link_to "Cancel", company_path(company), class: "px-3 py-1 rounded border hover:bg-gray-200" %>
+        <%= f.submit "Save", class: "bg-teal-600 text-white px-4 py-2 rounded-lg" %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="bg-gray-50 p-5 rounded-lg border text-gray-700 text-md mb-6">
+      <%= simple_format(company.description.presence || "No description available.") %>
+    </div>
+  <% end %>
+</turbo-frame>
