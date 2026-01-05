@@ -1,7 +1,7 @@
 <div class="tab-content-wrapper py-10">
   <h1 class="text-center text-4xl font-bold mb-10">
     <span class="inline-flex text-teal-800 items-center justify-center">
-      <i class="bi bi-check2-square text-3xl"></i>
+      <i class="bi bi-check2-square text-3xl mr-3"></i>
       Manage and monitor all tasks
     </span>
   </h1>
@@ -27,7 +27,7 @@
       </div>
       <div class="flex flex-col mt-3">
         <span class="text-gray-500 font-medium text-2xl mb-3">Not Started</span>
-        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @tasks.where(task_status: 'not_started').count %></span>
+        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @tasks.where(task_status: 'to_do').count %></span>
       </div>
     </div>
 
@@ -42,6 +42,17 @@
       </div>
     </div>
 
+    <!-- To verify -->
+    <div class="stat-card purple-gradient rounded-xl p-6 ml-10 shadow-md" style="min-width: 280px; min-height: 160px;">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); width: 80px; height: 80px;">
+        <i class="bi bi-clipboard-check" style="font-size: 2.5rem; color: white;"></i>
+      </div>
+      <div class="flex flex-col mt-3">
+        <span class="text-gray-500 font-medium text-2xl mb-3">To Verify</span>
+        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @tasks.where(task_status: 'to_verify').count %></span>
+      </div>
+    </div>
+
     <!-- Completed -->
     <div class="stat-card green-gradient rounded-xl p-6 ml-10 shadow-md" style="min-width: 280px; min-height: 160px;">
       <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); width: 80px; height: 80px;">
@@ -49,7 +60,7 @@
       </div>
       <div class="flex flex-col mt-3">
         <span class="text-gray-500 font-medium text-2xl mb-3">Completed</span>
-        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @tasks.where(task_status: 'completed').count %></span>
+        <span class="text-gray-900 font-bold text-3xl ml-2"><%= @tasks.where(task_status: 'done').count %></span>
       </div>
     </div>
 
