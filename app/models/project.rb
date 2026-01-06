@@ -22,7 +22,6 @@ class Project < ApplicationRecord
   # Validations
   validates :title, :project_status, :project_deadline, presence: true
   validates :description, presence: true
-  validates :project_deadline, presence: true
 
   #custom validation for documenet uploada
   validate :validate_uploaded_document                  # -- validates -> for built-in validations like presence, length, format
