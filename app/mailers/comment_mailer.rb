@@ -9,7 +9,7 @@ class CommentMailer < ApplicationMailer
 
     mail(
       to: @recipient.email,
-      subject: "Comment on Task: #{@task.title} (#{@action})"
+      subject: "Comment on Task: #{@task.title} is - (#{@action})"
     )
   end
 end

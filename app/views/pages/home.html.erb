@@ -85,61 +85,7 @@
 
 </section>
 
-<!-- How It Works Section -->
-<section id="how-it-works" class="bg-slate-100 py-10">
-  <div class="text-center mb-10">
-    <h3 class="text-3xl font-bold text-gray-900">How It Works</h3>
-    <p class="text-gray-600 mt-2">Get started in just three simple steps</p>
-  </div>
-  
-  <div class="relative max-w-6xl mx-auto px-6 py-8">
-  <!-- Left/Right Navigation -->
-  <button id="scroll-left" class="absolute -left-6 top-1/2 -translate-y-1/2 bg-teal-600 text-white p-2 rounded-full shadow-lg z-10 hover:bg-teal-700 transition">
-    &#10094;
-  </button>
-  <button id="scroll-right" class="absolute -right-6 top-1/2 -translate-y-1/2 bg-teal-600 text-white p-2 rounded-full shadow-lg z-10 hover:bg-teal-700 transition">
-    &#10095;
-  </button>
 
-  <!-- Steps Container -->
-  <div id="steps-container" class="flex gap-19 overflow-x-hidden scroll-snap-x snap-mandatory">
-    <% steps = [
-      { num: 1, title: "Create Company", desc: "Admin registers and sets up the company profile." },
-      { num: 2, title: "Add Managers & Clients", desc: "Managers add employees, clients, and create projects." },
-      { num: 3, title: "Track Everything", desc: "Monitor progress with reports, charts, and notifications." },
-      { num: 4, title: "Create Projects & Tasks", desc: "Managers assign tasks and set deadlines for projects." },
-      { num: 5, title: "Upload Deliverables", desc: "Employees upload task or project files." },
-      { num: 6, title: "Receive Notifications", desc: "Sidekiq sends automated updates about tasks and deadlines." },
-      { num: 7, title: "View Analytics Dashboard", desc: "Managers and admins monitor project progress visually." }
-    ] %>
-
-    <% steps.each_with_index do |step, index| %>
-      <div class="group flex flex-col items-center text-center snap-start min-w-[220px] relative transition-all duration-500" data-step="<%= step[:num] %>">
-        <!-- Step Circle -->
-        <div class="step-circle text-teal-600 text-4xl font-bold mb-3 rounded-full w-12 h-12 mt-1 mb-1 flex items-center justify-center bg-teal-100 
-                    group-hover:bg-teal-200 transition-all duration-300 transform group-hover:scale-110">
-          <%= step[:num] %>
-        </div>
-
-        <!-- Step Title & Description -->
-        <h4 class="font-semibold text-lg mb-2"><%= step[:title] %></h4>
-        <p class="text-gray-600 text-sm"><%= step[:desc] %></p>
-
-        <!-- Animated Arrow to Next -->
-        <% if index < steps.size - 1 %>
-          <div class="absolute top-1/2 right-[-60px] w-16 h-1 flex items-center justify-center">
-            <div class="w-full h-1 bg-teal-400 rounded-full relative overflow-hidden">
-              <div class="animated-flow bg-teal-600 h-1 absolute left-0 top-0 w-0"></div>
-              <svg class="absolute right-0 -top-2 w-4 h-4 text-teal-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6"/>
-              </svg>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-</div>
 
 </section>
 
@@ -173,7 +119,7 @@
       <span class="absolute top-3 right-3 bg-teal-700 text-white text-xs font-semibold px-3 py-1 rounded-full">7+ Members</span>
 
       <h4 class="font-semibold text-xl mb-2">Professional</h4>
-      <p class="text-3xl font-bold text-teal-600 mb-4">$49/mo</p>
+      <p class="text-3xl font-bold text-teal-600 mb-4">$10/mo</p>
       <p class="text-gray-600 text-sm mb-6">
         Designed for growing companies managing multiple clients and teams. Unlock advanced project analytics, file sharing, and automation.
       </p>

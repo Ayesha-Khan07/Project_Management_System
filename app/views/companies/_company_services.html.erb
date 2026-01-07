@@ -7,7 +7,6 @@
     </div>
 
     <% if can_edit_company?(current_user) %>
-      <%# Show edit button only when not editing %>
       <% unless @edit_section == "services" %>
         <%= link_to company_path(company, edit: "services"), class: "inline-flex items-center p-1 rounded-full hover:bg-gray-100" do %>
           <i data-lucide="edit" class="w-5 h-5 text-gray-600"></i>

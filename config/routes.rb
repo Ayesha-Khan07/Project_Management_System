@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   # Root path
-  root "pages#home"
   get "pages/home"
 
   # Devise routes with custom controllers
@@ -44,4 +43,6 @@ Rails.application.routes.draw do
   # Active Admin
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
+
+  root "pages#home"
 end

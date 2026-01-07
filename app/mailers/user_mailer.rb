@@ -3,7 +3,7 @@ class UserMailer < ApplicationMailer
 
   def welcome_email(user)
     @user = user
-    mail(
+    mail(           
       to: @user.email,
       subject: "Welcome to the Project Management System!"
     )
