@@ -7,7 +7,7 @@ class TasksController < ApplicationController
   def new
     @task = @project.tasks.build
     # Only employees of the project’s company
-    @employees = @project.company.users.where(role: ["employee", "manager"])
+    @employees = @project.users.where(role: ["employee", "manager"])
 
   end
 
