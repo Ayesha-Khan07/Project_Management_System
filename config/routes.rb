@@ -41,4 +41,7 @@ Rails.application.routes.draw do
   # root route
   root "pages#home"
 
+  #wildcard/catch-all route 
+  get '*unmatched_route', to: 'application#not_found'
+
 end
