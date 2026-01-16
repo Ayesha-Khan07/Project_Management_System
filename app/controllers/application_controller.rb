@@ -5,6 +5,15 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :ensure_company_exists, unless: :devise_controller?
 
+  #action method for 404 route 
+ def not_found
+    Rails.logger.warn "Unmatched route: #{params[:unmatched_route]}"
+    respond_to do |format|
+      format.html { render 'partials/not_found', status: 404 }
+      format.json { render json: { error: "Page not found" }, status: 404 }
+    end
+  end
+
   private
   
   def configure_permitted_parameters

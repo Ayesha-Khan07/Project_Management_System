@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
-  # Root path
-  get "pages/home"
-
+ 
   # Devise routes with custom controllers
   devise_for :users, controllers: {
     registrations: 'users/registrations',
@@ -29,7 +27,7 @@ Rails.application.routes.draw do
     delete 'remove_user', on: :member           # added becoz we are deleting a user from a proj not from the db account of user 
   end
 
-  # Super Admin Dashboard
+  # Super Admin Dashboard namespace
   namespace :super_admin do
     get 'dashboard', to: 'dashboards#index', as: 'dashboard'
     delete 'users/:id', to: 'dashboards#destroy_user', as: 'destroy_user'
@@ -40,9 +38,10 @@ Rails.application.routes.draw do
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
-  # Active Admin
-  devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
-
+  # root route
   root "pages#home"
+
+  #wildcard/catch-all route 
+  get '*unmatched_route', to: 'application#not_found'
+
 end
