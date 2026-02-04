@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     resources :invitations, only: [:new, :create]
     resources :tasks do
       resources :comments, only: [:create, :edit, :update, :destroy]
+      patch :update_status, on: :member
     end
     delete 'remove_user', on: :member           # added becoz we are deleting a user from a proj not from the db account of user 
   end
