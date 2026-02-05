@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_project, only: [:new, :create, :index, :edit, :update]
-  before_action :set_task, only: [:show, :edit, :update]
+  before_action :set_task, only: [:show, :edit, :update, :update_status]
   before_action :set_paper_trail_whodunnit
 
   def new
@@ -50,6 +50,20 @@ class TasksController < ApplicationController
    end
   end
 
+  # for drag and dropable task cards 
+  def update_status
+    PaperTrail.request.whodunnit = current_user.id
+
+    if @task.update(task_status: params[:task][:task_status])
+      # Get the last version and add comment
+      version = @task.versions.last
+      version&.update(comment: "#{current_user.username} moved task '#{@task.title}' to #{@task.task_status.humanize}")
+
+      render json: { success: true, task: @task }
+    else
+      render json: { success: false, errors: @task.errors.full_messages }
+    end
+  end
 
   def show
   end

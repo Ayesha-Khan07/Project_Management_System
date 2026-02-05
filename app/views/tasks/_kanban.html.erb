@@ -11,25 +11,38 @@
         Track progress, assignments, and completion status of taks for this project
     </p>
 
-  <div class="flex space-x-4 h-[600px]">
-
-    <% ['to_do', 'in_progress', 'to_verify', 'done'].each do |status| %>
-      <div class="flex-1 p-4 rounded-lg shadow-sm flex flex-col bg-teal-100">
-        
-        <h3 class="text-xl font-semibold text-gray-700 mb-4 text-center">
-          <%= status.humanize %>
-        </h3>
-
-        <div class="flex-1 overflow-y-auto space-y-4">
-          <% project.tasks.where(task_status: status).each do |task| %>
-            <%= render "partials/task_card",
-                  task: task,
-                  project: project %>
-          <% end %>
-        </div>
-
+    <% if @last_task_update && @last_task_update.last_comment.present? %>
+      <div class="mb-4 text-sm text-gray-600 italic text-left">
+        <i data-lucide="refresh-cw" class="w-5 h-5 inline mr-2 text-teal-600"></i>
+        <%= @last_task_update.last_comment %>
       </div>
     <% end %>
 
+  <div data-controller="kanban">
+    <div class="flex space-x-4 h-[600px]">
+
+      <% ['to_do', 'in_progress', 'to_verify', 'done'].each do |status| %>
+        <div class="flex-1 p-4 rounded-lg shadow-sm flex flex-col bg-teal-100" 
+           data-kanban-target="column"
+           data-status="<%= status %>"
+        >
+          
+          <h3 class="text-xl font-semibold text-gray-700 mb-4 text-center">
+            <%= status.humanize %>
+          </h3>
+
+          <div class="flex-1 overflow-y-auto space-y-4 tasks-container"
+                      data-status="<%= status %>">
+            <% project.tasks.where(task_status: status).each do |task| %>
+              <%= render "partials/task_card",
+                    task: task,
+                    project: project %>
+            <% end %>
+          </div>
+
+        </div>
+      <% end %>
+
+    </div>
   </div>
 </div>
