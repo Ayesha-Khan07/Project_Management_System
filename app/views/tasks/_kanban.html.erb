@@ -11,6 +11,13 @@
         Track progress, assignments, and completion status of taks for this project
     </p>
 
+    <% if @last_task_update && @last_task_update.last_comment.present? %>
+      <div class="mb-4 text-sm text-gray-600 italic text-left">
+        <i data-lucide="refresh-cw" class="w-5 h-5 inline mr-2 text-teal-600"></i>
+        <%= @last_task_update.last_comment %>
+      </div>
+    <% end %>
+
   <div data-controller="kanban">
     <div class="flex space-x-4 h-[600px]">
 
