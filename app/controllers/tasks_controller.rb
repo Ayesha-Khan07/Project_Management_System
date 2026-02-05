@@ -52,11 +52,17 @@ class TasksController < ApplicationController
 
   # for drag and dropable task cards 
   def update_status
-   if @task.update(task_status: params[:task][:task_status])
-    render json: {success: true, task: @task}
-   else
-    render json: {success: false, errors: @task.errors.full_messages}
-   end
+    PaperTrail.request.whodunnit = current_user.id
+
+    if @task.update(task_status: params[:task][:task_status])
+      # Get the last version and add comment
+      version = @task.versions.last
+      version&.update(comment: "#{current_user.username} moved task '#{@task.title}' to #{@task.task_status.humanize}")
+
+      render json: { success: true, task: @task }
+    else
+      render json: { success: false, errors: @task.errors.full_messages }
+    end
   end
 
   def show
