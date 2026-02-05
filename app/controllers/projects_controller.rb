@@ -20,6 +20,14 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find(params[:id])  
     @company_admin = @project.company.users.find_by(role: :admin)
+
+     #to get the papertrail record of last person who move the task/ticket.
+    @last_task_update = @project.tasks
+                             .joins(:versions)
+                             .where.not(versions: { comment: [nil, ''] })
+                             .order('versions.created_at DESC')
+                             .select('tasks.*, versions.comment AS last_comment')
+                             .first
   end
 
   def update
