@@ -12,8 +12,6 @@ class Task < ApplicationRecord
   enum :task_status, { to_do: 0, in_progress: 1, to_verify: 2, done: 3 }, suffix: true
   enum :progress, { "0%" => 0, "25%" => 1, "50%" => 2, "75%" => 3, "100%" => 4 }, suffix: true
 
-
-
   #validations
   validates :title, :task_type, :task_status, :progress, :assigned_user_id, :project_id, presence: true
 
