@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
     if @comment.save
       #send email seperatly to each associated user ---> becoz bcc won't works 
        @task.project.users.where.not(id: current_user.id).find_each do |recipient|
-        CommentMailer.with(comment: @comment, action: "created", recipient: recipient).comment_notification.deliver_now
+        CommentMailer.with(comment: @comment, action: "created", recipient: recipient).comment_notification.deliver_later
       end
       redirect_to project_task_path(@task.project, @task), notice: "Comment added."
     else
@@ -28,7 +28,7 @@ class CommentsController < ApplicationController
     if @comment.user == current_user && @comment.update(comment_params)
       
       @task.project.users.where.not(id: current_user.id).find_each do |recipient|
-        CommentMailer.with(comment: @comment, action: "updated", recipient: recipient).comment_notification.deliver_now
+        CommentMailer.with(comment: @comment, action: "updated", recipient: recipient).comment_notification.deliver_later
       end
 
       redirect_to project_task_path(@task.project, @task), notice: "Comment updated."
@@ -42,7 +42,7 @@ class CommentsController < ApplicationController
       @comment.update(body: "This comment was deleted.")
       #send mail before redirect
       @task.project.users.where.not(id: current_user.id).find_each do |recipient|
-        CommentMailer.with(comment: @comment, action: "deleted", recipient: recipient).comment_notification.deliver_now
+        CommentMailer.with(comment: @comment, action: "deleted", recipient: recipient).comment_notification.deliver_later
       end
 
       redirect_to project_task_path(@task.project, @task), notice: "Comment deleted."
