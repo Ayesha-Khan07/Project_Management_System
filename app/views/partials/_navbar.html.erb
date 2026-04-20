@@ -14,7 +14,7 @@
         <%= link_to root_path, class: "flex items-center space-x-4" do %>
 
           <% if company.logo.attached? %>
-            <%= image_tag company.logo, class: "w-10 h-10 rounded-full" %>
+            <%= image_tag company.logo, class: "w-10 h-10 rounded-full object-cover" %>
           <% end %>
           <span class="text-teal-600 font-bold text-xl"><%= company.name %></span>
 
@@ -27,7 +27,7 @@
             </h1>
           <% end %>
       <% end %>
-      
+
     </div>
 
     <!-- CENTER: Navigation -->

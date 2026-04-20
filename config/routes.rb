@@ -47,7 +47,8 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
-  #wildcard/catch-all route 
-  get '*unmatched_route', to: 'application#not_found'
+  #wildcard/catch-all route - was breaking the logo img as the active storage routes are like -> /rails/active_storage/blobs/...
+  match '*unmatched_route', to: 'application#not_found', via: :all,
+  constraints: ->(req) { !req.path.include?('/rails/active_storage') && !req.path.start_with?('/assets') }
 
 end
