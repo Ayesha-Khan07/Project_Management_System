@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
  
   # Devise routes with custom controllers
@@ -34,13 +36,16 @@ Rails.application.routes.draw do
     delete 'users/:id', to: 'dashboards#destroy_user', as: 'destroy_user'
   end
 
-  # Development tools
-  if Rails.env.development?
-    mount LetterOpenerWeb::Engine, at: "/letter_opener"
-  end
-
   # root route
   root "pages#home"
+
+     # Development tools
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+
+    #added it at the end - to make it seperate from the actual flow of the app.
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   #wildcard/catch-all route 
   get '*unmatched_route', to: 'application#not_found'
