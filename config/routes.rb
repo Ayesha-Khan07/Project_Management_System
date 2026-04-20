@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   # Root path
   root "pages#home"
@@ -41,4 +43,10 @@ Rails.application.routes.draw do
   # Active Admin
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
+
+  # Sidekiq dashboard (dev only) - added at the end to make it seperate from the normal flow 
+  if Rails.env.development?
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
 end
