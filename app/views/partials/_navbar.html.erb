@@ -11,15 +11,23 @@
       %>
 
       <% if company.present? && !current_user&.super_admin? %>
-        <% if company.logo.attached? %>
-          <%= image_tag company.logo, class: "w-10 h-10 rounded-full" %>
-        <% end %>
-        <span class="text-teal-600 font-bold text-xl"><%= company.name %></span>
+        <%= link_to root_path, class: "flex items-center space-x-4" do %>
+
+          <% if company.logo.attached? %>
+            <%= image_tag company.logo, class: "w-10 h-10 rounded-full object-cover" %>
+          <% end %>
+          <span class="text-teal-600 font-bold text-xl"><%= company.name %></span>
+
+        <%end%>
+
       <% else %>
-        <h1 class="text-2xl font-bold text-teal-700">
-          ClientProject<span class="text-gray-900">Hub</span>
-        </h1>
+          <%= link_to root_path do %>
+            <h1 class="text-2xl font-bold text-teal-700">
+              ClientProject<span class="text-gray-900">Hub</span>
+            </h1>
+          <% end %>
       <% end %>
+
     </div>
 
     <!-- CENTER: Navigation -->
