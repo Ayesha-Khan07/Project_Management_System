@@ -88,7 +88,7 @@
       <span class="text-lg"><%= @task.estimated_deadline.strftime("%b %d, %Y") %></span>
       <% days_until = (@task.estimated_deadline.to_date - Date.today).to_i %>
       <% if days_until < 0 %>
-        <span class="bg-teal-200 text-teal-900 text-sm mb-4 font-semibold px-2 py-1 rounded-full">Overdue</span>
+        <span class="bg-teal-200 text-red-600 text-sm mb-4 font-semibold px-2 py-1 rounded-full">Overdue</span>
       <% elsif days_until <= 3 %>
         <span class="bg-teal-200 text-teal-900 text-sm mb-4 font-semibold px-2 py-1 rounded-full">Soon</span>
       <% end %>
