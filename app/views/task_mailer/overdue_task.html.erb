@@ -1,0 +1,15 @@
+<h2>Overdue Task Alert </h2>
+
+<p>Hello <%= @user.username %>,</p>
+
+<p>The following task is overdue:</p>
+
+<p>
+  <strong>Title:</strong> <%= @task.title %><br>
+  <strong>Description:</strong> <%= @task.description %><br>
+  <strong>Deadline:</strong> <%= @task.estimated_deadline %>
+</p>
+
+<p>Make sure to complete the task or update the status of the task.</p>
+
+<p> <strong> Regards ProjectHUb </strong> </p>

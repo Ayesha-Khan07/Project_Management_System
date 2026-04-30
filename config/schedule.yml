@@ -1,0 +1,3 @@
+overdue_tasks_reminder:
+  cron: "0 11 * * *" # every day at 11 AM
+  class: "OverdueTasksReminderJob"

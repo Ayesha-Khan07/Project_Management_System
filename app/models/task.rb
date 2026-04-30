@@ -7,12 +7,18 @@ class Task < ApplicationRecord
   # paper trail 
   has_paper_trail
 
-  #enums# enums
+  # enums
   enum :task_type, { feature: 0, bug: 1, user_story: 2 }, suffix: true
   enum :task_status, { to_do: 0, in_progress: 1, to_verify: 2, done: 3 }, suffix: true
   enum :progress, { "0%" => 0, "25%" => 1, "50%" => 2, "75%" => 3, "100%" => 4 }, suffix: true
 
-  #validations
+  # scopes
+  scope :overdue, -> {
+    where("estimated_deadline < ? ", Date.today)
+    .where.not(task_status: :done)
+  } 
+
+  # validations
   validates :title, :task_type, :task_status, :progress, :assigned_user_id, :project_id, presence: true
 
 end

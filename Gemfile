@@ -41,6 +41,9 @@ gem 'ransack'
 gem "sidekiq"
 gem "redis"
 
+# to run the jobs automatically / for recurring jobs 
+gem 'sidekiq-cron' 
+
 # Charts for analytics
 gem "chartkick"
 gem "groupdate"
